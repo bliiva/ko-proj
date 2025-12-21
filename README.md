@@ -1,1 +1,1 @@
-Kombinatoiriālās optimizācijas projekts lidostas darbībai
+## Kombinatoriālās optimizācijas projekts lidostas darbībai
