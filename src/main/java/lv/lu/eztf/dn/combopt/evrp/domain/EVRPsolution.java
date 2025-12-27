@@ -26,12 +26,13 @@ public class EVRPsolution {
     HardSoftScore score;
     String name;
     @PlanningEntityCollectionProperty
-    @JsonIdentityReference
-    List<Vehicle> vehicleList = new ArrayList<>();
+    @JsonIdentityReference(alwaysAsId = true)
+    List<Plane> planeList = new ArrayList<>();
     @ValueRangeProvider
     @PlanningEntityCollectionProperty
     @JsonIdentityReference(alwaysAsId = true)
     List<Visit> visitList = new ArrayList<>();
     @ProblemFactCollectionProperty
-    List<Location> locationList = new ArrayList<>();
+    @JsonIdentityReference(alwaysAsId = true)
+    List<Gate> gateList = new ArrayList<>();
 }

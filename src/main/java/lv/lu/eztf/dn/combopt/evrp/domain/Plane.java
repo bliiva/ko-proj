@@ -1,0 +1,83 @@
+package lv.lu.eztf.dn.combopt.evrp.domain;
+
+import ai.timefold.solver.core.api.domain.entity.PlanningEntity;
+import ai.timefold.solver.core.api.domain.variable.PlanningListVariable;
+import ai.timefold.solver.core.api.domain.variable.ShadowSources;
+import ai.timefold.solver.core.api.domain.variable.ShadowVariable;
+import com.fasterxml.jackson.annotation.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@PlanningEntity @Slf4j
+@Setter @Getter @AllArgsConstructor @NoArgsConstructor
+@JsonIdentityInfo(scope = Plane.class, property = "id",
+        generator = ObjectIdGenerators.PropertyGenerator.class)
+public class Plane {
+    String id;
+    Long scheduledArrivalTime;
+    Long scheduledDepartureTime;
+    int serviceTimeArrival; // minutes
+    int serviceTimeDeparture; // minutes
+    List<String> necessaryGateTypes;
+    int servicePriority; // 1 - low, 5 - high
+    Company company;
+    
+    // Location depot;
+    @PlanningListVariable
+    List<Visit> visits = new ArrayList<>();
+    // @ShadowVariable(supplierName = "lastSupplier")
+    @JsonIdentityReference(alwaysAsId = true)
+    Visit last = null;
+    // TODO: THIS DOES NOT WORK !!!!!
+    @ShadowSources("visits")
+    @JsonIgnore
+    // public Visit lastSupplier() {
+    //     Visit last = null;
+    //     if (!this.getVisits().isEmpty()) {
+    //         last = this.getVisits().get(this.getVisits().size() - 1);
+    //     }
+    //     //log.info(String.valueOf(last));
+    //     return last;
+    // }
+
+    // @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    // public Double getTotalDistance() {
+    //     Double totalDistance = 0.0;
+    //     Location prevLoc = this.getDepot();
+    //     for (Visit visit: this.getVisits()) {
+    //         totalDistance = totalDistance +
+    //                 prevLoc.distanceTo(visit.getLocation());
+    //         prevLoc = visit.getLocation();
+    //     }
+    //     totalDistance = totalDistance +
+    //             prevLoc.distanceTo(this.getDepot());
+    //     return totalDistance;
+    // }
+    // @JsonIgnore
+    // public Boolean isBatteryEmpty() {
+    //     Boolean batteryEmpty = false;
+    //     Double charge = this.getCharge();
+    //     Location prevLoc = this.getDepot();
+    //     for (Visit visit: this.getVisits()) {
+    //         charge = charge - this.getDischargeSpeed() * prevLoc.distanceTo(visit.getLocation());
+    //         if (charge < 0) { batteryEmpty = true; }
+    //         if (visit instanceof ChargingStation) {charge = this.getMaxCharge(); }
+    //         prevLoc = visit.getLocation();
+    //     }
+    //     charge = charge - this.getDischargeSpeed() * prevLoc.distanceTo(this.getDepot());
+    //     if (charge < 0) { batteryEmpty = true; }
+    //     return batteryEmpty;
+
+    // }
+
+    @Override
+    public String toString() {
+        return this.id;
+    }
+}
