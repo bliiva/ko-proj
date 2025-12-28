@@ -1,0 +1,29 @@
+{
+  "score": null,
+  "name": "minimal-evrp",
+
+  "terminalList": [
+    { "id": "T1" }
+  ],
+
+  "companyList": [
+    { "id": "C1", "name": "Company-1", "terminal": { "id": "T1" } }
+  ],
+
+  "gateList": [
+    { "id": "G1", "type": "A", "serviceSpeedCoefficient": 1.0, "terminal": { "id": "T1" } }
+  ],
+
+  "planeList": [
+    {
+      "id": "P1",
+      "scheduledArrivalTime": 1000,
+      "scheduledDepartureTime": 2000,
+      "serviceTimeArrival": 30,
+      "serviceTimeDeparture": 25,
+      "servicePriority": 1,
+      "necessaryGateTypes": ["A"],
+      "company": { "id": "C1" }
+    }
+  ]
+}

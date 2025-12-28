@@ -4,9 +4,9 @@ import ai.timefold.solver.core.api.score.buildin.hardsoft.HardSoftScore;
 import ai.timefold.solver.core.api.score.constraint.ConstraintMatch;
 import lombok.Getter;
 import lombok.Setter;
-import lv.lu.eztf.dn.combopt.evrp.domain.ChargingStation;
-import lv.lu.eztf.dn.combopt.evrp.domain.Customer;
-import lv.lu.eztf.dn.combopt.evrp.domain.Vehicle;
+// import lv.lu.eztf.dn.combopt.evrp.domain.ChargingStation;
+import lv.lu.eztf.dn.combopt.evrp.domain.Gate;
+import lv.lu.eztf.dn.combopt.evrp.domain.Plane;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,13 +22,13 @@ public class SimpleIndictmentObject {
     private List<SimpleConstraintMatch> constraintMatches = new ArrayList<>();
 
     public SimpleIndictmentObject(Object indictedObject, HardSoftScore score, int matchCount, Set<ConstraintMatch<HardSoftScore>> constraintMatches) {
-        this.indictedObjectID = indictedObject instanceof Vehicle ? ((Vehicle) indictedObject).getRegNr() :
-                indictedObject instanceof Customer ? ((Customer) indictedObject).getName() :
-                        indictedObject instanceof ChargingStation ? ((ChargingStation) indictedObject).getName() :
+        this.indictedObjectID = indictedObject instanceof Plane ? ((Plane) indictedObject).getId() :
+                // indictedObject instanceof Gate ? ((Gate) indictedObject).getId() :
+                        // indictedObject instanceof ChargingStation ? ((ChargingStation) indictedObject).getName() :
                                 "0";
-        this.indictedObjectClass = indictedObject instanceof Vehicle ? "Vehicle" :
-                indictedObject instanceof Customer ? "Customer" :
-                        indictedObject instanceof ChargingStation ? "ChargingStation" :
+        this.indictedObjectClass = indictedObject instanceof Plane ? "Plane" :
+                // indictedObject instanceof Gate ? "Gate" :
+                        // indictedObject instanceof ChargingStation ? "ChargingStation" :
                                 "Object";
         this.score = score;
         this.matchCount = matchCount;
