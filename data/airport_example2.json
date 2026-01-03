@@ -3,8 +3,7 @@
   "name": "airport-example-with-visits",
 
   "gateList": [
-    { "id": "G1", "type": "A", "serviceSpeedCoefficient": 1.0, "terminal": { "id": "T1" } },
-    { "id": "G2", "type": "A", "serviceSpeedCoefficient": 1.0, "terminal": "T1" }
+    { "id": "G1", "type": "A", "serviceSpeedCoefficient": 1.0, "terminal": { "id": "T1" } }
   ],
 
   "planeList": [
@@ -33,7 +32,7 @@
   ],
 
   "visitList": [
-    { "id": "V1", "name": "Visit-1" },
-    { "id": "V2", "name": "Visit-2" }
+    { "id": "V1", "name": "Visit-1"},
+    { "id": "V2", "name": "Visit-2"}
   ]
 }

@@ -15,10 +15,51 @@
     <div class="container p-0 m-0"><p><a href="/index.html">List of solutions here</a></p></div>
     <div class="container p-0 m-0">
         <h1><a id="score_a" data-toggle="popover"><span id="score_text"></span></a></h1>
+
     </div>
     <div id="vehicle_container"></div>
+    <div>
+        <button onclick="getJobIdFromUrl()">Get solve/jobid</button>
+        <pre><code id="solve-response"></code></pre>
+    </div>
+    <div>
+        <button onclick="getScoreFromUrl()">Get score/jobid</button>
+        <pre><code id="score-response"></code></pre>
+    </div>
+    <div>
+        <button onclick="getIndictmentsFromUrl()">Get indictments/jobid</button>
+        <pre><code id="indictments-response"></code></pre>
+    </div>
 <script src="/webjars/jquery/jquery.min.js"></script>
 <script src="/webjars/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="/route.js"></script>
 </body>
 </html>
+
+<script>
+    function getJobIdFromUrl() {
+        const id = new URLSearchParams(window.location.search).get('id');
+        console.log(id);
+        fetch(`http://localhost:8080/evrp/${id}`)
+            .then(response => response.json())
+            .then(data => document.getElementById('solve-response').innerText = JSON.stringify(data, null, 2))
+            .catch(error => console.error('Error:', error));
+    }
+
+    function getScoreFromUrl() {
+        const id = new URLSearchParams(window.location.search).get('id');
+        console.log(id);
+        fetch(`http://localhost:8080/evrp/score/${id}`)
+            .then(response => response.json())
+            .then(data => document.getElementById('score-response').innerText = JSON.stringify(data, null, 2))
+            .catch(error => console.error('Error:', error));
+    }
+    function getIndictmentsFromUrl() {
+        const id = new URLSearchParams(window.location.search).get('id');
+        console.log(id);
+        fetch(`http://localhost:8080/evrp/indictments/${id}`)
+            .then(response => response.json())
+            .then(data => document.getElementById('indictments-response').innerText = JSON.stringify(data, null, 2))
+            .catch(error => console.error('Error:', error));
+    }
+</script>
