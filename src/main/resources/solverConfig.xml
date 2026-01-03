@@ -22,12 +22,14 @@
     <constructionHeuristic />
 
     <localSearch>
-        <!--<subListChangeMoveSelector />
-        <acceptor>
-            <valueTabuSize>2</valueTabuSize>
-        </acceptor>
-        <forager>
-            <acceptedCountLimit>1000</acceptedCountLimit>
-        </forager>-->
+        <unionMoveSelector>
+            <!-- Moves for the PlanningListVariable Plane.visits (assign/order visits). -->
+            <subListChangeMoveSelector />
+            <listChangeMoveSelector />
+            <listSwapMoveSelector />
+            <kOptListMoveSelector />
+            <!-- Moves for basic planning variables (if any exist). -->
+            <changeMoveSelector />
+        </unionMoveSelector>
     </localSearch>
 </solver>

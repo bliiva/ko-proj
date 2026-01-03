@@ -1,18 +1,14 @@
 package lv.lu.eztf.dn.combopt.evrp.solver;
 
-import ai.timefold.solver.core.api.score.buildin.hardsoft.HardSoftScore;
-import ai.timefold.solver.core.api.score.stream.Constraint;
-import ai.timefold.solver.core.api.score.stream.ConstraintCollectors;
-import ai.timefold.solver.core.api.score.stream.ConstraintFactory;
-import ai.timefold.solver.core.api.score.stream.ConstraintProvider;
-import lv.lu.eztf.dn.combopt.evrp.domain.Gate;
-import lv.lu.eztf.dn.combopt.evrp.domain.Plane;
-import lv.lu.eztf.dn.combopt.evrp.domain.Visit;
 import org.jspecify.annotations.NonNull;
 
+import ai.timefold.solver.core.api.score.buildin.hardsoft.HardSoftScore;
+import ai.timefold.solver.core.api.score.stream.Constraint;
+import ai.timefold.solver.core.api.score.stream.ConstraintFactory;
+import ai.timefold.solver.core.api.score.stream.ConstraintProvider;
 import static ai.timefold.solver.core.api.score.stream.Joiners.equal;
-
-import java.util.Objects;
+import lv.lu.eztf.dn.combopt.evrp.domain.Plane;
+import lv.lu.eztf.dn.combopt.evrp.domain.Visit;
 
 public class ConstraintStreamCostFunction implements ConstraintProvider {
     @Override
@@ -31,11 +27,21 @@ public class ConstraintStreamCostFunction implements ConstraintProvider {
                 // costRechargedEnergy(constraintFactory),
                 // rewardLeftover(constraintFactory)
                 penalizeEveryVisit(constraintFactory),
+                                eachPlaneHasVisit(constraintFactory),
                 gateOverlap(constraintFactory),
                 gateTypeMismatch(constraintFactory),
                 companyTerminalMismatch(constraintFactory)
         };
     }
+
+        public Constraint eachPlaneHasVisit(ConstraintFactory constraintFactory) {
+                return constraintFactory
+                                .forEach(Plane.class)
+                                .filter(p -> p.getVisits() == null || p.getVisits().isEmpty())
+                                .penalize(HardSoftScore.ONE_HARD)
+                                .asConstraint("Each plane has a visit");
+        }
+
     public Constraint penalizeEveryVisit(ConstraintFactory constraintFactory) {
         return constraintFactory
                 .forEach(Visit.class)
@@ -60,11 +66,10 @@ public class ConstraintStreamCostFunction implements ConstraintProvider {
     public Constraint gateTypeMismatch(ConstraintFactory constraintFactory) {
         return constraintFactory
                 .forEach(Visit.class)
-                .filter(v -> v.getPlane() != null && v.getGate() != null) // ignore unassigned gate
-                .filter(v -> !Objects.equals(
-                        v.getPlane().getNecessaryGateTypes(), // e.g. GateType
-                        v.getGate().getType()               // e.g. GateType
-                ))
+                .filter(v -> v.getPlane() != null && v.getGate() != null) // ignore unassigned
+                .filter(v -> v.getPlane().getNecessaryGateTypes() == null
+                        || v.getPlane().getNecessaryGateTypes().isEmpty()
+                        || !v.getPlane().getNecessaryGateTypes().contains(v.getGate().getType()))
                 .penalize(HardSoftScore.ONE_HARD)
                 .asConstraint("Gate type mismatch");
     }
