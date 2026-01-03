@@ -1,5 +1,7 @@
 package lv.lu.eztf.dn.combopt.evrp.solver;
 
+import java.util.Objects;
+
 import org.jspecify.annotations.NonNull;
 
 import ai.timefold.solver.core.api.score.buildin.hardsoft.HardSoftScore;
@@ -28,11 +30,20 @@ public class ConstraintStreamCostFunction implements ConstraintProvider {
                 // rewardLeftover(constraintFactory)
                 penalizeEveryVisit(constraintFactory),
                                 eachPlaneHasVisit(constraintFactory),
+                                gateRequired(constraintFactory),
                 gateOverlap(constraintFactory),
                 gateTypeMismatch(constraintFactory),
                 companyTerminalMismatch(constraintFactory)
         };
     }
+
+        public Constraint gateRequired(ConstraintFactory constraintFactory) {
+                return constraintFactory
+                                .forEach(Visit.class)
+                                .filter(v -> v.getGate() == null)
+                                .penalize(HardSoftScore.ONE_HARD)
+                                .asConstraint("Gate required");
+        }
 
         public Constraint eachPlaneHasVisit(ConstraintFactory constraintFactory) {
                 return constraintFactory
@@ -80,7 +91,10 @@ public class ConstraintStreamCostFunction implements ConstraintProvider {
             .forEach(Visit.class)
             .filter(v -> v.getPlane() != null && v.getGate() != null)
             .filter(v -> v.getPlane().getCompany() != null && v.getGate().getTerminal() != null)
-            .filter(v -> !v.getPlane().getCompany().getTerminal().equals(v.getGate().getTerminal()))
+            .filter(v -> v.getPlane().getCompany().getTerminal() != null)
+            .filter(v -> !Objects.equals(
+                    v.getPlane().getCompany().getTerminal().getId(),
+                    v.getGate().getTerminal().getId()))
             .penalize(HardSoftScore.ONE_SOFT)
             .asConstraint("Company terminal mismatch");
     }

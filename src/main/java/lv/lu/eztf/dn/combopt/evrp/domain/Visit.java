@@ -1,9 +1,17 @@
 package lv.lu.eztf.dn.combopt.evrp.domain;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import ai.timefold.solver.core.api.domain.entity.PlanningEntity;
 import ai.timefold.solver.core.api.domain.lookup.PlanningId;
-import ai.timefold.solver.core.api.domain.variable.*;
-import com.fasterxml.jackson.annotation.*;
+import ai.timefold.solver.core.api.domain.variable.CascadingUpdateShadowVariable;
+import ai.timefold.solver.core.api.domain.variable.InverseRelationShadowVariable;
+import ai.timefold.solver.core.api.domain.variable.NextElementShadowVariable;
+import ai.timefold.solver.core.api.domain.variable.PlanningVariable;
+import ai.timefold.solver.core.api.domain.variable.PreviousElementShadowVariable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,6 +25,7 @@ public class  Visit {
     @PlanningId
     private String id;
 
+    @PlanningVariable(valueRangeProviderRefs = "gateRange", allowsUnassigned = true)
     @JsonIdentityReference(alwaysAsId = true)
     Gate gate;
     Long startTime; // second of a day
@@ -37,8 +46,9 @@ public class  Visit {
     @CascadingUpdateShadowVariable(targetMethodName = "updateShadows")
     public Long arrivalTime = null;
     public void updateShadows() {
-        // Unassigned -> no times.
-        if (this.getPlane() == null || this.getGate() == null) {
+        // Unassigned to a plane -> no times.
+        // Gate assignment is orthogonal; time comes from plane ordering.
+        if (this.getPlane() == null) {
             this.setArrivalTime(null);
             this.setStartTime(null);
             this.setEndTime(null);
