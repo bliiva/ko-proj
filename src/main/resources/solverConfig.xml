@@ -22,14 +22,6 @@
     <constructionHeuristic />
 
     <localSearch>
-        <unionMoveSelector>
-            <!-- Moves for the PlanningListVariable Plane.visits (assign/order visits). -->
-            <subListChangeMoveSelector />
-            <listChangeMoveSelector />
-            <listSwapMoveSelector />
-            <kOptListMoveSelector />
-            <!-- Moves for basic planning variables (if any exist). -->
-            <changeMoveSelector />
-        </unionMoveSelector>
+
     </localSearch>
 </solver>
