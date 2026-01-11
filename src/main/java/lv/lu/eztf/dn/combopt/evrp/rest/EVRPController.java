@@ -1,8 +1,22 @@
 package lv.lu.eztf.dn.combopt.evrp.rest;
 
+import java.util.Collection;
+import java.util.List;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+import java.util.stream.Collectors;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import ai.timefold.solver.core.api.score.analysis.ScoreAnalysis;
-import ai.timefold.solver.core.api.score.buildin.hardmediumsoft.HardMediumSoftScore;
-import ai.timefold.solver.core.api.score.buildin.hardmediumsoftbigdecimal.HardMediumSoftBigDecimalScore;
 import ai.timefold.solver.core.api.score.buildin.hardsoft.HardSoftScore;
 import ai.timefold.solver.core.api.score.constraint.Indictment;
 import ai.timefold.solver.core.api.solver.SolutionManager;
@@ -17,17 +31,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import lv.lu.eztf.dn.combopt.evrp.domain.EVRPsolution;
+import lv.lu.eztf.dn.combopt.evrp.domain.Visit;
 import lv.lu.eztf.dn.combopt.evrp.solver.SimpleIndictmentObject;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.Collection;
-import java.util.List;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
-import java.util.stream.Collectors;
 
 @Tag(name = "EVRP", description = "Service to optimize EVRP routes")
 @RestController @Slf4j
@@ -59,8 +64,36 @@ public class EVRPController {
                     description = "The job ID. Use that ID to get the solution with the other methods.",
                     content = @Content(mediaType = MediaType.TEXT_PLAIN_VALUE,
                             schema = @Schema(implementation = String.class))) })
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
-    public String solve(@RequestBody EVRPsolution problem) {
+
+        @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
+        public String solve(@RequestBody EVRPsolution problem) {
+
+        // Create 4 visits per plane
+        problem.getPlaneList().forEach(plane -> {
+                Visit arrival = new Visit();
+                arrival.setId(plane.getId() + "-V1");
+                arrival.setPlane(plane);
+                arrival.setName(plane.getId() + " Arrival");
+
+                Visit empty1 = new Visit();
+                empty1.setId(plane.getId() + "-V2");
+                empty1.setPlane(plane);
+                empty1.setName(plane.getId() + " Empty1");
+
+                Visit empty2 = new Visit();
+                empty2.setId(plane.getId() + "-V3");
+                empty2.setPlane(plane);
+                empty2.setName(plane.getId() + " Empty2");
+
+                Visit departure = new Visit();
+                departure.setId(plane.getId() + "-V4");
+                departure.setPlane(plane);
+                departure.setName(plane.getId() + " Departure");
+
+                problem.getVisitList().addAll(List.of(arrival, empty1, empty2, departure));
+        });
+
+        // Existing solver start code
         String jobId = UUID.randomUUID().toString();
         jobIdToJob.put(jobId, Job.ofEVRPsolution(problem));
         solverManager.solveBuilder()
@@ -68,12 +101,15 @@ public class EVRPController {
                 .withProblemFinder(jobId_ -> jobIdToJob.get(jobId).evrpSolution)
                 .withBestSolutionConsumer(solution -> jobIdToJob.put(jobId, Job.ofEVRPsolution(solution)))
                 .withExceptionHandler((jobId_, exception) -> {
-                    jobIdToJob.put(jobId, Job.ofException(exception));
-                    log.error("Failed solving jobId ({}).", jobId, exception);
+                        jobIdToJob.put(jobId, Job.ofException(exception));
+                        log.error("Failed solving jobId ({}).", jobId, exception);
                 })
                 .run();
+
         return jobId;
-    }
+        }
+
+
 
     @Operation(
             summary = "Get the solution and score for a given job ID. This is the best solution so far, as it might still be running or not even started.")
