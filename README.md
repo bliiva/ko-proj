@@ -7,3 +7,7 @@
 2. Call test example:
 `call_test.py`
 3. Check http://localhost:8080/index.html, click on returned hash to see score
+
+
+---
+* If frontend does not reset, "hard-reset" it with `Ctrl + Shift + R`
