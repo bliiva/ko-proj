@@ -1,29 +1,1287 @@
 {
-  "score": null,
-  "name": "minimal-evrp",
-
-  "terminalList": [
-    { "id": "T1" }
-  ],
-
-  "companyList": [
-    { "id": "C1", "name": "Company-1", "terminal": { "id": "T1" } }
-  ],
-
-  "gateList": [
-    { "id": "G1", "type": "A", "serviceSpeedCoefficient": 1.0, "terminal": { "id": "T1" } }
-  ],
-
-  "planeList": [
+  "planes": [
     {
-      "id": "P1",
-      "scheduledArrivalTime": 1000,
-      "scheduledDepartureTime": 2000,
-      "serviceTimeArrival": 30,
-      "serviceTimeDeparture": 25,
-      "servicePriority": 1,
-      "necessaryGateTypes": ["A"],
-      "company": { "id": "C1" }
+      "id": "0",
+      "name": "AA",
+      "durationInGrains": 16
+    },
+    {
+      "id": "1",
+      "name": "BB",
+      "durationInGrains": 12
+    },
+    {
+      "id": "2",
+      "name": "CC",
+      "durationInGrains": 16
+    },
+    {
+      "id": "3",
+      "name": "DD",
+      "durationInGrains": 8
+    },
+    {
+      "id": "4",
+      "name": "EE",
+      "durationInGrains": 8
+    },
+    {
+      "id": "5",
+      "name": "FF",
+      "durationInGrains": 12
+    },
+    {
+      "id": "6",
+      "name": "GG",
+      "durationInGrains": 8
+    },
+    {
+      "id": "7",
+      "name": "HH",
+      "durationInGrains": 8
+    },
+    {
+      "id": "8",
+      "name": "II",
+      "durationInGrains": 12
+    },
+    {
+      "id": "9",
+      "name": "JJ",
+      "durationInGrains": 16
+    },
+    {
+      "id": "10",
+      "name": "KK",
+      "durationInGrains": 8
+    },
+    {
+      "id": "11",
+      "name": "LL",
+      "durationInGrains": 16
+    },
+    {
+      "id": "12",
+      "name": "MM",
+      "durationInGrains": 12
+    },
+    {
+      "id": "13",
+      "name": "NN",
+      "durationInGrains": 16
+    },
+    {
+      "id": "14",
+      "name": "OO",
+      "durationInGrains": 8
+    },
+    {
+      "id": "15",
+      "name": "PP",
+      "durationInGrains": 8
+    },
+    {
+      "id": "16",
+      "name": "QQ",
+      "durationInGrains": 12
+    },
+    {
+      "id": "17",
+      "name": "RR",
+      "durationInGrains": 8
+    },
+    {
+      "id": "18",
+      "name": "SS",
+      "durationInGrains": 12
+    },
+    {
+      "id": "19",
+      "name": "TT",
+      "durationInGrains": 16
+    },
+    {
+      "id": "20",
+      "name": "UU",
+      "durationInGrains": 12
+    },
+    {
+      "id": "21",
+      "name": "VV",
+      "durationInGrains": 16
+    },
+    {
+      "id": "22",
+      "name": "WW",
+      "durationInGrains": 12
+    },
+    {
+      "id": "23",
+      "name": "XX",
+      "durationInGrains": 16
+    },
+    {
+      "id": "24",
+      "name": "YY",
+      "durationInGrains": 8
     }
-  ]
+  ],
+  "timeGrains": [
+    {
+      "id": "1",
+      "grainIndex": 1,
+      "dayOfYear": 14,
+      "startingMinuteOfDay": 480
+    },
+    {
+      "id": "2",
+      "grainIndex": 2,
+      "dayOfYear": 14,
+      "startingMinuteOfDay": 495
+    },
+    {
+      "id": "3",
+      "grainIndex": 3,
+      "dayOfYear": 14,
+      "startingMinuteOfDay": 510
+    },
+    {
+      "id": "4",
+      "grainIndex": 4,
+      "dayOfYear": 14,
+      "startingMinuteOfDay": 525
+    },
+    {
+      "id": "5",
+      "grainIndex": 5,
+      "dayOfYear": 14,
+      "startingMinuteOfDay": 540
+    },
+    {
+      "id": "6",
+      "grainIndex": 6,
+      "dayOfYear": 14,
+      "startingMinuteOfDay": 555
+    },
+    {
+      "id": "7",
+      "grainIndex": 7,
+      "dayOfYear": 14,
+      "startingMinuteOfDay": 570
+    },
+    {
+      "id": "8",
+      "grainIndex": 8,
+      "dayOfYear": 14,
+      "startingMinuteOfDay": 585
+    },
+    {
+      "id": "9",
+      "grainIndex": 9,
+      "dayOfYear": 14,
+      "startingMinuteOfDay": 600
+    },
+    {
+      "id": "10",
+      "grainIndex": 10,
+      "dayOfYear": 14,
+      "startingMinuteOfDay": 615
+    },
+    {
+      "id": "11",
+      "grainIndex": 11,
+      "dayOfYear": 14,
+      "startingMinuteOfDay": 630
+    },
+    {
+      "id": "12",
+      "grainIndex": 12,
+      "dayOfYear": 14,
+      "startingMinuteOfDay": 645
+    },
+    {
+      "id": "13",
+      "grainIndex": 13,
+      "dayOfYear": 14,
+      "startingMinuteOfDay": 660
+    },
+    {
+      "id": "14",
+      "grainIndex": 14,
+      "dayOfYear": 14,
+      "startingMinuteOfDay": 675
+    },
+    {
+      "id": "15",
+      "grainIndex": 15,
+      "dayOfYear": 14,
+      "startingMinuteOfDay": 690
+    },
+    {
+      "id": "16",
+      "grainIndex": 16,
+      "dayOfYear": 14,
+      "startingMinuteOfDay": 705
+    },
+    {
+      "id": "17",
+      "grainIndex": 17,
+      "dayOfYear": 14,
+      "startingMinuteOfDay": 720
+    },
+    {
+      "id": "18",
+      "grainIndex": 18,
+      "dayOfYear": 14,
+      "startingMinuteOfDay": 735
+    },
+    {
+      "id": "19",
+      "grainIndex": 19,
+      "dayOfYear": 14,
+      "startingMinuteOfDay": 750
+    },
+    {
+      "id": "20",
+      "grainIndex": 20,
+      "dayOfYear": 14,
+      "startingMinuteOfDay": 765
+    },
+    {
+      "id": "21",
+      "grainIndex": 21,
+      "dayOfYear": 14,
+      "startingMinuteOfDay": 780
+    },
+    {
+      "id": "22",
+      "grainIndex": 22,
+      "dayOfYear": 14,
+      "startingMinuteOfDay": 795
+    },
+    {
+      "id": "23",
+      "grainIndex": 23,
+      "dayOfYear": 14,
+      "startingMinuteOfDay": 810
+    },
+    {
+      "id": "24",
+      "grainIndex": 24,
+      "dayOfYear": 14,
+      "startingMinuteOfDay": 825
+    },
+    {
+      "id": "25",
+      "grainIndex": 25,
+      "dayOfYear": 14,
+      "startingMinuteOfDay": 840
+    },
+    {
+      "id": "26",
+      "grainIndex": 26,
+      "dayOfYear": 14,
+      "startingMinuteOfDay": 855
+    },
+    {
+      "id": "27",
+      "grainIndex": 27,
+      "dayOfYear": 14,
+      "startingMinuteOfDay": 870
+    },
+    {
+      "id": "28",
+      "grainIndex": 28,
+      "dayOfYear": 14,
+      "startingMinuteOfDay": 885
+    },
+    {
+      "id": "29",
+      "grainIndex": 29,
+      "dayOfYear": 14,
+      "startingMinuteOfDay": 900
+    },
+    {
+      "id": "30",
+      "grainIndex": 30,
+      "dayOfYear": 14,
+      "startingMinuteOfDay": 915
+    },
+    {
+      "id": "31",
+      "grainIndex": 31,
+      "dayOfYear": 14,
+      "startingMinuteOfDay": 930
+    },
+    {
+      "id": "32",
+      "grainIndex": 32,
+      "dayOfYear": 14,
+      "startingMinuteOfDay": 945
+    },
+    {
+      "id": "33",
+      "grainIndex": 33,
+      "dayOfYear": 14,
+      "startingMinuteOfDay": 960
+    },
+    {
+      "id": "34",
+      "grainIndex": 34,
+      "dayOfYear": 14,
+      "startingMinuteOfDay": 975
+    },
+    {
+      "id": "35",
+      "grainIndex": 35,
+      "dayOfYear": 14,
+      "startingMinuteOfDay": 990
+    },
+    {
+      "id": "36",
+      "grainIndex": 36,
+      "dayOfYear": 14,
+      "startingMinuteOfDay": 1005
+    },
+    {
+      "id": "37",
+      "grainIndex": 37,
+      "dayOfYear": 14,
+      "startingMinuteOfDay": 1020
+    },
+    {
+      "id": "38",
+      "grainIndex": 38,
+      "dayOfYear": 14,
+      "startingMinuteOfDay": 1035
+    },
+    {
+      "id": "39",
+      "grainIndex": 39,
+      "dayOfYear": 14,
+      "startingMinuteOfDay": 1050
+    },
+    {
+      "id": "40",
+      "grainIndex": 40,
+      "dayOfYear": 14,
+      "startingMinuteOfDay": 1065
+    },
+    {
+      "id": "41",
+      "grainIndex": 41,
+      "dayOfYear": 15,
+      "startingMinuteOfDay": 480
+    },
+    {
+      "id": "42",
+      "grainIndex": 42,
+      "dayOfYear": 15,
+      "startingMinuteOfDay": 495
+    },
+    {
+      "id": "43",
+      "grainIndex": 43,
+      "dayOfYear": 15,
+      "startingMinuteOfDay": 510
+    },
+    {
+      "id": "44",
+      "grainIndex": 44,
+      "dayOfYear": 15,
+      "startingMinuteOfDay": 525
+    },
+    {
+      "id": "45",
+      "grainIndex": 45,
+      "dayOfYear": 15,
+      "startingMinuteOfDay": 540
+    },
+    {
+      "id": "46",
+      "grainIndex": 46,
+      "dayOfYear": 15,
+      "startingMinuteOfDay": 555
+    },
+    {
+      "id": "47",
+      "grainIndex": 47,
+      "dayOfYear": 15,
+      "startingMinuteOfDay": 570
+    },
+    {
+      "id": "48",
+      "grainIndex": 48,
+      "dayOfYear": 15,
+      "startingMinuteOfDay": 585
+    },
+    {
+      "id": "49",
+      "grainIndex": 49,
+      "dayOfYear": 15,
+      "startingMinuteOfDay": 600
+    },
+    {
+      "id": "50",
+      "grainIndex": 50,
+      "dayOfYear": 15,
+      "startingMinuteOfDay": 615
+    },
+    {
+      "id": "51",
+      "grainIndex": 51,
+      "dayOfYear": 15,
+      "startingMinuteOfDay": 630
+    },
+    {
+      "id": "52",
+      "grainIndex": 52,
+      "dayOfYear": 15,
+      "startingMinuteOfDay": 645
+    },
+    {
+      "id": "53",
+      "grainIndex": 53,
+      "dayOfYear": 15,
+      "startingMinuteOfDay": 660
+    },
+    {
+      "id": "54",
+      "grainIndex": 54,
+      "dayOfYear": 15,
+      "startingMinuteOfDay": 675
+    },
+    {
+      "id": "55",
+      "grainIndex": 55,
+      "dayOfYear": 15,
+      "startingMinuteOfDay": 690
+    },
+    {
+      "id": "56",
+      "grainIndex": 56,
+      "dayOfYear": 15,
+      "startingMinuteOfDay": 705
+    },
+    {
+      "id": "57",
+      "grainIndex": 57,
+      "dayOfYear": 15,
+      "startingMinuteOfDay": 720
+    },
+    {
+      "id": "58",
+      "grainIndex": 58,
+      "dayOfYear": 15,
+      "startingMinuteOfDay": 735
+    },
+    {
+      "id": "59",
+      "grainIndex": 59,
+      "dayOfYear": 15,
+      "startingMinuteOfDay": 750
+    },
+    {
+      "id": "60",
+      "grainIndex": 60,
+      "dayOfYear": 15,
+      "startingMinuteOfDay": 765
+    },
+    {
+      "id": "61",
+      "grainIndex": 61,
+      "dayOfYear": 15,
+      "startingMinuteOfDay": 780
+    },
+    {
+      "id": "62",
+      "grainIndex": 62,
+      "dayOfYear": 15,
+      "startingMinuteOfDay": 795
+    },
+    {
+      "id": "63",
+      "grainIndex": 63,
+      "dayOfYear": 15,
+      "startingMinuteOfDay": 810
+    },
+    {
+      "id": "64",
+      "grainIndex": 64,
+      "dayOfYear": 15,
+      "startingMinuteOfDay": 825
+    },
+    {
+      "id": "65",
+      "grainIndex": 65,
+      "dayOfYear": 15,
+      "startingMinuteOfDay": 840
+    },
+    {
+      "id": "66",
+      "grainIndex": 66,
+      "dayOfYear": 15,
+      "startingMinuteOfDay": 855
+    },
+    {
+      "id": "67",
+      "grainIndex": 67,
+      "dayOfYear": 15,
+      "startingMinuteOfDay": 870
+    },
+    {
+      "id": "68",
+      "grainIndex": 68,
+      "dayOfYear": 15,
+      "startingMinuteOfDay": 885
+    },
+    {
+      "id": "69",
+      "grainIndex": 69,
+      "dayOfYear": 15,
+      "startingMinuteOfDay": 900
+    },
+    {
+      "id": "70",
+      "grainIndex": 70,
+      "dayOfYear": 15,
+      "startingMinuteOfDay": 915
+    },
+    {
+      "id": "71",
+      "grainIndex": 71,
+      "dayOfYear": 15,
+      "startingMinuteOfDay": 930
+    },
+    {
+      "id": "72",
+      "grainIndex": 72,
+      "dayOfYear": 15,
+      "startingMinuteOfDay": 945
+    },
+    {
+      "id": "73",
+      "grainIndex": 73,
+      "dayOfYear": 15,
+      "startingMinuteOfDay": 960
+    },
+    {
+      "id": "74",
+      "grainIndex": 74,
+      "dayOfYear": 15,
+      "startingMinuteOfDay": 975
+    },
+    {
+      "id": "75",
+      "grainIndex": 75,
+      "dayOfYear": 15,
+      "startingMinuteOfDay": 990
+    },
+    {
+      "id": "76",
+      "grainIndex": 76,
+      "dayOfYear": 15,
+      "startingMinuteOfDay": 1005
+    },
+    {
+      "id": "77",
+      "grainIndex": 77,
+      "dayOfYear": 15,
+      "startingMinuteOfDay": 1020
+    },
+    {
+      "id": "78",
+      "grainIndex": 78,
+      "dayOfYear": 15,
+      "startingMinuteOfDay": 1035
+    },
+    {
+      "id": "79",
+      "grainIndex": 79,
+      "dayOfYear": 15,
+      "startingMinuteOfDay": 1050
+    },
+    {
+      "id": "80",
+      "grainIndex": 80,
+      "dayOfYear": 15,
+      "startingMinuteOfDay": 1065
+    },
+    {
+      "id": "81",
+      "grainIndex": 81,
+      "dayOfYear": 16,
+      "startingMinuteOfDay": 480
+    },
+    {
+      "id": "82",
+      "grainIndex": 82,
+      "dayOfYear": 16,
+      "startingMinuteOfDay": 495
+    },
+    {
+      "id": "83",
+      "grainIndex": 83,
+      "dayOfYear": 16,
+      "startingMinuteOfDay": 510
+    },
+    {
+      "id": "84",
+      "grainIndex": 84,
+      "dayOfYear": 16,
+      "startingMinuteOfDay": 525
+    },
+    {
+      "id": "85",
+      "grainIndex": 85,
+      "dayOfYear": 16,
+      "startingMinuteOfDay": 540
+    },
+    {
+      "id": "86",
+      "grainIndex": 86,
+      "dayOfYear": 16,
+      "startingMinuteOfDay": 555
+    },
+    {
+      "id": "87",
+      "grainIndex": 87,
+      "dayOfYear": 16,
+      "startingMinuteOfDay": 570
+    },
+    {
+      "id": "88",
+      "grainIndex": 88,
+      "dayOfYear": 16,
+      "startingMinuteOfDay": 585
+    },
+    {
+      "id": "89",
+      "grainIndex": 89,
+      "dayOfYear": 16,
+      "startingMinuteOfDay": 600
+    },
+    {
+      "id": "90",
+      "grainIndex": 90,
+      "dayOfYear": 16,
+      "startingMinuteOfDay": 615
+    },
+    {
+      "id": "91",
+      "grainIndex": 91,
+      "dayOfYear": 16,
+      "startingMinuteOfDay": 630
+    },
+    {
+      "id": "92",
+      "grainIndex": 92,
+      "dayOfYear": 16,
+      "startingMinuteOfDay": 645
+    },
+    {
+      "id": "93",
+      "grainIndex": 93,
+      "dayOfYear": 16,
+      "startingMinuteOfDay": 660
+    },
+    {
+      "id": "94",
+      "grainIndex": 94,
+      "dayOfYear": 16,
+      "startingMinuteOfDay": 675
+    },
+    {
+      "id": "95",
+      "grainIndex": 95,
+      "dayOfYear": 16,
+      "startingMinuteOfDay": 690
+    },
+    {
+      "id": "96",
+      "grainIndex": 96,
+      "dayOfYear": 16,
+      "startingMinuteOfDay": 705
+    },
+    {
+      "id": "97",
+      "grainIndex": 97,
+      "dayOfYear": 16,
+      "startingMinuteOfDay": 720
+    },
+    {
+      "id": "98",
+      "grainIndex": 98,
+      "dayOfYear": 16,
+      "startingMinuteOfDay": 735
+    },
+    {
+      "id": "99",
+      "grainIndex": 99,
+      "dayOfYear": 16,
+      "startingMinuteOfDay": 750
+    },
+    {
+      "id": "100",
+      "grainIndex": 100,
+      "dayOfYear": 16,
+      "startingMinuteOfDay": 765
+    },
+    {
+      "id": "101",
+      "grainIndex": 101,
+      "dayOfYear": 16,
+      "startingMinuteOfDay": 780
+    },
+    {
+      "id": "102",
+      "grainIndex": 102,
+      "dayOfYear": 16,
+      "startingMinuteOfDay": 795
+    },
+    {
+      "id": "103",
+      "grainIndex": 103,
+      "dayOfYear": 16,
+      "startingMinuteOfDay": 810
+    },
+    {
+      "id": "104",
+      "grainIndex": 104,
+      "dayOfYear": 16,
+      "startingMinuteOfDay": 825
+    },
+    {
+      "id": "105",
+      "grainIndex": 105,
+      "dayOfYear": 16,
+      "startingMinuteOfDay": 840
+    },
+    {
+      "id": "106",
+      "grainIndex": 106,
+      "dayOfYear": 16,
+      "startingMinuteOfDay": 855
+    },
+    {
+      "id": "107",
+      "grainIndex": 107,
+      "dayOfYear": 16,
+      "startingMinuteOfDay": 870
+    },
+    {
+      "id": "108",
+      "grainIndex": 108,
+      "dayOfYear": 16,
+      "startingMinuteOfDay": 885
+    },
+    {
+      "id": "109",
+      "grainIndex": 109,
+      "dayOfYear": 16,
+      "startingMinuteOfDay": 900
+    },
+    {
+      "id": "110",
+      "grainIndex": 110,
+      "dayOfYear": 16,
+      "startingMinuteOfDay": 915
+    },
+    {
+      "id": "111",
+      "grainIndex": 111,
+      "dayOfYear": 16,
+      "startingMinuteOfDay": 930
+    },
+    {
+      "id": "112",
+      "grainIndex": 112,
+      "dayOfYear": 16,
+      "startingMinuteOfDay": 945
+    },
+    {
+      "id": "113",
+      "grainIndex": 113,
+      "dayOfYear": 16,
+      "startingMinuteOfDay": 960
+    },
+    {
+      "id": "114",
+      "grainIndex": 114,
+      "dayOfYear": 16,
+      "startingMinuteOfDay": 975
+    },
+    {
+      "id": "115",
+      "grainIndex": 115,
+      "dayOfYear": 16,
+      "startingMinuteOfDay": 990
+    },
+    {
+      "id": "116",
+      "grainIndex": 116,
+      "dayOfYear": 16,
+      "startingMinuteOfDay": 1005
+    },
+    {
+      "id": "117",
+      "grainIndex": 117,
+      "dayOfYear": 16,
+      "startingMinuteOfDay": 1020
+    },
+    {
+      "id": "118",
+      "grainIndex": 118,
+      "dayOfYear": 16,
+      "startingMinuteOfDay": 1035
+    },
+    {
+      "id": "119",
+      "grainIndex": 119,
+      "dayOfYear": 16,
+      "startingMinuteOfDay": 1050
+    },
+    {
+      "id": "120",
+      "grainIndex": 120,
+      "dayOfYear": 16,
+      "startingMinuteOfDay": 1065
+    },
+    {
+      "id": "121",
+      "grainIndex": 121,
+      "dayOfYear": 17,
+      "startingMinuteOfDay": 480
+    },
+    {
+      "id": "122",
+      "grainIndex": 122,
+      "dayOfYear": 17,
+      "startingMinuteOfDay": 495
+    },
+    {
+      "id": "123",
+      "grainIndex": 123,
+      "dayOfYear": 17,
+      "startingMinuteOfDay": 510
+    },
+    {
+      "id": "124",
+      "grainIndex": 124,
+      "dayOfYear": 17,
+      "startingMinuteOfDay": 525
+    },
+    {
+      "id": "125",
+      "grainIndex": 125,
+      "dayOfYear": 17,
+      "startingMinuteOfDay": 540
+    },
+    {
+      "id": "126",
+      "grainIndex": 126,
+      "dayOfYear": 17,
+      "startingMinuteOfDay": 555
+    },
+    {
+      "id": "127",
+      "grainIndex": 127,
+      "dayOfYear": 17,
+      "startingMinuteOfDay": 570
+    },
+    {
+      "id": "128",
+      "grainIndex": 128,
+      "dayOfYear": 17,
+      "startingMinuteOfDay": 585
+    },
+    {
+      "id": "129",
+      "grainIndex": 129,
+      "dayOfYear": 17,
+      "startingMinuteOfDay": 600
+    },
+    {
+      "id": "130",
+      "grainIndex": 130,
+      "dayOfYear": 17,
+      "startingMinuteOfDay": 615
+    },
+    {
+      "id": "131",
+      "grainIndex": 131,
+      "dayOfYear": 17,
+      "startingMinuteOfDay": 630
+    },
+    {
+      "id": "132",
+      "grainIndex": 132,
+      "dayOfYear": 17,
+      "startingMinuteOfDay": 645
+    },
+    {
+      "id": "133",
+      "grainIndex": 133,
+      "dayOfYear": 17,
+      "startingMinuteOfDay": 660
+    },
+    {
+      "id": "134",
+      "grainIndex": 134,
+      "dayOfYear": 17,
+      "startingMinuteOfDay": 675
+    },
+    {
+      "id": "135",
+      "grainIndex": 135,
+      "dayOfYear": 17,
+      "startingMinuteOfDay": 690
+    },
+    {
+      "id": "136",
+      "grainIndex": 136,
+      "dayOfYear": 17,
+      "startingMinuteOfDay": 705
+    },
+    {
+      "id": "137",
+      "grainIndex": 137,
+      "dayOfYear": 17,
+      "startingMinuteOfDay": 720
+    },
+    {
+      "id": "138",
+      "grainIndex": 138,
+      "dayOfYear": 17,
+      "startingMinuteOfDay": 735
+    },
+    {
+      "id": "139",
+      "grainIndex": 139,
+      "dayOfYear": 17,
+      "startingMinuteOfDay": 750
+    },
+    {
+      "id": "140",
+      "grainIndex": 140,
+      "dayOfYear": 17,
+      "startingMinuteOfDay": 765
+    },
+    {
+      "id": "141",
+      "grainIndex": 141,
+      "dayOfYear": 17,
+      "startingMinuteOfDay": 780
+    },
+    {
+      "id": "142",
+      "grainIndex": 142,
+      "dayOfYear": 17,
+      "startingMinuteOfDay": 795
+    },
+    {
+      "id": "143",
+      "grainIndex": 143,
+      "dayOfYear": 17,
+      "startingMinuteOfDay": 810
+    },
+    {
+      "id": "144",
+      "grainIndex": 144,
+      "dayOfYear": 17,
+      "startingMinuteOfDay": 825
+    },
+    {
+      "id": "145",
+      "grainIndex": 145,
+      "dayOfYear": 17,
+      "startingMinuteOfDay": 840
+    },
+    {
+      "id": "146",
+      "grainIndex": 146,
+      "dayOfYear": 17,
+      "startingMinuteOfDay": 855
+    },
+    {
+      "id": "147",
+      "grainIndex": 147,
+      "dayOfYear": 17,
+      "startingMinuteOfDay": 870
+    },
+    {
+      "id": "148",
+      "grainIndex": 148,
+      "dayOfYear": 17,
+      "startingMinuteOfDay": 885
+    },
+    {
+      "id": "149",
+      "grainIndex": 149,
+      "dayOfYear": 17,
+      "startingMinuteOfDay": 900
+    },
+    {
+      "id": "150",
+      "grainIndex": 150,
+      "dayOfYear": 17,
+      "startingMinuteOfDay": 915
+    },
+    {
+      "id": "151",
+      "grainIndex": 151,
+      "dayOfYear": 17,
+      "startingMinuteOfDay": 930
+    },
+    {
+      "id": "152",
+      "grainIndex": 152,
+      "dayOfYear": 17,
+      "startingMinuteOfDay": 945
+    },
+    {
+      "id": "153",
+      "grainIndex": 153,
+      "dayOfYear": 17,
+      "startingMinuteOfDay": 960
+    },
+    {
+      "id": "154",
+      "grainIndex": 154,
+      "dayOfYear": 17,
+      "startingMinuteOfDay": 975
+    },
+    {
+      "id": "155",
+      "grainIndex": 155,
+      "dayOfYear": 17,
+      "startingMinuteOfDay": 990
+    },
+    {
+      "id": "156",
+      "grainIndex": 156,
+      "dayOfYear": 17,
+      "startingMinuteOfDay": 1005
+    },
+    {
+      "id": "157",
+      "grainIndex": 157,
+      "dayOfYear": 17,
+      "startingMinuteOfDay": 1020
+    },
+    {
+      "id": "158",
+      "grainIndex": 158,
+      "dayOfYear": 17,
+      "startingMinuteOfDay": 1035
+    },
+    {
+      "id": "159",
+      "grainIndex": 159,
+      "dayOfYear": 17,
+      "startingMinuteOfDay": 1050
+    },
+    {
+      "id": "160",
+      "grainIndex": 160,
+      "dayOfYear": 17,
+      "startingMinuteOfDay": 1065
+    }
+  ],
+  "gates": [
+    {
+      "id": "G1",
+      "name": "Gate 1",
+      "capacity": 1
+    },
+    {
+      "id": "G2",
+      "name": "Gate 2",
+      "capacity": 1
+    },
+    {
+      "id": "G3",
+      "name": "Gate 3",
+      "capacity": 1
+    }
+  ],
+  "visits": [
+    {
+      "id": "0",
+      "plane": "0",
+      "pinned": false,
+      "startingTimeGrain": null,
+      "gate": null
+    },
+    {
+      "id": "1",
+      "plane": "1",
+      "pinned": false,
+      "startingTimeGrain": null,
+      "gate": null
+    },
+    {
+      "id": "2",
+      "plane": "2",
+      "pinned": false,
+      "startingTimeGrain": null,
+      "gate": null
+    },
+    {
+      "id": "3",
+      "plane": "3",
+      "pinned": false,
+      "startingTimeGrain": null,
+      "gate": null
+    },
+    {
+      "id": "4",
+      "plane": "4",
+      "pinned": false,
+      "startingTimeGrain": null,
+      "gate": null
+    },
+    {
+      "id": "5",
+      "plane": "5",
+      "pinned": false,
+      "startingTimeGrain": null,
+      "gate": null
+    },
+    {
+      "id": "6",
+      "plane": "6",
+      "pinned": false,
+      "startingTimeGrain": null,
+      "gate": null
+    },
+    {
+      "id": "7",
+      "plane": "7",
+      "pinned": false,
+      "startingTimeGrain": null,
+      "gate": null
+    },
+    {
+      "id": "8",
+      "plane": "8",
+      "pinned": false,
+      "startingTimeGrain": null,
+      "gate": null
+    },
+    {
+      "id": "9",
+      "plane": "9",
+      "pinned": false,
+      "startingTimeGrain": null,
+      "gate": null
+    },
+    {
+      "id": "10",
+      "plane": "10",
+      "pinned": false,
+      "startingTimeGrain": null,
+      "gate": null
+    },
+    {
+      "id": "11",
+      "plane": "11",
+      "pinned": false,
+      "startingTimeGrain": null,
+      "gate": null
+    },
+    {
+      "id": "12",
+      "plane": "12",
+      "pinned": false,
+      "startingTimeGrain": null,
+      "gate": null
+    },
+    {
+      "id": "13",
+      "plane": "13",
+      "pinned": false,
+      "startingTimeGrain": null,
+      "gate": null
+    },
+    {
+      "id": "14",
+      "plane": "14",
+      "pinned": false,
+      "startingTimeGrain": null,
+      "gate": null
+    },
+    {
+      "id": "15",
+      "plane": "15",
+      "pinned": false,
+      "startingTimeGrain": null,
+      "gate": null
+    },
+    {
+      "id": "16",
+      "plane": "16",
+      "pinned": false,
+      "startingTimeGrain": null,
+      "gate": null
+    },
+    {
+      "id": "17",
+      "plane": "17",
+      "pinned": false,
+      "startingTimeGrain": null,
+      "gate": null
+    },
+    {
+      "id": "18",
+      "plane": "18",
+      "pinned": false,
+      "startingTimeGrain": null,
+      "gate": null
+    },
+    {
+      "id": "19",
+      "plane": "19",
+      "pinned": false,
+      "startingTimeGrain": null,
+      "gate": null
+    },
+    {
+      "id": "20",
+      "plane": "20",
+      "pinned": false,
+      "startingTimeGrain": null,
+      "gate": null
+    },
+    {
+      "id": "21",
+      "plane": "21",
+      "pinned": false,
+      "startingTimeGrain": null,
+      "gate": null
+    },
+    {
+      "id": "22",
+      "plane": "22",
+      "pinned": false,
+      "startingTimeGrain": null,
+      "gate": null
+    },
+    {
+      "id": "23",
+      "plane": "23",
+      "pinned": false,
+      "startingTimeGrain": null,
+      "gate": null
+    },
+    {
+      "id": "24",
+      "plane": "24",
+      "pinned": false,
+      "startingTimeGrain": null,
+      "gate": null
+    }
+  ],
+  "score": null,
+  "solverStatus": null
 }

@@ -1,7 +1,7 @@
 import requests
 import json
 
-url = "http://localhost:8080/evrp"
+url = "http://localhost:8080/schedules"
 
 # Read JSON file
 with open("data/airport_example.json", "r") as f:

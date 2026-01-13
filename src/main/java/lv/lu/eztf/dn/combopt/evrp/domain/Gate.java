@@ -1,20 +1,78 @@
 package lv.lu.eztf.dn.combopt.evrp.domain;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIdentityReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import java.util.Objects;
 
-@Setter @Getter @AllArgsConstructor @NoArgsConstructor
-@JsonIdentityInfo(scope = Gate.class,
-    property = "id", generator = ObjectIdGenerators.PropertyGenerator.class)
+import ai.timefold.solver.core.api.domain.lookup.PlanningId;
+
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
+@JsonIdentityInfo(scope = Gate.class, generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Gate {
-    String id;
-    String type;
-    Double serviceSpeedCoefficient;
-    @JsonIdentityReference(alwaysAsId = true)
-    Terminal terminal;
+
+    @PlanningId
+    private String id;
+    private String name;
+    private int capacity;
+
+    public Gate() {
+    }
+
+    public Gate(String id) {
+        this.id = id;
+    }
+
+    public Gate(String id, String name) {
+        this(id);
+        this.name = name;
+    }
+
+    public Gate(String id, String name, int capacity) {
+        this(id, name);
+        this.capacity = capacity;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getCapacity() {
+        return capacity;
+    }
+
+    public void setCapacity(int capacity) {
+        this.capacity = capacity;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return name;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (!(o instanceof Gate gate))
+            return false;
+        return Objects.equals(getId(), gate.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return getId().hashCode();
+    }
 }
+

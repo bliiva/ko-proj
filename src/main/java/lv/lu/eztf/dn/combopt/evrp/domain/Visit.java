@@ -1,81 +1,45 @@
 package lv.lu.eztf.dn.combopt.evrp.domain;
 
+import java.util.Objects;
+
 import ai.timefold.solver.core.api.domain.entity.PlanningEntity;
+import ai.timefold.solver.core.api.domain.entity.PlanningPin;
 import ai.timefold.solver.core.api.domain.lookup.PlanningId;
-import ai.timefold.solver.core.api.domain.variable.*;
-import com.fasterxml.jackson.annotation.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import ai.timefold.solver.core.api.domain.variable.PlanningVariable;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @PlanningEntity
-@Getter @Setter @AllArgsConstructor @NoArgsConstructor
-@JsonIdentityInfo(scope = Visit.class, property = "id",
-        generator = ObjectIdGenerators.PropertyGenerator.class)
-public class  Visit {
+public class Visit {
+
     @PlanningId
     private String id;
+    private Plane plane;
+    @PlanningPin
+    private boolean pinned;
 
-    @JsonIdentityReference(alwaysAsId = true)
-    Gate gate;
-    Long startTime; // second of a day
-    Long endTime; // second of a day
-    String name;
+    // Planning variables: changes during planning, between score calculations.
+    @PlanningVariable
+    private TimeGrain startingTimeGrain;
+    @PlanningVariable
+    private Gate gate;
 
-    @InverseRelationShadowVariable(sourceVariableName = "visits")
-    @JsonIdentityReference(alwaysAsId = true)
-    Plane plane;
-    @PreviousElementShadowVariable(sourceVariableName = "visits")
-    @JsonIdentityReference(alwaysAsId = true)
-    Visit previous;
-    @NextElementShadowVariable(sourceVariableName = "visits")
-    @JsonIdentityReference(alwaysAsId = true)
-    Visit next;
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    // public abstract Long getVisitTime();
-    @CascadingUpdateShadowVariable(targetMethodName = "updateShadows")
-    public Long arrivalTime = null;
-    public void updateShadows() {
-        // Unassigned -> no times.
-        if (this.getPlane() == null || this.getGate() == null) {
-            this.setArrivalTime(null);
-            this.setStartTime(null);
-            this.setEndTime(null);
-            return;
-        }
-
-        // No movement time between gates:
-        // earliest arrival is plane arrival for first visit, otherwise previous end.
-        final Long computedArrival = (this.getPrevious() == null)
-                ? this.getPlane().getScheduledArrivalTime()
-                : this.getPrevious().getEndTime();
-
-        this.setArrivalTime(computedArrival);
-
-        if (computedArrival == null) {
-            this.setStartTime(null);
-            this.setEndTime(null);
-            return;
-        }
-
-        // If you have additional time windows, apply them here via Math.max(...).
-        this.setStartTime(computedArrival);
-        this.setEndTime(computedArrival+ this.getPlane().getServiceTimeArrival());
-
-        // Long dur = this.getVisitTime();
-        // this.setEndTime(dur == null ? null : computedArrival + dur);
+    public Visit() {
     }
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    public Long getDepartureTime() {
-        // In this model, leaving the gate == endTime.
-        return this.getEndTime();
+    public Visit(String id) {
+        this.id = id;
     }
 
-    @Override
-    public String toString() {
-        return this.getName();
+    public Visit(String id, Plane plane) {
+        this(id);
+        this.plane = plane;
+    }
+
+    public Visit(String id, Plane plane, TimeGrain startingTimeGrain, Gate gate) {
+        this(id, plane);
+        this.startingTimeGrain = startingTimeGrain;
+        this.gate = gate;
     }
 
     public String getId() {
@@ -84,5 +48,105 @@ public class  Visit {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public Plane getPlane() {
+        return plane;
+    }
+
+    public void setPlane(Plane plane) {
+        this.plane = plane;
+    }
+
+    public boolean isPinned() {
+        return pinned;
+    }
+
+    public void setPinned(boolean pinned) {
+        this.pinned = pinned;
+    }
+
+    public TimeGrain getStartingTimeGrain() {
+        return startingTimeGrain;
+    }
+
+    public void setStartingTimeGrain(TimeGrain startingTimeGrain) {
+        this.startingTimeGrain = startingTimeGrain;
+    }
+
+    public Gate getGate() {
+        return gate;
+    }
+
+    public void setGate(Gate gate) {
+        this.gate = gate;
+    }
+
+    // ************************************************************************
+    // Complex methods
+    // ************************************************************************
+
+    @JsonIgnore
+    public int getGrainIndex() {
+        return getStartingTimeGrain().getGrainIndex();
+    }
+
+    @JsonIgnore
+    public int calculateOverlap(Visit other) {
+        if (startingTimeGrain == null || other.getStartingTimeGrain() == null) {
+            return 0;
+        }
+        // start is inclusive, end is exclusive
+        int start = startingTimeGrain.getGrainIndex();
+        int end = getLastTimeGrainIndex() + 1;
+        int otherStart = other.startingTimeGrain.getGrainIndex();
+        int otherEnd = other.getLastTimeGrainIndex() + 1;
+        if (otherEnd < start) {
+            return 0;
+        }
+        if (end < otherStart) {
+            return 0;
+        }
+        return Math.min(end, otherEnd) - Math.max(start, otherStart);
+    }
+
+    @JsonIgnore
+    public Integer getLastTimeGrainIndex() {
+        if (startingTimeGrain == null) {
+            return null;
+        }
+        return startingTimeGrain.getGrainIndex() + plane.getDurationInGrains() - 1;
+    }
+
+    @JsonIgnore
+    public int getGateCapacity() {
+        if (gate == null) {
+            return 0;
+        }
+        return gate.getCapacity();
+    }
+
+    @JsonIgnore
+    public int getRequiredCapacity() {
+        return plane.getRequiredCapacity();
+    }
+
+    @Override
+    public String toString() {
+        return plane.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (!(o instanceof Visit that))
+            return false;
+        return Objects.equals(getId(), that.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return getId().hashCode();
     }
 }
