@@ -21,6 +21,9 @@ public class Plane {
     private int arrivalDurationInGrains;
     private int departureDurationInGrains;
 
+    private int arrivalTimeGrain;
+    private int departureTimeGrain;
+
     public Plane() {
     }
 
@@ -44,6 +47,15 @@ public class Plane {
         this.name = name;
         this.arrivalDurationInGrains = arrivalDurationInGrains;
         this.departureDurationInGrains = departureDurationInGrains;
+    }
+
+    public Plane(String id, String name, int arrivalDurationInGrains, int departureDurationInGrains, int arrivalTimeGrain, int departureTimeGrain) {
+        this(id);
+        this.name = name;
+        this.arrivalDurationInGrains = arrivalDurationInGrains;
+        this.departureDurationInGrains = departureDurationInGrains;
+        this.arrivalTimeGrain = arrivalTimeGrain;
+        this.departureTimeGrain = departureTimeGrain;
     }
 
     public String getId() {
@@ -76,6 +88,22 @@ public class Plane {
 
     public void setDepartureDurationInGrains(int departureDurationInGrains) {
         this.departureDurationInGrains = departureDurationInGrains;
+    }
+
+    public int getArrivalTimeGrain() {
+        return arrivalTimeGrain;
+    }
+
+    public void setArrivalTimeGrain(int arrivalTimeGrain) {
+        this.arrivalTimeGrain = arrivalTimeGrain;
+    }
+
+    public int getDepartureTimeGrain() {
+        return departureTimeGrain;
+    }
+
+    public void setDepartureTimeGrain(int departureTimeGrain) {
+        this.departureTimeGrain = departureTimeGrain;
     }
 
     // ************************************************************************

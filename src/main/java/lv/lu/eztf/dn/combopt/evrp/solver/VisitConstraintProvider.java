@@ -24,6 +24,7 @@ public class VisitConstraintProvider implements ConstraintProvider {
                 avoidOvertime(constraintFactory),
                 requiredGateCapacity(constraintFactory),
                 startAndEndOnSameDay(constraintFactory),
+                waitForGateToOpen(constraintFactory),
                 // requiredAndPreferredAttendanceConflict(constraintFactory),
                 // preferredAttendanceConflict(constraintFactory),
                 // doMeetingsAsSoonAsPossible(constraintFactory),
@@ -37,6 +38,23 @@ public class VisitConstraintProvider implements ConstraintProvider {
     // ************************************************************************
     // Hard constraints
     // ************************************************************************
+
+        public Constraint waitForGateToOpen(ConstraintFactory constraintFactory) {
+        return constraintFactory.forEachIncludingUnassigned(Visit.class)
+                        .filter(visit -> visit.getStartingTimeGrain() != null)
+                        .filter(visit -> {
+                                if (visit.getVisitType().equals("ARRIVAL")) {
+                                        return visit.getStartingTimeGrain().getGrainIndex() > visit.getPlane().getArrivalTimeGrain();
+                                } else {
+                                        return visit.getStartingTimeGrain().getGrainIndex() > visit.getPlane().getDepartureTimeGrain();
+                                }
+                        })
+                        .penalize(HardMediumSoftScore.ONE_SOFT, visit -> {
+                                int requiredTime = visit.getVisitType().equals("ARRIVAL") ? visit.getPlane().getArrivalTimeGrain() : visit.getPlane().getDepartureTimeGrain();
+                                return visit.getStartingTimeGrain().getGrainIndex() - requiredTime;
+                        })
+                        .asConstraint("Wait for gate to open");
+        }
 
     public Constraint gateConflict(ConstraintFactory constraintFactory) {
         return constraintFactory.forEachUniquePair(Visit.class,

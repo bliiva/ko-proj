@@ -115,7 +115,17 @@ public class DemoDataGenerator {
         planes.stream()
                 .filter(m -> m.getDepartureDurationInGrains() == 0)
                 .forEach(m -> m.setDepartureDurationInGrains(8));
-        // Attendants
+
+        // Assign random valid arrival and departure time grains
+        int minTimeGrain = 1;
+        int maxTimeGrain = 160;
+        for (Plane plane : planes) {
+            int arrivalTime = minTimeGrain + random.nextInt(maxTimeGrain - 20);
+            int departureTime = arrivalTime + plane.getArrivalDurationInGrains() + random.nextInt(10) + plane.getDepartureDurationInGrains();
+            plane.setArrivalTimeGrain(arrivalTime);
+            plane.setDepartureTimeGrain(departureTime);
+        }
+
         return planes;
     }
 
