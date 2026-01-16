@@ -68,30 +68,16 @@ public class EVRPController {
         @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
         public String solve(@RequestBody EVRPsolution problem) {
 
-        // Create 4 visits per plane
-        problem.getPlaneList().forEach(plane -> {
-                Visit arrival = new Visit();
-                arrival.setId(plane.getId() + "-V1");
-                arrival.setPlane(plane);
-                arrival.setName(plane.getId() + " Arrival");
-
-                Visit empty1 = new Visit();
-                empty1.setId(plane.getId() + "-V2");
-                empty1.setPlane(plane);
-                empty1.setName(plane.getId() + " Empty1");
-
-                Visit empty2 = new Visit();
-                empty2.setId(plane.getId() + "-V3");
-                empty2.setPlane(plane);
-                empty2.setName(plane.getId() + " Empty2");
-
-                Visit departure = new Visit();
-                departure.setId(plane.getId() + "-V4");
-                departure.setPlane(plane);
-                departure.setName(plane.getId() + " Departure");
-
-                problem.getVisitList().addAll(List.of(arrival, empty1, empty2, departure));
-        });
+                // Build planning visits from the flights (planes).
+                // One visit == one plane turnaround occupying a gate.
+                problem.getVisitList().clear();
+                problem.getPlaneList().forEach(plane -> {
+                        Visit visit = new Visit();
+                        visit.setId(plane.getId() + "-V");
+                        visit.setPlane(plane);
+                        visit.setName(plane.getId());
+                        problem.getVisitList().add(visit);
+                });
 
         // Existing solver start code
         String jobId = UUID.randomUUID().toString();

@@ -1,42 +1,30 @@
 package lv.lu.eztf.dn.combopt.evrp.domain;
 
-import ai.timefold.solver.core.api.domain.entity.PlanningEntity;
-import ai.timefold.solver.core.api.domain.variable.PlanningListVariable;
-import ai.timefold.solver.core.api.domain.variable.ShadowSources;
-import ai.timefold.solver.core.api.domain.variable.ShadowVariable;
-import com.fasterxml.jackson.annotation.*;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
 
-import java.util.ArrayList;
-import java.util.List;
-
-@PlanningEntity @Slf4j
 @Setter @Getter @AllArgsConstructor @NoArgsConstructor
 @JsonIdentityInfo(scope = Plane.class, property = "id",
         generator = ObjectIdGenerators.PropertyGenerator.class)
 public class Plane {
     String id;
-    Long scheduledArrivalTime;
-    Long scheduledDepartureTime;
+    Long scheduledArrivalTime;      // minutes since day start (or any consistent time unit)
+    Long scheduledDepartureTime;    // minutes since day start (or any consistent time unit)
     int serviceTimeArrival; // minutes
     int serviceTimeDeparture; // minutes
     List<String> necessaryGateTypes;
     int servicePriority; // 1 - low, 5 - high
-    Company company;
-    
-    // Location depot;
-    @PlanningListVariable
-    List<Visit> visits = new ArrayList<>();
-    // @ShadowVariable(supplierName = "lastSupplier")
+
     @JsonIdentityReference(alwaysAsId = true)
-    Visit last = null;
-    // TODO: THIS DOES NOT WORK !!!!!
-    @ShadowSources("visits")
-    @JsonIgnore
+    Company company;
     // public Visit lastSupplier() {
     //     Visit last = null;
     //     if (!this.getVisits().isEmpty()) {

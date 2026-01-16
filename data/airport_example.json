@@ -7,11 +7,13 @@
   ],
 
   "companyList": [
-    { "id": "C1", "name": "Company-1", "terminal": { "id": "T1" } }
+    { "id": "C1", "name": "Company-1", "terminal": "T1" },
+    { "id": "C2", "name": "Company-2", "terminal": "T1" }
   ],
 
   "gateList": [
-    { "id": "G1", "type": "A", "serviceSpeedCoefficient": 1.0, "terminal": { "id": "T1" } }
+    { "id": "G1", "type": "A", "serviceSpeedCoefficient": 1.0, "terminal": "T1" },
+    { "id": "G2", "type": "B", "serviceSpeedCoefficient": 1.0, "terminal": "T1" }
   ],
 
   "planeList": [
@@ -23,7 +25,17 @@
       "serviceTimeDeparture": 25,
       "servicePriority": 1,
       "necessaryGateTypes": ["A"],
-      "company": { "id": "C1" }
+      "company": "C1"
+    },
+    {
+      "id": "P2",
+      "scheduledArrivalTime": 1050,
+      "scheduledDepartureTime": 2000,
+      "serviceTimeArrival": 40,
+      "serviceTimeDeparture": 55,
+      "servicePriority": 1,
+      "necessaryGateTypes": ["B"],
+      "company": "C2"
     }
   ]
 }

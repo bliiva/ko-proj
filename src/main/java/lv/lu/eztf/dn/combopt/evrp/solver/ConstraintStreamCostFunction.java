@@ -18,54 +18,23 @@ public class ConstraintStreamCostFunction implements ConstraintProvider {
     @Override
     public Constraint @NonNull [] defineConstraints(@NonNull ConstraintFactory constraintFactory) {
         return new Constraint[] {
-                //penalizeEveryVisit(constraintFactory),
-                //totalDistance(constraintFactory),
-                //batteryEmpty(constraintFactory),
-                // visitTimeWindowViolated(constraintFactory),
-                // visitChargeNegative(constraintFactory),
-                // depotChargeNegative(constraintFactory),
-                // depotTimeWindowViolated(constraintFactory),
-                // costVehicleUsage(constraintFactory),
-                // costVehicleTime(constraintFactory),
-                // costInitialEnergy(constraintFactory),
-                // costRechargedEnergy(constraintFactory),
-                // rewardLeftover(constraintFactory)
-                penalizeEveryVisit(constraintFactory),
-                gateOverlap(constraintFactory),
                 gateTypeMismatch(constraintFactory),
-                companyTerminalMismatch(constraintFactory)
+                companyTerminalMismatch(constraintFactory),
+                totalDelay(constraintFactory)
         };
-    }
-    public Constraint penalizeEveryVisit(ConstraintFactory constraintFactory) {
-        return constraintFactory
-                .forEach(Visit.class)
-                .penalize(HardSoftScore.ONE_SOFT)
-                .asConstraint("Every Visit");
-    }
-
-    public Constraint gateOverlap(ConstraintFactory constraintFactory) {
-        return constraintFactory
-                .forEachUniquePair(Visit.class,
-                        equal(Visit::getGate))
-                .filter((a, b) -> a.getGate() != null) // ignore unassigned
-                .filter((a, b) ->
-                        a.getStartTime() != null && a.getEndTime() != null &&
-                        b.getStartTime() != null && b.getEndTime() != null)
-                // overlap test for half-open intervals [start, end):
-                .filter((a, b) -> a.getStartTime() < b.getEndTime() && b.getStartTime() < a.getEndTime())
-                .penalize(HardSoftScore.ONE_HARD)
-                .asConstraint("Gate overlap");
     }
 
     public Constraint gateTypeMismatch(ConstraintFactory constraintFactory) {
         return constraintFactory
                 .forEach(Visit.class)
-                .filter(v -> v.getPlane() != null && v.getGate() != null) // ignore unassigned gate
-                .filter(v -> !Objects.equals(
-                        v.getPlane().getNecessaryGateTypes(), // e.g. GateType
-                        v.getGate().getType()               // e.g. GateType
-                ))
-                .penalize(HardSoftScore.ONE_HARD)
+                                .filter(v -> v.getPlane() != null && v.getGate() != null)
+                                .filter(v -> {
+                                        if (v.getPlane().getNecessaryGateTypes() == null || v.getPlane().getNecessaryGateTypes().isEmpty()) {
+                                                return false;
+                                        }
+                                        return v.getGate().getType() == null || !v.getPlane().getNecessaryGateTypes().contains(v.getGate().getType());
+                                })
+                                .penalize(HardSoftScore.ONE_HARD, v -> Math.max(1, v.getPlane().getServicePriority()))
                 .asConstraint("Gate type mismatch");
     }
 
@@ -78,6 +47,16 @@ public class ConstraintStreamCostFunction implements ConstraintProvider {
             .filter(v -> !v.getPlane().getCompany().getTerminal().equals(v.getGate().getTerminal()))
             .penalize(HardSoftScore.ONE_SOFT)
             .asConstraint("Company terminal mismatch");
+    }
+
+    public Constraint totalDelay(ConstraintFactory constraintFactory) {
+        return constraintFactory
+                .forEach(Visit.class)
+                .filter(v -> v.getPlane() != null)
+                .filter(v -> v.getDelay() != null && v.getDelay() > 0)
+                .penalize(HardSoftScore.ONE_SOFT,
+                        v -> Math.toIntExact(v.getDelay() * Math.max(1L, (long) v.getPlane().getServicePriority())))
+                .asConstraint("Total delay");
     }
 
 //     public Constraint totalDistance(ConstraintFactory constraintFactory) {

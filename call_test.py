@@ -1,7 +1,9 @@
-import requests
 import json
+import os
 
-url = "http://localhost:8080/evrp"
+import requests
+
+url = os.environ.get("EVRP_URL", "http://localhost:8080/evrp")
 
 # Read JSON file
 with open("data/airport_example.json", "r") as f:
