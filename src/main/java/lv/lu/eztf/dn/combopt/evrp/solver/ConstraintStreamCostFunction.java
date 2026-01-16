@@ -37,15 +37,14 @@ public class ConstraintStreamCostFunction implements ConstraintProvider {
     public Constraint gateTypeMismatch(ConstraintFactory constraintFactory) {
         return constraintFactory
                 .forEach(Visit.class)
-                .filter(v -> v.getType() == VisitType.ARRIVAL)
-                                .filter(v -> v.getPlane() != null && v.getGate() != null)
-                                .filter(v -> {
-                                        if (v.getPlane().getNecessaryGateTypes() == null || v.getPlane().getNecessaryGateTypes().isEmpty()) {
-                                                return false;
-                                        }
-                                        return v.getGate().getType() == null || !v.getPlane().getNecessaryGateTypes().contains(v.getGate().getType());
-                                })
-                                .penalize(HardSoftScore.ONE_HARD, v -> Math.max(1, v.getPlane().getServicePriority()))
+                .filter(v -> v.getPlane() != null && v.getGate() != null)
+                .filter(v -> {
+                        if (v.getPlane().getNecessaryGateTypes() == null || v.getPlane().getNecessaryGateTypes().isEmpty()) {
+                                return false;
+                        }
+                        return v.getGate().getType() == null || !v.getPlane().getNecessaryGateTypes().contains(v.getGate().getType());
+                })
+                .penalize(HardSoftScore.ONE_HARD, v -> Math.max(1, v.getPlane().getServicePriority()))
                 .asConstraint("Gate type mismatch");
     }
 

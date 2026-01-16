@@ -20,7 +20,7 @@
     {
       "id": "P1",
       "scheduledArrivalTime": 1000,
-      "scheduledDepartureTime": 2000,
+      "scheduledDepartureTime": 1100,
       "serviceTimeArrival": 30,
       "serviceTimeDeparture": 25,
       "servicePriority": 1,
@@ -30,9 +30,19 @@
     {
       "id": "P2",
       "scheduledArrivalTime": 1050,
-      "scheduledDepartureTime": 2000,
+      "scheduledDepartureTime": 1200,
       "serviceTimeArrival": 40,
       "serviceTimeDeparture": 55,
+      "servicePriority": 1,
+      "necessaryGateTypes": ["B"],
+      "company": "C2"
+    },
+    {
+      "id": "P3",
+      "scheduledArrivalTime": 1050,
+      "scheduledDepartureTime": 1200,
+      "serviceTimeArrival": 50,
+      "serviceTimeDeparture": 50,
       "servicePriority": 1,
       "necessaryGateTypes": ["B"],
       "company": "C2"
