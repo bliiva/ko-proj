@@ -32,6 +32,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import lv.lu.eztf.dn.combopt.evrp.domain.EVRPsolution;
 import lv.lu.eztf.dn.combopt.evrp.domain.Visit;
+import lv.lu.eztf.dn.combopt.evrp.domain.VisitType;
 import lv.lu.eztf.dn.combopt.evrp.solver.SimpleIndictmentObject;
 
 @Tag(name = "EVRP", description = "Service to optimize EVRP routes")
@@ -68,16 +69,42 @@ public class EVRPController {
         @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
         public String solve(@RequestBody EVRPsolution problem) {
 
-                // Build planning visits from the flights (planes).
-                // One visit == one plane turnaround occupying a gate.
-                problem.getVisitList().clear();
-                problem.getPlaneList().forEach(plane -> {
-                        Visit visit = new Visit();
-                        visit.setId(plane.getId() + "-V");
-                        visit.setPlane(plane);
-                        visit.setName(plane.getId());
-                        problem.getVisitList().add(visit);
+                if (problem.getGateList() == null || problem.getGateList().isEmpty()) {
+                        throw new EVRPSolverException(null, HttpStatus.BAD_REQUEST, "gateList must not be empty");
+                }
+
+                // Ensure gates have non-null visit lists.
+                problem.getGateList().forEach(g -> {
+                        if (g.getVisits() == null) {
+                                g.setVisits(new java.util.ArrayList<>());
+                        } else {
+                                g.getVisits().clear();
+                        }
                 });
+
+                // Build 2 visits per plane: ARRIVAL service then DEPARTURE service.
+                // We also assign them to a gate initially (round-robin) to satisfy list-variable invariants.
+                problem.getVisitList().clear();
+                for (int i = 0; i < problem.getPlaneList().size(); i++) {
+                        var plane = problem.getPlaneList().get(i);
+                        var gate = problem.getGateList().get(i % problem.getGateList().size());
+
+                        Visit arrival = new Visit();
+                        arrival.setId(plane.getId() + "-A");
+                        arrival.setPlane(plane);
+                        arrival.setType(VisitType.ARRIVAL);
+                        arrival.setName(plane.getId() + " ARRIVAL");
+
+                        Visit departure = new Visit();
+                        departure.setId(plane.getId() + "-D");
+                        departure.setPlane(plane);
+                        departure.setType(VisitType.DEPARTURE);
+                        departure.setName(plane.getId() + " DEPARTURE");
+
+                        problem.getVisitList().addAll(List.of(arrival, departure));
+                        gate.getVisits().add(arrival);
+                        gate.getVisits().add(departure);
+                }
 
         // Existing solver start code
         String jobId = UUID.randomUUID().toString();

@@ -1,32 +1,45 @@
 package lv.lu.eztf.dn.combopt.evrp.solver;
 
-import ai.timefold.solver.core.api.score.buildin.hardsoft.HardSoftScore;
-import ai.timefold.solver.core.api.score.stream.Constraint;
-import ai.timefold.solver.core.api.score.stream.ConstraintCollectors;
-import ai.timefold.solver.core.api.score.stream.ConstraintFactory;
-import ai.timefold.solver.core.api.score.stream.ConstraintProvider;
-import lv.lu.eztf.dn.combopt.evrp.domain.Gate;
-import lv.lu.eztf.dn.combopt.evrp.domain.Plane;
-import lv.lu.eztf.dn.combopt.evrp.domain.Visit;
 import org.jspecify.annotations.NonNull;
 
-import static ai.timefold.solver.core.api.score.stream.Joiners.equal;
-
-import java.util.Objects;
+import ai.timefold.solver.core.api.score.buildin.hardsoft.HardSoftScore;
+import ai.timefold.solver.core.api.score.stream.Constraint;
+import ai.timefold.solver.core.api.score.stream.ConstraintFactory;
+import ai.timefold.solver.core.api.score.stream.ConstraintProvider;
+import lv.lu.eztf.dn.combopt.evrp.domain.Visit;
+import lv.lu.eztf.dn.combopt.evrp.domain.VisitType;
 
 public class ConstraintStreamCostFunction implements ConstraintProvider {
     @Override
     public Constraint @NonNull [] defineConstraints(@NonNull ConstraintFactory constraintFactory) {
         return new Constraint[] {
+                arrivalAndDepartureConsecutiveSameGate(constraintFactory),
                 gateTypeMismatch(constraintFactory),
                 companyTerminalMismatch(constraintFactory),
                 totalDelay(constraintFactory)
         };
     }
 
+    public Constraint arrivalAndDepartureConsecutiveSameGate(ConstraintFactory constraintFactory) {
+        return constraintFactory
+                .forEach(Visit.class)
+                .filter(v -> v.getType() == VisitType.DEPARTURE)
+                .filter(v -> v.getPlane() != null)
+                .filter(v -> v.getGate() != null)
+                .filter(v -> v.getPrevious() == null
+                        || v.getPrevious().getPlane() == null
+                        || !v.getPrevious().getPlane().equals(v.getPlane())
+                        || v.getPrevious().getType() != VisitType.ARRIVAL
+                        || v.getPrevious().getGate() == null
+                        || !v.getPrevious().getGate().equals(v.getGate()))
+                .penalize(HardSoftScore.ONE_HARD)
+                .asConstraint("Arrival+departure not consecutive on same gate");
+    }
+
     public Constraint gateTypeMismatch(ConstraintFactory constraintFactory) {
         return constraintFactory
                 .forEach(Visit.class)
+                .filter(v -> v.getType() == VisitType.ARRIVAL)
                                 .filter(v -> v.getPlane() != null && v.getGate() != null)
                                 .filter(v -> {
                                         if (v.getPlane().getNecessaryGateTypes() == null || v.getPlane().getNecessaryGateTypes().isEmpty()) {
@@ -42,6 +55,7 @@ public class ConstraintStreamCostFunction implements ConstraintProvider {
 
     return constraintFactory
             .forEach(Visit.class)
+            .filter(v -> v.getType() == VisitType.ARRIVAL)
             .filter(v -> v.getPlane() != null && v.getGate() != null)
             .filter(v -> v.getPlane().getCompany() != null && v.getGate().getTerminal() != null)
             .filter(v -> !v.getPlane().getCompany().getTerminal().equals(v.getGate().getTerminal()))
@@ -52,6 +66,7 @@ public class ConstraintStreamCostFunction implements ConstraintProvider {
     public Constraint totalDelay(ConstraintFactory constraintFactory) {
         return constraintFactory
                 .forEach(Visit.class)
+                .filter(v -> v.getType() == VisitType.DEPARTURE)
                 .filter(v -> v.getPlane() != null)
                 .filter(v -> v.getDelay() != null && v.getDelay() > 0)
                 .penalize(HardSoftScore.ONE_SOFT,
