@@ -6,6 +6,7 @@ import ai.timefold.solver.core.api.score.buildin.hardsoft.HardSoftScore;
 import ai.timefold.solver.core.api.score.stream.Constraint;
 import ai.timefold.solver.core.api.score.stream.ConstraintFactory;
 import ai.timefold.solver.core.api.score.stream.ConstraintProvider;
+import static ai.timefold.solver.core.api.score.stream.Joiners.equal;
 import lv.lu.eztf.dn.combopt.evrp.domain.Visit;
 import lv.lu.eztf.dn.combopt.evrp.domain.VisitType;
 
@@ -13,28 +14,25 @@ public class ConstraintStreamCostFunction implements ConstraintProvider {
     @Override
     public Constraint @NonNull [] defineConstraints(@NonNull ConstraintFactory constraintFactory) {
         return new Constraint[] {
-                arrivalAndDepartureConsecutiveSameGate(constraintFactory),
+                                arrivalMustFinishBeforeDepartureStarts(constraintFactory),
                 gateTypeMismatch(constraintFactory),
                 companyTerminalMismatch(constraintFactory),
                 totalDelay(constraintFactory)
         };
     }
 
-    public Constraint arrivalAndDepartureConsecutiveSameGate(ConstraintFactory constraintFactory) {
-        return constraintFactory
-                .forEach(Visit.class)
-                .filter(v -> v.getType() == VisitType.DEPARTURE)
-                .filter(v -> v.getPlane() != null)
-                .filter(v -> v.getGate() != null)
-                .filter(v -> v.getPrevious() == null
-                        || v.getPrevious().getPlane() == null
-                        || !v.getPrevious().getPlane().equals(v.getPlane())
-                        || v.getPrevious().getType() != VisitType.ARRIVAL
-                        || v.getPrevious().getGate() == null
-                        || !v.getPrevious().getGate().equals(v.getGate()))
-                .penalize(HardSoftScore.ONE_HARD)
-                .asConstraint("Arrival+departure not consecutive on same gate");
-    }
+        public Constraint arrivalMustFinishBeforeDepartureStarts(ConstraintFactory constraintFactory) {
+                return constraintFactory
+                                .forEach(Visit.class)
+                                .filter(v -> v.getType() == VisitType.ARRIVAL)
+                                .filter(v -> v.getPlane() != null)
+                                .join(Visit.class, equal(Visit::getPlane))
+                                .filter((arrival, other) -> other.getType() == VisitType.DEPARTURE)
+                                .filter((arrival, departure) -> arrival.getEndTime() != null && departure.getStartTime() != null)
+                                .filter((arrival, departure) -> departure.getStartTime() < arrival.getEndTime())
+                                .penalize(HardSoftScore.ONE_HARD)
+                                .asConstraint("Arrival must finish before departure starts");
+        }
 
     public Constraint gateTypeMismatch(ConstraintFactory constraintFactory) {
         return constraintFactory
