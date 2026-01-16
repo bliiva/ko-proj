@@ -12,14 +12,14 @@ public class Plane {
 
     private String id;
     private String name;
-    private boolean entireGroupMeeting;
     List<String> necessaryGateTypes;
     int servicePriority; // 1 - low, 5 - high
 
     /**
      * Multiply by {@link TimeGrain#GRAIN_LENGTH_IN_MINUTES} to get duration in minutes.
      */
-    private int durationInGrains;
+    private int arrivalDurationInGrains;
+    private int departureDurationInGrains;
 
     public Plane() {
     }
@@ -33,10 +33,17 @@ public class Plane {
         this.name = name;
     }
 
-    public Plane(String id, String name, int durationInGrains) {
+    public Plane(String id, String name, int arrivalDurationInGrains) {
         this(id);
         this.name = name;
-        this.durationInGrains = durationInGrains;
+        this.arrivalDurationInGrains = arrivalDurationInGrains;
+    }
+
+    public Plane(String id, String name, int arrivalDurationInGrains, int departureDurationInGrains) {
+        this(id);
+        this.name = name;
+        this.arrivalDurationInGrains = arrivalDurationInGrains;
+        this.departureDurationInGrains = departureDurationInGrains;
     }
 
     public String getId() {
@@ -55,12 +62,20 @@ public class Plane {
         this.name = name;
     }
 
-    public int getDurationInGrains() {
-        return durationInGrains;
+    public int getArrivalDurationInGrains() {
+        return arrivalDurationInGrains;
     }
 
-    public void setDurationInGrains(int durationInGrains) {
-        this.durationInGrains = durationInGrains;
+    public void setArrivalDurationInGrains(int arrivalDurationInGrains) {
+        this.arrivalDurationInGrains = arrivalDurationInGrains;
+    }
+
+    public int getDepartureDurationInGrains() {
+        return departureDurationInGrains;
+    }
+
+    public void setDepartureDurationInGrains(int departureDurationInGrains) {
+        this.departureDurationInGrains = departureDurationInGrains;
     }
 
     // ************************************************************************

@@ -12,17 +12,20 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @PlanningEntity
 public class Visit {
 
+
     @PlanningId
     private String id;
     private Plane plane;
     @PlanningPin
     private boolean pinned;
+    private String visitType = "ARRIVAL";
 
     // Planning variables: changes during planning, between score calculations.
     @PlanningVariable
     private TimeGrain startingTimeGrain;
     @PlanningVariable
     private Gate gate;
+
 
     public Visit() {
     }
@@ -36,10 +39,27 @@ public class Visit {
         this.plane = plane;
     }
 
+    public Visit(String id, Plane plane, String visitType) {
+        this(id, plane);
+        this.visitType = visitType;
+    }
+
     public Visit(String id, Plane plane, TimeGrain startingTimeGrain, Gate gate) {
         this(id, plane);
         this.startingTimeGrain = startingTimeGrain;
         this.gate = gate;
+    }
+
+    public Visit(String id, Plane plane, TimeGrain startingTimeGrain, Gate gate, String visitType) {
+        this(id, plane, startingTimeGrain, gate);
+        this.visitType = visitType;
+    }
+    public String getVisitType() {
+        return visitType;
+    }
+
+    public void setVisitType(String visitType) {
+        this.visitType = visitType;
     }
 
     public String getId() {
@@ -115,7 +135,7 @@ public class Visit {
         if (startingTimeGrain == null) {
             return null;
         }
-        return startingTimeGrain.getGrainIndex() + plane.getDurationInGrains() - 1;
+        return startingTimeGrain.getGrainIndex() + (visitType.equals("ARRIVAL") ? plane.getArrivalDurationInGrains() : plane.getDepartureDurationInGrains()) - 1;
     }
 
     @JsonIgnore
@@ -133,7 +153,7 @@ public class Visit {
 
     @Override
     public String toString() {
-        return plane.toString();
+        return plane.toString() + " [" + visitType + "]";
     }
 
     @Override

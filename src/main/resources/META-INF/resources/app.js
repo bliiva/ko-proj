@@ -122,7 +122,7 @@ function refreshSchedule() {
 function renderSchedule(schedule) {
     refreshSolvingButtons(schedule.solverStatus != null && schedule.solverStatus !== "NOT_SOLVING");
     $("#score").text("Score: " + (schedule.score == null ? "?" : schedule.score));
-    $("#info").text(`This dataset has ${schedule.meetings.length} meetings which need to be assigned to ${schedule.people.length} people in ${schedule.Gates.length} Gates.`);
+    $("#info").text(`This dataset has ${schedule.planes.length} planes which need to be assigned to  ${schedule.gates.length} gates.`);
 
 
     if (viewType === "R") {
@@ -139,38 +139,42 @@ function renderScheduleByGate(schedule) {
     byGateGroupData.clear();
     byGateItemData.clear();
 
-    $.each(schedule.Gates.sort((e1, e2) => e1.name.localeCompare(e2.name)), (_, Gate) => {
-        let content = `<div class="d-flex flex-column"><div><h5 class="card-title mb-1">${Gate.name}</h5></div>`;
+    $.each(schedule.gates.sort((e1, e2) => e1.name.localeCompare(e2.name)), (_, gate) => {
+        let content = `<div class="d-flex flex-column"><div><h5 class="card-title mb-1">${gate.name}</h5></div>`;
         byGateGroupData.add({
-            id: Gate.id,
+            id: gate.id,
             content: content,
         });
     });
 
-    const meetingMap = new Map();
-    schedule.meetings.forEach(m => meetingMap.set(m.id, m));
+    const planeMap = new Map();
+    schedule.planes.forEach(m => planeMap.set(m.id, m));
     const timeGrainMap = new Map();
     schedule.timeGrains.forEach(t => timeGrainMap.set(t.id, t));
-    $.each(schedule.meetingAssignments, (_, assignment) => {
-        const meet = meetingMap.get(assignment.meeting);
-        if (assignment.Gate == null || assignment.startingTimeGrain == null) {
+    $.each(schedule.visits, (_, visit) => {
+        const plane = planeMap.get(visit.plane);
+        let durationInGrains = plane.arrivalDurationInGrains;
+        if (visit.visitType === "DEPARTURE") {
+            durationInGrains = plane.departureDurationInGrains;
+        }
+        if (visit.gate == null || visit.startingTimeGrain == null) {
             const unassignedElement = $(`<div class="card-body"/>`)
-                .append($(`<h5 class="card-title mb-1"/>`).text(meet.topic))
-                .append($(`<p class="card-text ms-2 mb-0"/>`).text(`${(meet.durationInGrains * 15) / 60} hour(s)`));
+                .append($(`<h5 class="card-title mb-1"/>`).text(plane.name+` (${visit.visitType === "ARRIVAL" ? "A" : "D"})`))
+                .append($(`<p class="card-text ms-2 mb-0"/>`).text(`${(durationInGrains * 15) / 60} hour(s)`));
 
             unassigned.append($(`<div class="pl-1"/>`).append($(`<div class="card"/>`).append(unassignedElement)));
         } else {
-            const color = pickColor(assignment.Gate);
-            const byGateElement = $("<div />").append($("<div class='d-flex justify-content-center' />").append($(`<h5 class="card-title mb-1"/>`).text(meet.topic)));
-            const timeGrain = timeGrainMap.get(assignment.startingTimeGrain);
+            const color = pickColor(visit.gate);
+            const byGateElement = $("<div />").append($("<div class='d-flex justify-content-center' />").append($(`<h5 class="card-title mb-1"/>`).text(plane.name + ` (${visit.visitType === "ARRIVAL" ? "A" : "D"})`)));
+            const timeGrain = timeGrainMap.get(visit.startingTimeGrain);
             const startDate = JSJoda.LocalDate.now().withDayOfYear(timeGrain.dayOfYear);
             const startTime = JSJoda.LocalTime.of(0, 0, 0, 0)
                 .plusMinutes(timeGrain.startingMinuteOfDay);
             const startDateTime = JSJoda.LocalDateTime.of(startDate, startTime);
-            const endDateTime = startTime.plusMinutes(meet.durationInGrains * 15);
+            const endDateTime = startTime.plusMinutes(durationInGrains * 15);
             byGateItemData.add({
-                id: assignment.id,
-                group: assignment.Gate,
+                id: visit.id,
+                group: visit.gate,
                 content: byGateElement.html(),
                 start: startDateTime.toString(),
                 end: endDateTime.toString(),
@@ -179,77 +183,66 @@ function renderScheduleByGate(schedule) {
         }
     });
 
+    // Show banner if no unassigned items
+    if (unassigned.children().length === 0) {
+        const banner = $(`<div class="col-12"/>`)
+            .append($(`<div class="alert alert-success d-flex align-items-center justify-content-center" role="alert"/>`)
+                .append($(`<i class="fas fa-check-circle me-2"/>`))
+                .append($(`<span/>`).text("All planes have been assigned!")));
+        unassigned.append(banner);
+    }
+
     byGateTimeline.setWindow(JSJoda.LocalDateTime.now().plusDays(1).withHour(8).toString(),
         JSJoda.LocalDateTime.now().plusDays(1).withHour(17).withMinute(45).toString());
 }
 
 function renderScheduleByPerson(schedule) {
-    const unassigned = $("#unassigned");
-    unassigned.children().remove();
-    byPersonGroupData.clear();
-    byPersonItemData.clear();
+    // const unassigned = $("#unassigned");
+    // unassigned.children().remove();
+    // byPersonGroupData.clear();
+    // byPersonItemData.clear();
 
-    $.each(schedule.people.sort((e1, e2) => e1.fullName.localeCompare(e2.fullName)), (_, person) => {
-        let content = `<div class="d-flex flex-column"><div><h5 class="card-title mb-1">${person.fullName}</h5></div>`;
-        byPersonGroupData.add({
-            id: person.id,
-            content: content,
-        });
-    });
-    const meetingMap = new Map();
-    schedule.meetings.forEach(m => meetingMap.set(m.id, m));
-    const timeGrainMap = new Map();
-    schedule.timeGrains.forEach(t => timeGrainMap.set(t.id, t));
-    $.each(schedule.meetingAssignments, (_, assignment) => {
-        const meet = meetingMap.get(assignment.meeting);
-        if (assignment.Gate == null || assignment.startingTimeGrain == null) {
-            const unassignedElement = $(`<div class="card-body"/>`)
-                .append($(`<h5 class="card-title mb-1"/>`).text(meet.topic))
-                .append($(`<p class="card-text ms-2 mb-0"/>`).text(`${(meet.durationInGrains * 15) / 60} hour(s)`));
+    // $.each(schedule.people.sort((e1, e2) => e1.fullName.localeCompare(e2.fullName)), (_, person) => {
+    //     let content = `<div class="d-flex flex-column"><div><h5 class="card-title mb-1">${person.fullName}</h5></div>`;
+    //     byPersonGroupData.add({
+    //         id: person.id,
+    //         content: content,
+    //     });
+    // });
+    // const planeMap = new Map();
+    // schedule.planes.forEach(m => planeMap.set(m.id, m));
+    // const timeGrainMap = new Map();
+    // schedule.timeGrains.forEach(t => timeGrainMap.set(t.id, t));
+    // $.each(schedule.planeAssignments, (_, assignment) => {
+    //     const plane = planeMap.get(assignment.plane);
+    //     if (assignment.gate == null || assignment.startingTimeGrain == null) {
+    //         const unassignedElement = $(`<div class="card-body"/>`)
+    //             .append($(`<h5 class="card-title mb-1"/>`).text(plane.name))
+    //             .append($(`<p class="card-text ms-2 mb-0"/>`).text(`${(plane.durationInGrains * 15) / 60} hour(s)`));
 
-            unassigned.append($(`<div class="pl-1"/>`).append($(`<div class="card"/>`).append(unassignedElement)));
-        } else {
-            const color = pickColor(assignment.Gate);
-            const timeGrain = timeGrainMap.get(assignment.startingTimeGrain);
-            const startDate = JSJoda.LocalDate.now().withDayOfYear(timeGrain.dayOfYear);
-            const startTime = JSJoda.LocalTime.of(0, 0, 0, 0)
-                .plusMinutes(timeGrain.startingMinuteOfDay);
-            const startDateTime = JSJoda.LocalDateTime.of(startDate, startTime);
-            const endDateTime = startTime.plusMinutes(meet.durationInGrains * 15);
-            meet.requiredAttendances.forEach(attendance => {
-                const byPersonElement = $("<div />").append($("<div class='d-flex justify-content-center' />").append($(`<h5 class="card-title mb-1"/>`).text(meet.topic)));
-                byPersonElement.append($("<div class='d-flex justify-content-center' />").append($(`<span class="badge bg-primary m-1"/>`).text("Required")));
-                if (meet.preferredAttendances.map(a => a.person).indexOf(attendance.person) >= 0) {
-                    byPersonElement.append($("<div class='d-flex justify-content-center' />").append($(`<span class="badge bg-secondary m-1"/>`).text("Preferred")));
-                }
-                byPersonItemData.add({
-                    id: `${assignment.id}-${attendance.person}`,
-                    group: attendance.person,
-                    content: byPersonElement.html(),
-                    start: startDateTime.toString(),
-                    end: endDateTime.toString(),
-                    style: `min-height: 50px;background-color: ${color.bg};color:${color.fg} !important"`
-                });
-            });
-            meet.preferredAttendances.forEach(attendance => {
-                if (meet.requiredAttendances.map(a => a.person).indexOf(attendance.person) === -1) {
-                    const byPersonElement = $("<div />").append($("<div class='d-flex justify-content-center' />").append($(`<h5 class="card-title mb-1"/>`).text(meet.topic)));
-                    byPersonElement.append($("<div class='d-flex justify-content-center' />").append($(`<span class="badge bg-secondary m-1" />`).text("Preferred")));
-                    byPersonItemData.add({
-                        id: `${assignment.id}-${attendance.person}`,
-                        group: attendance.person,
-                        content: byPersonElement.html(),
-                        start: startDateTime.toString(),
-                        end: endDateTime.toString(),
-                        style: `min-height: 50px;background-color: ${color.bg};color:${color.fg} !important"`
-                    });
-                }
-            });
-        }
-    });
+    //         unassigned.append($(`<div class="pl-1"/>`).append($(`<div class="card"/>`).append(unassignedElement)));
+    //     } else {
+    //         const color = pickColor(assignment.gate);
+    //         const timeGrain = timeGrainMap.get(assignment.startingTimeGrain);
+    //         const startDate = JSJoda.LocalDate.now().withDayOfYear(timeGrain.dayOfYear);
+    //         const startTime = JSJoda.LocalTime.of(0, 0, 0, 0)
+    //             .plusMinutes(timeGrain.startingMinuteOfDay);
+    //         const startDateTime = JSJoda.LocalDateTime.of(startDate, startTime);
+    //         const endDateTime = startTime.plusMinutes(plane.durationInGrains * 15);
+    //     }
+    // });
 
-    byPersonTimeline.setWindow(JSJoda.LocalDateTime.now().plusDays(1).withHour(8).toString(),
-        JSJoda.LocalDateTime.now().plusDays(1).withHour(17).withMinute(45).toString());
+    // // Show banner if no unassigned items
+    // if (unassigned.children().length === 0) {
+    //     const banner = $(`<div class="col-12"/>`)
+    //         .append($(`<div class="alert alert-success d-flex align-items-center justify-content-center" role="alert"/>`)
+    //             .append($(`<i class="fas fa-check-circle me-2"/>`))
+    //             .append($(`<span/>`).text("All planes have been assigned!")));
+    //     unassigned.append(banner);
+    // }
+
+    // byPersonTimeline.setWindow(JSJoda.LocalDateTime.now().plusDays(1).withHour(8).toString(),
+    //     JSJoda.LocalDateTime.now().plusDays(1).withHour(17).withMinute(45).toString());
 }
 
 function solve() {
@@ -381,4 +374,33 @@ function copyTextToClipboard(id) {
     dummy.select();
     document.execCommand("copy");
     document.body.removeChild(dummy);
+}
+
+function showError(title, xhr) {
+    let serverErrorMessage = !xhr.responseJSON ? `${xhr.status}: ${xhr.statusText}` : xhr.responseJSON.message;
+    let serverErrorCode = !xhr.responseJSON ? `unknown` : xhr.responseJSON.code;
+    let serverErrorId = !xhr.responseJSON ? `----` : xhr.responseJSON.id;
+    let serverErrorDetails = !xhr.responseJSON ? `no details provided` : xhr.responseJSON.details;
+
+    if (xhr.responseJSON && !serverErrorMessage) {
+        serverErrorMessage = JSON.stringify(xhr.responseJSON);
+        serverErrorCode = xhr.statusText + '(' + xhr.status + ')';
+        serverErrorId = `----`;
+    }
+
+    console.error(title + "\n" + serverErrorMessage + " : " + serverErrorDetails);
+    const notification = $(`<div class="toast" role="alert" aria-live="assertive" aria-atomic="true" style="min-width: 50rem"/>`)
+        .append($(`<div class="toast-header bg-danger">
+                 <strong class="me-auto text-dark">Error</strong>
+                 <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+               </div>`))
+        .append($(`<div class="toast-body"/>`)
+            .append($(`<p/>`).text(title))
+            .append($(`<pre/>`)
+                .append($(`<code/>`).text(serverErrorMessage + "\n\nCode: " + serverErrorCode + "\nError id: " + serverErrorId))
+            )
+        );
+    $("#notificationPanel").append(notification);
+    notification.toast({delay: 30000});
+    notification.toast('show');
 }

@@ -103,18 +103,25 @@ public class DemoDataGenerator {
                 new Pair<>(0.33f, 12),
                 new Pair<>(0.33f, 16));
         durationGrainsCount.forEach(p -> applyRandomValue((int) (p.key() * planes.size()), planes,
-                m -> m.getDurationInGrains() == 0, m -> m.setDurationInGrains(p.value()), random));
+                m -> m.getArrivalDurationInGrains() == 0, m -> m.setArrivalDurationInGrains(p.value()), random));
         // Ensure there are no empty duration
         planes.stream()
-                .filter(m -> m.getDurationInGrains() == 0)
-                .forEach(m -> m.setDurationInGrains(8));
+                .filter(m -> m.getArrivalDurationInGrains() == 0)
+                .forEach(m -> m.setArrivalDurationInGrains(8));
+
+        durationGrainsCount.forEach(p -> applyRandomValue((int) (p.key() * planes.size()), planes,
+                m -> m.getDepartureDurationInGrains() == 0, m -> m.setDepartureDurationInGrains(p.value()), random));
+        // Ensure there are no empty duration
+        planes.stream()
+                .filter(m -> m.getDepartureDurationInGrains() == 0)
+                .forEach(m -> m.setDepartureDurationInGrains(8));
         // Attendants
         return planes;
     }
 
     private List<Visit> generateVisits(List<Plane> planes) {
-        return IntStream.range(0, planes.size())
-                .mapToObj(i -> new Visit(String.valueOf(i), planes.get(i)))
+        return IntStream.range(0, planes.size()*2)
+                .mapToObj(i -> new Visit(String.valueOf(i), planes.get(i % planes.size()), i < planes.size() ? "ARRIVAL" : "DEPARTURE"))
                 .toList();
     }
 

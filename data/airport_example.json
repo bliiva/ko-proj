@@ -3,127 +3,152 @@
     {
       "id": "0",
       "name": "AA",
-      "durationInGrains": 16
+      "arrivalDurationInGrains": 16,
+      "departureDurationInGrains": 16
     },
     {
       "id": "1",
       "name": "BB",
-      "durationInGrains": 12
+      "arrivalDurationInGrains": 12,
+      "departureDurationInGrains": 12
     },
     {
       "id": "2",
       "name": "CC",
-      "durationInGrains": 16
+      "arrivalDurationInGrains": 16,
+      "departureDurationInGrains": 16
     },
     {
       "id": "3",
       "name": "DD",
-      "durationInGrains": 8
+      "arrivalDurationInGrains": 8,
+      "departureDurationInGrains": 8
     },
     {
       "id": "4",
       "name": "EE",
-      "durationInGrains": 8
+      "arrivalDurationInGrains": 8,
+      "departureDurationInGrains": 8
     },
     {
       "id": "5",
       "name": "FF",
-      "durationInGrains": 12
+      "arrivalDurationInGrains": 12,
+      "departureDurationInGrains": 12
     },
     {
       "id": "6",
       "name": "GG",
-      "durationInGrains": 8
+      "arrivalDurationInGrains": 8,
+      "departureDurationInGrains": 8
     },
     {
       "id": "7",
       "name": "HH",
-      "durationInGrains": 8
+      "arrivalDurationInGrains": 8,
+      "departureDurationInGrains": 8
     },
     {
       "id": "8",
       "name": "II",
-      "durationInGrains": 12
+      "arrivalDurationInGrains": 12,
+      "departureDurationInGrains": 12
     },
     {
       "id": "9",
       "name": "JJ",
-      "durationInGrains": 16
+      "arrivalDurationInGrains": 16,
+      "departureDurationInGrains": 16
     },
     {
       "id": "10",
       "name": "KK",
-      "durationInGrains": 8
+      "arrivalDurationInGrains": 8,
+      "departureDurationInGrains": 8
     },
     {
       "id": "11",
       "name": "LL",
-      "durationInGrains": 16
+      "arrivalDurationInGrains": 16,
+      "departureDurationInGrains": 16
     },
     {
       "id": "12",
       "name": "MM",
-      "durationInGrains": 12
+      "arrivalDurationInGrains": 12,
+      "departureDurationInGrains": 12
     },
     {
       "id": "13",
       "name": "NN",
-      "durationInGrains": 16
+      "arrivalDurationInGrains": 16,
+      "departureDurationInGrains": 16
     },
     {
       "id": "14",
       "name": "OO",
-      "durationInGrains": 8
+      "arrivalDurationInGrains": 8,
+      "departureDurationInGrains": 8
     },
     {
       "id": "15",
       "name": "PP",
-      "durationInGrains": 8
+      "arrivalDurationInGrains": 8,
+      "departureDurationInGrains": 8
     },
     {
       "id": "16",
       "name": "QQ",
-      "durationInGrains": 12
+      "arrivalDurationInGrains": 12,
+      "departureDurationInGrains": 12
     },
     {
       "id": "17",
       "name": "RR",
-      "durationInGrains": 8
+      "arrivalDurationInGrains": 8,
+      "departureDurationInGrains": 8
     },
     {
       "id": "18",
       "name": "SS",
-      "durationInGrains": 12
+      "arrivalDurationInGrains": 12,
+      "departureDurationInGrains": 12
     },
     {
       "id": "19",
       "name": "TT",
-      "durationInGrains": 16
+      "arrivalDurationInGrains": 16,
+      "departureDurationInGrains": 16
     },
     {
       "id": "20",
       "name": "UU",
-      "durationInGrains": 12
+      "arrivalDurationInGrains": 12,
+      "departureDurationInGrains": 12
     },
     {
       "id": "21",
       "name": "VV",
-      "durationInGrains": 16
+      "arrivalDurationInGrains": 16,
+      "departureDurationInGrains": 16
     },
     {
       "id": "22",
       "name": "WW",
-      "durationInGrains": 12
+      "arrivalDurationInGrains": 12,
+      "departureDurationInGrains": 12
     },
     {
       "id": "23",
       "name": "XX",
-      "durationInGrains": 16
+      "arrivalDurationInGrains": 16,
+      "departureDurationInGrains": 16
     },
     {
       "id": "24",
       "name": "YY",
-      "durationInGrains": 8
+      "arrivalDurationInGrains": 8,
+      "departureDurationInGrains": 8
     }
   ],
   "timeGrains": [
@@ -1110,6 +1135,7 @@
       "id": "0",
       "plane": "0",
       "pinned": false,
+      "visitType": "ARRIVAL",
       "startingTimeGrain": null,
       "gate": null
     },
@@ -1117,6 +1143,7 @@
       "id": "1",
       "plane": "1",
       "pinned": false,
+      "visitType": "ARRIVAL",
       "startingTimeGrain": null,
       "gate": null
     },
@@ -1124,6 +1151,7 @@
       "id": "2",
       "plane": "2",
       "pinned": false,
+      "visitType": "ARRIVAL",
       "startingTimeGrain": null,
       "gate": null
     },
@@ -1131,6 +1159,7 @@
       "id": "3",
       "plane": "3",
       "pinned": false,
+      "visitType": "ARRIVAL",
       "startingTimeGrain": null,
       "gate": null
     },
@@ -1138,6 +1167,7 @@
       "id": "4",
       "plane": "4",
       "pinned": false,
+      "visitType": "ARRIVAL",
       "startingTimeGrain": null,
       "gate": null
     },
@@ -1145,6 +1175,7 @@
       "id": "5",
       "plane": "5",
       "pinned": false,
+      "visitType": "ARRIVAL",
       "startingTimeGrain": null,
       "gate": null
     },
@@ -1152,6 +1183,7 @@
       "id": "6",
       "plane": "6",
       "pinned": false,
+      "visitType": "ARRIVAL",
       "startingTimeGrain": null,
       "gate": null
     },
@@ -1159,6 +1191,7 @@
       "id": "7",
       "plane": "7",
       "pinned": false,
+      "visitType": "ARRIVAL",
       "startingTimeGrain": null,
       "gate": null
     },
@@ -1166,6 +1199,7 @@
       "id": "8",
       "plane": "8",
       "pinned": false,
+      "visitType": "ARRIVAL",
       "startingTimeGrain": null,
       "gate": null
     },
@@ -1173,6 +1207,7 @@
       "id": "9",
       "plane": "9",
       "pinned": false,
+      "visitType": "ARRIVAL",
       "startingTimeGrain": null,
       "gate": null
     },
@@ -1180,6 +1215,7 @@
       "id": "10",
       "plane": "10",
       "pinned": false,
+      "visitType": "ARRIVAL",
       "startingTimeGrain": null,
       "gate": null
     },
@@ -1187,6 +1223,7 @@
       "id": "11",
       "plane": "11",
       "pinned": false,
+      "visitType": "ARRIVAL",
       "startingTimeGrain": null,
       "gate": null
     },
@@ -1194,6 +1231,7 @@
       "id": "12",
       "plane": "12",
       "pinned": false,
+      "visitType": "ARRIVAL",
       "startingTimeGrain": null,
       "gate": null
     },
@@ -1201,6 +1239,7 @@
       "id": "13",
       "plane": "13",
       "pinned": false,
+      "visitType": "ARRIVAL",
       "startingTimeGrain": null,
       "gate": null
     },
@@ -1208,6 +1247,7 @@
       "id": "14",
       "plane": "14",
       "pinned": false,
+      "visitType": "ARRIVAL",
       "startingTimeGrain": null,
       "gate": null
     },
@@ -1215,6 +1255,7 @@
       "id": "15",
       "plane": "15",
       "pinned": false,
+      "visitType": "ARRIVAL",
       "startingTimeGrain": null,
       "gate": null
     },
@@ -1222,6 +1263,7 @@
       "id": "16",
       "plane": "16",
       "pinned": false,
+      "visitType": "ARRIVAL",
       "startingTimeGrain": null,
       "gate": null
     },
@@ -1229,6 +1271,7 @@
       "id": "17",
       "plane": "17",
       "pinned": false,
+      "visitType": "ARRIVAL",
       "startingTimeGrain": null,
       "gate": null
     },
@@ -1236,6 +1279,7 @@
       "id": "18",
       "plane": "18",
       "pinned": false,
+      "visitType": "ARRIVAL",
       "startingTimeGrain": null,
       "gate": null
     },
@@ -1243,6 +1287,7 @@
       "id": "19",
       "plane": "19",
       "pinned": false,
+      "visitType": "ARRIVAL",
       "startingTimeGrain": null,
       "gate": null
     },
@@ -1250,6 +1295,7 @@
       "id": "20",
       "plane": "20",
       "pinned": false,
+      "visitType": "ARRIVAL",
       "startingTimeGrain": null,
       "gate": null
     },
@@ -1257,6 +1303,7 @@
       "id": "21",
       "plane": "21",
       "pinned": false,
+      "visitType": "ARRIVAL",
       "startingTimeGrain": null,
       "gate": null
     },
@@ -1264,6 +1311,7 @@
       "id": "22",
       "plane": "22",
       "pinned": false,
+      "visitType": "ARRIVAL",
       "startingTimeGrain": null,
       "gate": null
     },
@@ -1271,6 +1319,7 @@
       "id": "23",
       "plane": "23",
       "pinned": false,
+      "visitType": "ARRIVAL",
       "startingTimeGrain": null,
       "gate": null
     },
@@ -1278,6 +1327,207 @@
       "id": "24",
       "plane": "24",
       "pinned": false,
+      "visitType": "ARRIVAL",
+      "startingTimeGrain": null,
+      "gate": null
+    },
+        {
+      "id": "25",
+      "plane": "0",
+      "pinned": false,
+      "visitType": "DEPARTURE",
+      "startingTimeGrain": null,
+      "gate": null
+    },
+    {
+      "id": "26",
+      "plane": "1",
+      "pinned": false,
+      "visitType": "DEPARTURE",
+      "startingTimeGrain": null,
+      "gate": null
+    },
+    {
+      "id": "27",
+      "plane": "2",
+      "pinned": false,
+      "visitType": "DEPARTURE",
+      "startingTimeGrain": null,
+      "gate": null
+    },
+    {
+      "id": "28",
+      "plane": "3",
+      "pinned": false,
+      "visitType": "DEPARTURE",
+      "startingTimeGrain": null,
+      "gate": null
+    },
+    {
+      "id": "29",
+      "plane": "4",
+      "pinned": false,
+      "visitType": "DEPARTURE",
+      "startingTimeGrain": null,
+      "gate": null
+    },
+    {
+      "id": "30",
+      "plane": "5",
+      "pinned": false,
+      "visitType": "DEPARTURE",
+      "startingTimeGrain": null,
+      "gate": null
+    },
+    {
+      "id": "31",
+      "plane": "6",
+      "pinned": false,
+      "visitType": "DEPARTURE",
+      "startingTimeGrain": null,
+      "gate": null
+    },
+    {
+      "id": "32",
+      "plane": "7",
+      "pinned": false,
+      "visitType": "DEPARTURE",
+      "startingTimeGrain": null,
+      "gate": null
+    },
+    {
+      "id": "33",
+      "plane": "8",
+      "pinned": false,
+      "visitType": "DEPARTURE",
+      "startingTimeGrain": null,
+      "gate": null
+    },
+    {
+      "id": "34",
+      "plane": "9",
+      "pinned": false,
+      "visitType": "DEPARTURE",
+      "startingTimeGrain": null,
+      "gate": null
+    },
+    {
+      "id": "35",
+      "plane": "10",
+      "pinned": false,
+      "visitType": "DEPARTURE",
+      "startingTimeGrain": null,
+      "gate": null
+    },
+    {
+      "id": "36",
+      "plane": "11",
+      "pinned": false,
+      "visitType": "DEPARTURE",
+      "startingTimeGrain": null,
+      "gate": null
+    },
+    {
+      "id": "37",
+      "plane": "12",
+      "pinned": false,
+      "visitType": "DEPARTURE",
+      "startingTimeGrain": null,
+      "gate": null
+    },
+    {
+      "id": "38",
+      "plane": "13",
+      "pinned": false,
+      "visitType": "DEPARTURE",
+      "startingTimeGrain": null,
+      "gate": null
+    },
+    {
+      "id": "39",
+      "plane": "14",
+      "pinned": false,
+      "visitType": "DEPARTURE",
+      "startingTimeGrain": null,
+      "gate": null
+    },
+    {
+      "id": "40",
+      "plane": "15",
+      "pinned": false,
+      "visitType": "DEPARTURE",
+      "startingTimeGrain": null,
+      "gate": null
+    },
+    {
+      "id": "41",
+      "plane": "16",
+      "pinned": false,
+      "visitType": "DEPARTURE",
+      "startingTimeGrain": null,
+      "gate": null
+    },
+    {
+      "id": "42",
+      "plane": "17",
+      "pinned": false,
+      "visitType": "DEPARTURE",
+      "startingTimeGrain": null,
+      "gate": null
+    },
+    {
+      "id": "43",
+      "plane": "18",
+      "pinned": false,
+      "visitType": "DEPARTURE",
+      "startingTimeGrain": null,
+      "gate": null
+    },
+    {
+      "id": "44",
+      "plane": "19",
+      "pinned": false,
+      "visitType": "DEPARTURE",
+      "startingTimeGrain": null,
+      "gate": null
+    },
+    {
+      "id": "45",
+      "plane": "20",
+      "pinned": false,
+      "visitType": "DEPARTURE",
+      "startingTimeGrain": null,
+      "gate": null
+    },
+    {
+      "id": "46",
+      "plane": "21",
+      "pinned": false,
+      "visitType": "DEPARTURE",
+      "startingTimeGrain": null,
+      "gate": null
+    },
+    {
+      "id": "47",
+      "plane": "22",
+      "pinned": false,
+      "visitType": "DEPARTURE",
+      "startingTimeGrain": null,
+      "gate": null
+    },
+    {
+      "id": "48",
+      "plane": "23",
+      "pinned": false,
+      "visitType": "DEPARTURE",
+      "startingTimeGrain": null,
+      "gate": null
+    },
+    {
+      "id": "49",
+      "plane": "24",
+      "pinned": false,
+      "visitType": "DEPARTURE",
       "startingTimeGrain": null,
       "gate": null
     }
