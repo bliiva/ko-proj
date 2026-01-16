@@ -1,5 +1,7 @@
 package lv.lu.eztf.dn.combopt.evrp.solver;
 
+import java.util.Objects;
+
 import org.jspecify.annotations.NonNull;
 
 import ai.timefold.solver.core.api.score.buildin.hardsoft.HardSoftScore;
@@ -34,7 +36,7 @@ public class ConstraintStreamCostFunction implements ConstraintProvider {
                                 .asConstraint("Arrival must finish before departure starts");
         }
 
-    public Constraint gateTypeMismatch(ConstraintFactory constraintFactory) {
+        public Constraint gateTypeMismatch(ConstraintFactory constraintFactory) {
         return constraintFactory
                 .forEach(Visit.class)
                 .filter(v -> v.getPlane() != null && v.getGate() != null)
@@ -46,21 +48,20 @@ public class ConstraintStreamCostFunction implements ConstraintProvider {
                 })
                 .penalize(HardSoftScore.ONE_HARD, v -> Math.max(1, v.getPlane().getServicePriority()))
                 .asConstraint("Gate type mismatch");
-    }
+        }
 
-    public Constraint companyTerminalMismatch(ConstraintFactory constraintFactory) {
+        public Constraint companyTerminalMismatch(ConstraintFactory constraintFactory) {
+        return constraintFactory
+                .forEach(Visit.class)
+                .filter(v -> v.getPlane() != null && v.getGate() != null)
+                .filter(v -> v.getPlane().getCompany() != null)
+                .filter(v -> v.getPlane().getCompany().getTerminal() != null && v.getGate().getTerminal() != null)
+                .filter(v -> !Objects.equals(v.getPlane().getCompany().getTerminal().getId(), v.getGate().getTerminal().getId()))
+                .penalize(HardSoftScore.ONE_SOFT, v -> 100)
+                .asConstraint("Company terminal mismatch");
+        }
 
-    return constraintFactory
-            .forEach(Visit.class)
-            .filter(v -> v.getType() == VisitType.ARRIVAL)
-            .filter(v -> v.getPlane() != null && v.getGate() != null)
-            .filter(v -> v.getPlane().getCompany() != null && v.getGate().getTerminal() != null)
-            .filter(v -> !v.getPlane().getCompany().getTerminal().equals(v.getGate().getTerminal()))
-            .penalize(HardSoftScore.ONE_SOFT)
-            .asConstraint("Company terminal mismatch");
-    }
-
-    public Constraint totalDelay(ConstraintFactory constraintFactory) {
+        public Constraint totalDelay(ConstraintFactory constraintFactory) {
         return constraintFactory
                 .forEach(Visit.class)
                 .filter(v -> v.getType() == VisitType.DEPARTURE)
@@ -69,7 +70,7 @@ public class ConstraintStreamCostFunction implements ConstraintProvider {
                 .penalize(HardSoftScore.ONE_SOFT,
                         v -> Math.toIntExact(v.getDelay() * Math.max(1L, (long) v.getPlane().getServicePriority())))
                 .asConstraint("Total delay");
-    }
+        }
 
 //     public Constraint totalDistance(ConstraintFactory constraintFactory) {
 //         return constraintFactory

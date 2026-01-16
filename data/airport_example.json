@@ -3,12 +3,13 @@
   "name": "minimal-evrp",
 
   "terminalList": [
-    { "id": "T1" }
+    { "id": "T1" },
+    { "id": "T2" }
   ],
 
   "companyList": [
     { "id": "C1", "name": "Company-1", "terminal": "T1" },
-    { "id": "C2", "name": "Company-2", "terminal": "T1" }
+    { "id": "C2", "name": "Company-2", "terminal": "T2" }
   ],
 
   "gateList": [
