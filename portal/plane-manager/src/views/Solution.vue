@@ -10,6 +10,7 @@ import {
   LxSection,
   LxDataGrid,
   LxContentSwitcher,
+  LxInfoWrapper,
 } from "@wntr/lx-ui";
 import api from "../../api.js";
 
@@ -120,6 +121,11 @@ function getGridItems() {
   return visitListDisplay.value;
 }
 
+function getColor(index){
+  const colors = ['var(--color-green)', 'var(--color-blue)', 'var(--color-purple)', 'var(--color-orange)', 'var(--color-teal)'];
+  return colors[index % colors.length];
+}
+
 onMounted(() => {
   getSolution();
   getTest();
@@ -127,12 +133,6 @@ onMounted(() => {
 </script>
 <template>
   <div>
-    <div>{{ data?.solverStatus }}</div>
-    <div>{{ data?.score }}</div>
-    {{ hardScore }} ||| {{ softScore }}
-
-    <div></div>
-
     <LxForm :columnCount="4">
       <template #header>
         {{ data?.name }}
@@ -154,6 +154,7 @@ onMounted(() => {
           ]"
         />
       </template>
+      <template #pre-header-info> Risinājuma statuss </template>
 
       <LxRow label="Rezultāts" columnSpan="4">
         <LxStack orientation="horizontal">
@@ -208,7 +209,32 @@ onMounted(() => {
           </LxRow>
         </LxSection>
         <LxSection label="Vārtu grafiks" :columnCount="2">
-          <LxRow columnSpan="2"></LxRow>
+          <LxRow columnSpan="2">
+            <div style="overflow-x: scroll; padding-bottom: 0.5rem;">
+            <div v-for="gate in visitData" style="display: flex; gap: 1rem; align-items: center;">
+              <p>{{ gate.gateId }}</p>
+              <div style="display: flex; gap: 0.125rem; padding-top: 0.5rem; padding-bottom: 0.5rem;">
+                <div
+                  v-for="(visit, index) in gate.visits"
+                  :key="visit.id"
+                  :style="{
+                    width: `${(visit.endTime - visit.startTime) * 2}px`,
+                    backgroundColor:
+                      visit.type === 'ARRIVAL' ? '#90caf9' : '#a5d6a7',
+                    border: '1px solid #000',
+                    padding: '0.25rem',
+                    paddingTop: '0.75rem',
+                    paddingBottom: '0.75rem',
+                    backgroundColor: getColor(index),
+                  }"
+                >
+                  {{ visit.planeId }}
+                </div>
+              </div>
+            </div>
+            </div>
+          </LxRow>
+          <pre>{{ visitData }}</pre>
         </LxSection>
       </template>
     </LxForm>
