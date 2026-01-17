@@ -68,7 +68,7 @@ public class ConstraintStreamCostFunction implements ConstraintProvider {
                 .filter(v -> v.getPlane() != null)
                 .filter(v -> v.getDelay() != null && v.getDelay() > 0)
                 .penalize(HardSoftScore.ONE_SOFT,
-                        v -> Math.toIntExact(v.getDelay() * Math.max(1L, (long) v.getPlane().getServicePriority()) * (v.getType() == VisitType.ARRIVAL ? 2 : 3)))
+                        v -> Math.toIntExact(v.getDelay() * Math.max(1L, (long) v.getPlane().getServicePriority()) * (v.getType() == VisitType.ARRIVAL ? 3 : 2)))
                 .asConstraint("Total delay");
         }
 
