@@ -116,13 +116,23 @@ public class  Visit {
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     public Long getDelay() {
-        if (this.getType() != VisitType.DEPARTURE) {
-            return 0L;
-        }
-        if (this.getPlane() == null || this.getDepartureTime() == null || this.getPlane().getScheduledDepartureTime() == null) {
+        if (this.getPlane() == null || this.getStartTime() == null) {
             return null;
         }
-        return Math.max(0L, this.getDepartureTime() - this.getPlane().getScheduledDepartureTime());
+        if (this.getType() == VisitType.ARRIVAL) {
+            Long scheduledArrival = this.getPlane().getScheduledArrivalTime();
+            if (scheduledArrival == null) {
+                return null;
+            }
+            return Math.max(0L, this.getStartTime() - scheduledArrival);
+        } else if (this.getType() == VisitType.DEPARTURE) {
+            Long scheduledDeparture = this.getPlane().getScheduledDepartureTime();
+            if (scheduledDeparture == null) {
+                return null;
+            }
+            return Math.max(0L, this.getStartTime() - scheduledDeparture);
+        }
+        return 0L;
     }
 
     @Override
