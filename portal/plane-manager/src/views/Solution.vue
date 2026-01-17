@@ -1,12 +1,22 @@
 <script setup>
 import { ref, computed, onMounted } from "vue";
 import { useRoute } from "vue-router";
-import { LxBadge, LxStateDisplay, LxForm, LxRow, LxStack, LxSection, LxDataGrid } from "@wntr/lx-ui";
+import {
+  LxBadge,
+  LxStateDisplay,
+  LxForm,
+  LxRow,
+  LxStack,
+  LxSection,
+  LxDataGrid,
+  LxContentSwitcher,
+} from "@wntr/lx-ui";
 import api from "../../api.js";
 
 const route = useRoute();
 
 const data = ref();
+const switcherModel = ref("full");
 
 function getSolution() {
   api()
@@ -34,8 +44,85 @@ const softScore = computed(() => {
   return number[0];
 });
 
+const visitData = ref();
+
+function getTest() {
+  api()
+    .get(`/evrp/${route.params.id}/schedule`)
+    .then((response) => {
+      console.log("Test data:", response);
+      visitData.value = response.data;
+    });
+}
+
+const columnDefinitions = [
+  {
+    id: "id",
+    name: "ID",
+    attributeName: "id",
+    size: "xs",
+  },
+  {
+    id: "plane",
+    name: "Lidmašīna",
+    attributeName: "plane",
+    size: "s",
+    kind: "primary",
+  },
+  {
+    id: "gate",
+    name: "Vārti",
+    attributeName: "gate",
+    size: "s",
+  },
+  {
+    id: "type",
+    name: "Tips",
+    attributeName: "typeDisplay",
+    size: "s",
+    type: "icon",
+  },
+  {
+    id: "startTime",
+    name: "Sākums",
+    attributeName: "startTime",
+    size: "s",
+  },
+  {
+    id: "endTime",
+    name: "Beigas",
+    attributeName: "endTime",
+    size: "s",
+  },
+];
+
+const visitListDisplay = computed(() => {
+  if (!data.value) return [];
+  return data.value?.visitList
+    ?.map((x) => ({
+      ...x,
+      typeDisplay: {
+        label: x?.type === "ARRIVAL" ? "Ielidošana" : "Izlidošana",
+        icon: x?.type === "ARRIVAL" ? "back" : "next",
+      },
+    }))
+    .sort((a, b) => a.startTime - b.startTime);
+});
+
+function getGridItems() {
+  if (switcherModel.value === "full") {
+    return visitListDisplay.value || [];
+  } else if (switcherModel.value === "arrivals") {
+    return visitListDisplay.value?.filter((x) => x?.type === "ARRIVAL");
+  } else if (switcherModel.value === "departure") {
+    return visitListDisplay.value?.filter((x) => x?.type === "DEPARTURE");
+  }
+  return visitListDisplay.value;
+}
+
 onMounted(() => {
   getSolution();
+  getTest();
 });
 </script>
 <template>
@@ -71,14 +158,17 @@ onMounted(() => {
       <LxRow label="Rezultāts" columnSpan="4">
         <LxStack orientation="horizontal">
           <LxBadge
-            :icon="
-              hardScore === '-0' ? 'notification-success' : 'notification-error'
-            "
+            :icon="hardScore === '-0' ? 'accept' : 'warning'"
             :value="`Hard rezultāts: ${hardScore}`"
             iconSet="material"
+            :class="[
+              {
+                'lx-bage-error': hardScore !== '-0',
+              },
+            ]"
           />
           <LxBadge
-            icon="notification-success"
+            icon="accept"
             :value="`Soft rezultāts: ${softScore}`"
             iconSet="material"
           />
@@ -99,13 +189,29 @@ onMounted(() => {
       </LxRow>
       <template #sections>
         <LxSection label="Lidojumu saraksts" :columnCount="2">
-          <LxRow columnSpan="2">
-            <LxDataGrid />
+          <LxRow columnSpan="2" :hideLabel="true">
+            <LxContentSwitcher
+              v-model="switcherModel"
+              :items="[
+                { id: 'full', name: 'Pilns saraksts' },
+                { id: 'arrivals', name: 'Ielidošana' },
+                { id: 'departure', name: 'Izlidošana' },
+              ]"
+            />
           </LxRow>
+          <LxRow columnSpan="2" :hideLabel="true">
+            <LxDataGrid
+              :items="getGridItems()"
+              :column-definitions="columnDefinitions"
+              :scrollable="true"
+            />
+          </LxRow>
+        </LxSection>
+        <LxSection label="Vārtu grafiks" :columnCount="2">
+          <LxRow columnSpan="2"></LxRow>
         </LxSection>
       </template>
     </LxForm>
-    <hr />
     <pre>{{ data }}</pre>
   </div>
 </template>

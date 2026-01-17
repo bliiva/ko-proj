@@ -84,3 +84,17 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+
+/*-------*/
+
+.lx-form-grid .lx-badge.lx-bage-error {
+  background-color: var(--color-red);
+}
+
+.lx-badge.lx-bage-error .lx-badge-text{
+  color: var(--color-badge-foreground);
+}
+.lx-badge.lx-bage-error .lx-badge-icon {
+  fill: var(--color-badge-foreground);
+}
