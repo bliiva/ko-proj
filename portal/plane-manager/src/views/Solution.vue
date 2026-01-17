@@ -133,6 +133,25 @@ function getColor(index) {
   return colors[index % colors.length];
 }
 
+const timeMarkers = computed(() => {
+  if (!visitData.value) return 0;
+  let maxTime = 0;
+  visitData.value.forEach((gate) => {
+    gate.visits.forEach((visit) => {
+      if (visit.endTime > maxTime) {
+        maxTime = visit.endTime;
+      }
+    });
+  });
+
+  const timeMarkers = [];
+  for (let i = 100; i <= maxTime + 100; i += 100) {
+    timeMarkers.push(i);
+  }
+
+  return timeMarkers;
+});
+
 onMounted(() => {
   getSolution();
   getTest();
@@ -217,11 +236,40 @@ onMounted(() => {
         </LxSection>
         <LxSection label="Vārtu grafiks" :columnCount="2">
           <LxRow columnSpan="2">
-            <div style="overflow-x: scroll; padding-bottom: 0.5rem">
+            <div
+              style="
+                overflow-x: scroll;
+                padding-bottom: 0.5rem;
+                padding-top: 2rem;
+                position: relative;
+              "
+            >
+              <div>
+                <div
+                  v-for="i in timeMarkers"
+                  :style="{
+                    position: 'absolute',
+                    left: `${i * 2 + 32}px`,
+                    top: '-0rem',
+                    height: '100%',
+                    borderLeft: '1px dashed var(--color-label)',
+                    paddingLeft: '0.25rem',
+                  }"
+                >
+                  {{ i }}
+                </div>
+              </div>
               <div
                 v-for="gate in visitData"
-                style="display: flex; gap: 1rem; align-items: center; height: 4rem; border-bottom: 1px dotted var(--color-label); border-top: 1px dotted var(--color-label);">
-              
+                style="
+                  display: flex;
+                  gap: 1rem;
+                  align-items: center;
+                  height: 4rem;
+                  border-bottom: 1px dotted var(--color-label);
+                  border-top: 1px dotted var(--color-label);
+                "
+              >
                 <p>{{ gate.gateId }}</p>
                 <div
                   style="
@@ -233,16 +281,16 @@ onMounted(() => {
                   "
                 >
                   <div v-for="(visit, index) in gate.visits" :key="visit.id">
-                    <LxInfoWrapper :style="{
-                          left: `${(visit.startTime) * 2}px`,
-                          position: 'absolute',
-                          top: '-1rem',
-                        }">
+                    <LxInfoWrapper
+                      :style="{
+                        left: `${visit.startTime * 2}px`,
+                        position: 'absolute',
+                        top: '-1rem',
+                      }"
+                    >
                       <div
                         :style="{
                           width: `${(visit.endTime - visit.startTime) * 2}px`,
-                          backgroundColor:
-                            visit.type === 'ARRIVAL' ? '#90caf9' : '#a5d6a7',
                           border: '1px solid #000',
                           padding: '0.25rem',
                           paddingTop: '0.75rem',
@@ -256,18 +304,32 @@ onMounted(() => {
                         <LxRow label="Lidmašīna">
                           <p class="lx-data">{{ visit.planeId }}</p>
                         </LxRow>
-                           <LxRow label="Tips">
-                          <p class="lx-data">
+                        <LxRow label="Tips">
+                          <div class="lx-data">
                             <div style="display: flex; gap: 0.5rem">
-                            <LxIcon :value="visit.type === 'ARRIVAL' ? 'back' : 'next'" style="height: 1.5rem; width: 1.5rem; padding-top: unset; padding-bottom: unset;" />
-                            {{ visit.type === 'ARRIVAL' ? 'Ielidošana' : 'Izlidošana' }}
+                              <LxIcon
+                                :value="
+                                  visit.type === 'ARRIVAL' ? 'back' : 'next'
+                                "
+                                style="
+                                  height: 1.5rem;
+                                  width: 1.5rem;
+                                  padding-top: unset;
+                                  padding-bottom: unset;
+                                "
+                              />
+                              {{
+                                visit.type === "ARRIVAL"
+                                  ? "Ielidošana"
+                                  : "Izlidošana"
+                              }}
                             </div>
-                            </p>
+                          </div>
                         </LxRow>
-                           <LxRow label="Sākuma laiks">
+                        <LxRow label="Sākuma laiks">
                           <p class="lx-data">{{ visit.startTime }}</p>
                         </LxRow>
-                           <LxRow label="Beigu laiks">
+                        <LxRow label="Beigu laiks">
                           <p class="lx-data">{{ visit.endTime }}</p>
                         </LxRow>
                       </template>
@@ -277,10 +339,11 @@ onMounted(() => {
               </div>
             </div>
           </LxRow>
-          <pre>{{ visitData }}</pre>
+          <!-- {{ timeMarkers }}
+          <pre>{{ visitData }}</pre> -->
         </LxSection>
       </template>
     </LxForm>
-    <pre>{{ data }}</pre>
+    <!-- <pre>{{ data }}</pre> -->
   </div>
 </template>
