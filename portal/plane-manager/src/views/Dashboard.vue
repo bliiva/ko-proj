@@ -1,5 +1,6 @@
 <script setup>
 import api from '../../api.js';
+import { LxIcon}  from '@wntr/lx-ui'
 
 
 function getSolutions() {
@@ -14,5 +15,6 @@ getSolutions();
 <template>
     <div>
         1234
+        
     </div>
 </template>
