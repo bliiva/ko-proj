@@ -2,11 +2,12 @@ import os
 import json
 import random
 import glob
+from typing import overload, Literal
 
 
 def generate_terminals_companies(
-    terminal_count,
-    company_count,
+    terminal_count: int,
+    company_count: int,
 ):
     dict_with_data = {}
 
@@ -27,43 +28,65 @@ def generate_terminals_companies(
     return dict_with_data
 
 
-def _gate_type_count(gate_type_count, regime):
+@overload
+def _gate_type_count(gate_type_count: int, regime: Literal["update_count"]) -> int: ...
+@overload
+def _gate_type_count(
+    gate_type_count: int, regime: Literal["select_gate_type"]
+) -> str: ...
+
+
+def _gate_type_count(gate_type_count: int, regime: str) -> int | str:
     uppercase_alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
     if regime == "update_count":
-        if gate_type_count > len(uppercase_alphabet):
-            return len(uppercase_alphabet)
-        else:
-            return gate_type_count
+        return min(gate_type_count, len(uppercase_alphabet))
 
     if regime == "select_gate_type":
         return uppercase_alphabet[random.randint(0, gate_type_count - 1)]
 
-
-def _skew_towards_min(min, max):  # skew depends on max value - experimentally better
-    return random.random() ** (max) * (max - min) + min
+    raise ValueError("Invalid regime")
 
 
-def _skew_towards_max(min, max):  # skew got too big with different power
-    return random.random() ** 0.5 * (max - min) + min
+# skew depends on max value - experimentally better
+def _skew_towards_min(min_v: float, max_v: float):
+
+    # if max_v is not too big or too small, set it as power
+    if max_v > 1 and max_v < 8:
+        power = max_v
+    # if max_v less than 1, for this to correctly skew towards min, it has to be set higher than 1
+    elif max_v <= 1:
+        power = 2
+    # if max_v too high, then this will not be able to reach values closer to max -> so reduce power
+    else:
+        power = 5
+
+    # power = (1, 5]
+
+    return random.random() ** (power) * (max_v - min_v) + min_v
 
 
-def _skew_towards_average(min, max):
-    mu = (min + max) / 2
-    sigma = (max - min) / 6  # ~99.7% within [a, b]
+# skew got too big with different power
+def _skew_towards_max(min_v: float, max_v: float):
+    return random.random() ** 0.5 * (max_v - min_v) + min_v
+
+
+def _skew_towards_average(min_v: float, max_v: float):
+    mu = (min_v + max_v) / 2
+    sigma = (max_v - min_v) / 6  # ~99.7% within [a, b]
     value = random.gauss(mu, sigma)
     # force to stay in [min, max]
-    value = max(min, min(max, value))
+    value = max(min_v, min(max_v, value))
     return value
 
 
 def generate_gates(
     dict_with_data,
-    gate_count,
-    gate_type_count,
-    speed_coef_min,
-    speed_coef_max,
-    skew_speed_coef_towards,
+    gate_count: int,
+    gate_type_count: int,
+    speed_coef_min: float,
+    speed_coef_max: float,
+    skew_speed_coef_towards: str,
 ):
     gate_type_count = _gate_type_count(
         gate_type_count=gate_type_count, regime="update_count"
@@ -76,14 +99,18 @@ def generate_gates(
 
         if skew_speed_coef_towards == "min":
             # skew towards minimum value
-            speed_coef_used = _skew_towards_min(min=speed_coef_min, max=speed_coef_max)
+            speed_coef_used = _skew_towards_min(
+                min_v=speed_coef_min, max_v=speed_coef_max
+            )
         elif skew_speed_coef_towards == "max":
             # skew towards maximum value (skews less that minimum)
-            speed_coef_used = _skew_towards_max(min=speed_coef_min, max=speed_coef_max)
+            speed_coef_used = _skew_towards_max(
+                min_v=speed_coef_min, max_v=speed_coef_max
+            )
         else:
             # normal distribution
             speed_coef_used = _skew_towards_average(
-                min=speed_coef_min, max=speed_coef_max
+                min_v=speed_coef_min, max_v=speed_coef_max
             )
 
         one_gate_dict = {
@@ -99,7 +126,7 @@ def generate_gates(
     return dict_with_data
 
 
-def _generate_times(minutes_on_ground_min, minutes_on_ground_max):
+def _generate_times(minutes_on_ground_min: int, minutes_on_ground_max: int):
     # choose arrival freely
     scheduled_arrival_time = random.randint(0, 2000)
 
@@ -127,17 +154,22 @@ def _generate_times(minutes_on_ground_min, minutes_on_ground_max):
     )
 
 
-def generate_planes(
+def generate_planes_visits(
     dict_with_data,
-    plane_count,
-    gate_type_count,
-    minutes_on_ground_min,
-    minutes_on_ground_max,
+    plane_count: int,
+    gate_type_count: int,
+    minutes_on_ground_min: int,
+    minutes_on_ground_max: int,
+    generate_visits: bool,
 ):
     dict_with_data["planeList"] = []
 
     company_count = len(dict_with_data["companyList"])
     service_priority_min, service_priority_max = 1, 5
+
+    if generate_visits:
+        dict_with_data["visitList"] = []
+        visit_counter = 1
 
     for i in range(1, plane_count + 1):
         (
@@ -157,7 +189,9 @@ def generate_planes(
             "serviceTimeArrival": service_time_arrival,
             "serviceTimeDeparture": service_time_departure,
             "servicePriority": round(
-                _skew_towards_min(min=service_priority_min, max=service_priority_max)
+                _skew_towards_min(
+                    min_v=service_priority_min, max_v=service_priority_max
+                )
             ),
             "necessaryGateTypes": [
                 _gate_type_count(
@@ -168,10 +202,36 @@ def generate_planes(
         }
         dict_with_data["planeList"].append(one_plane_dict)
 
+        if generate_visits:
+            first_visit_dict = {
+                "id": f"V{visit_counter}",
+                "plane": f"P{i}",
+                "type": "ARRIVAL",
+                "gate": None,
+                "startTime": None,
+                "endTime": None,
+                "next": None,
+                "previous": None,
+            }
+            visit_counter += 1
+            second_visit_dict = {
+                "id": f"V{visit_counter}",
+                "plane": f"P{i}",
+                "type": "DEPARTURE",
+                "gate": None,
+                "startTime": None,
+                "endTime": None,
+                "next": None,
+                "previous": None,
+            }
+            visit_counter += 1
+            dict_with_data["visitList"].append(first_visit_dict)
+            dict_with_data["visitList"].append(second_visit_dict)
+
     return dict_with_data
 
 
-def generate_meta_and_save(dict_with_data, data_dir, name=""):
+def generate_meta_and_save(dict_with_data, data_dir: str, name=""):
     dict_with_data["score"] = None
 
     if name == "":
@@ -209,6 +269,7 @@ if __name__ == "__main__":
     company_count = 2
     gate_count = 2
     plane_count = 4
+    generate_visits = True
 
     # NOTE: these are fine if no particular interest in going deeper in logic:
     # will increment "airport_auto_example_*.json"
@@ -252,12 +313,13 @@ if __name__ == "__main__":
         skew_speed_coef_towards="min",
     )
 
-    dict_with_data = generate_planes(
+    dict_with_data = generate_planes_visits(
         dict_with_data=dict_with_data,
         plane_count=plane_count,
         gate_type_count=gate_type_count,
         minutes_on_ground_min=minutes_on_ground_min,
         minutes_on_ground_max=minutes_on_ground_max,
+        generate_visits=generate_visits,
     )
 
     generate_meta_and_save(
