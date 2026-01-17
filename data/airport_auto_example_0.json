@@ -1,0 +1,88 @@
+{
+  "score": null,
+  "name": "airport_auto_example_0",
+  "terminalList": [
+    {
+      "id": "T1"
+    },
+    {
+      "id": "T2"
+    }
+  ],
+  "companyList": [
+    {
+      "id": "C1",
+      "name": "Company-1",
+      "terminal": "T2"
+    },
+    {
+      "id": "C2",
+      "name": "Company-2",
+      "terminal": "T1"
+    }
+  ],
+  "gateList": [
+    {
+      "id": "G1",
+      "type": "A",
+      "serviceSpeedCoefficient": 1.18,
+      "terminal": "T2"
+    },
+    {
+      "id": "G2",
+      "type": "B",
+      "serviceSpeedCoefficient": 1.4,
+      "terminal": "T2"
+    }
+  ],
+  "planeList": [
+    {
+      "id": "P1",
+      "scheduledArrivalTime": 1073,
+      "scheduledDepartureTime": 1121,
+      "serviceTimeArrival": 19,
+      "serviceTimeDeparture": 26,
+      "servicePriority": 1.0,
+      "necessaryGateTypes": [
+        "B"
+      ],
+      "company": "C2"
+    },
+    {
+      "id": "P2",
+      "scheduledArrivalTime": 217,
+      "scheduledDepartureTime": 370,
+      "serviceTimeArrival": 83,
+      "serviceTimeDeparture": 62,
+      "servicePriority": 1.0,
+      "necessaryGateTypes": [
+        "A"
+      ],
+      "company": "C2"
+    },
+    {
+      "id": "P3",
+      "scheduledArrivalTime": 508,
+      "scheduledDepartureTime": 579,
+      "serviceTimeArrival": 23,
+      "serviceTimeDeparture": 31,
+      "servicePriority": 1.0,
+      "necessaryGateTypes": [
+        "B"
+      ],
+      "company": "C2"
+    },
+    {
+      "id": "P4",
+      "scheduledArrivalTime": 1063,
+      "scheduledDepartureTime": 1200,
+      "serviceTimeArrival": 67,
+      "serviceTimeDeparture": 52,
+      "servicePriority": 1.0,
+      "necessaryGateTypes": [
+        "A"
+      ],
+      "company": "C2"
+    }
+  ]
+}

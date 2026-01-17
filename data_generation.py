@@ -222,8 +222,8 @@ if __name__ == "__main__":
     # total counts
     terminal_count = 2
     company_count = 2
-    gate_count = 2
-    plane_count = 4
+    gate_count = 3
+    plane_count = 20
 
     # NOTE: these are fine if no particular interest in going deeper in logic:
     # will increment "airport_auto_example_*.json"

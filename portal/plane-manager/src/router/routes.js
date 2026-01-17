@@ -26,10 +26,21 @@ const routes = [
         path: '/dashboard',
         name: 'dashboard',
         meta: {
-          title: 'pages.dashboard.title',
-          category: 'useful',
+          title: 'Sākumlapa',
+          description: 'Pārskats par veiktajiem optimizācijas uzdevumiem',
         },
         component: () => import('@/views/Dashboard.vue'),
+      },
+      {
+        path: '/solution/:id',
+        name: 'solution',
+        meta: {
+          title: 'Risinājums',
+          breadcrumbs: [
+            { text: 'Sākumlapa', to: { name: 'dashboard' } },
+          ],
+        },
+        component: () => import('@/views/Solution.vue'),
       },
     ],
   },

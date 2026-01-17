@@ -1,5 +1,6 @@
 package lv.lu.eztf.dn.combopt.evrp.rest;
 
+import java.time.Instant;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
@@ -9,7 +10,6 @@ import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -52,12 +52,14 @@ public class EVRPController {
 
     @Operation(summary = "List the job IDs of all submitted EVRPs.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "List of all job IDs.",
+            @ApiResponse(responseCode = "200", description = "List of all submitted jobs.",
                     content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
-                            schema = @Schema(type = "array", implementation = String.class))) })
+                            schema = @Schema(type = "array", implementation = JobSummary.class))) })
     @GetMapping
-    public Collection<String> list() {
-        return jobIdToJob.keySet();
+    public Collection<JobSummary> list() {
+        return jobIdToJob.entrySet().stream()
+                .map(entry -> new JobSummary(entry.getKey(), entry.getValue().startedAt))
+                .collect(Collectors.toList());
     }
 
     @Operation(summary = "Submit a EVRP to start solving as soon as CPU resources are available.")
@@ -109,13 +111,15 @@ public class EVRPController {
 
         // Existing solver start code
         String jobId = UUID.randomUUID().toString();
-        jobIdToJob.put(jobId, Job.ofEVRPsolution(problem));
+        jobIdToJob.put(jobId, Job.ofEVRPsolution(problem, Instant.now()));
         solverManager.solveBuilder()
                 .withProblemId(jobId)
                 .withProblemFinder(jobId_ -> jobIdToJob.get(jobId).evrpSolution)
-                .withBestSolutionConsumer(solution -> jobIdToJob.put(jobId, Job.ofEVRPsolution(solution)))
+                .withBestSolutionConsumer(solution -> jobIdToJob.compute(jobId, (jobId_, previousJob) ->
+                        Job.ofEVRPsolution(solution, previousJob == null ? Instant.now() : previousJob.startedAt)))
                 .withExceptionHandler((jobId_, exception) -> {
-                        jobIdToJob.put(jobId, Job.ofException(exception));
+                        jobIdToJob.compute(jobId, (id, previousJob) ->
+                                Job.ofException(exception, previousJob == null ? Instant.now() : previousJob.startedAt));
                         log.error("Failed solving jobId ({}).", jobId, exception);
                 })
                 .run();
@@ -206,16 +210,19 @@ public class EVRPController {
         return job.evrpSolution;
     }
 
-    private record Job(EVRPsolution evrpSolution, Throwable exception) {
+        private record Job(EVRPsolution evrpSolution, Throwable exception, Instant startedAt) {
 
-        static Job ofEVRPsolution(EVRPsolution evrpSolution) {
-            return new Job(evrpSolution, null);
+                static Job ofEVRPsolution(EVRPsolution evrpSolution, Instant startedAt) {
+                        return new Job(evrpSolution, null, startedAt);
         }
 
-        static Job ofException(Throwable error) {
-            return new Job(null, error);
+                static Job ofException(Throwable error, Instant startedAt) {
+                        return new Job(null, error, startedAt);
         }
     }
+
+        private record JobSummary(String jobId, Instant startedAt) {
+        }
 
 
 }
