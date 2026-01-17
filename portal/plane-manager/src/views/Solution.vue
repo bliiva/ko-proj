@@ -261,14 +261,15 @@ onMounted(() => {
               </div>
               <div
                 v-for="gate in visitData"
-                style="
-                  display: flex;
-                  gap: 1rem;
-                  align-items: center;
-                  height: 4rem;
-                  border-bottom: 1px dotted var(--color-label);
-                  border-top: 1px dotted var(--color-label);
-                "
+                :style="{
+                  display: 'flex',
+                  gap: '1rem',
+                  alignItems: 'center',
+                  height: '4rem',
+                  borderBottom: '1px dotted var(--color-label)',
+                  borderTop: '1px dotted var(--color-label)',
+                  width: `calc(${timeMarkers[timeMarkers.length - 1] * 2 + 64}px)`,
+                }"
               >
                 <p>{{ gate.gateId }}</p>
                 <div
@@ -339,11 +340,8 @@ onMounted(() => {
               </div>
             </div>
           </LxRow>
-          <!-- {{ timeMarkers }}
-          <pre>{{ visitData }}</pre> -->
         </LxSection>
       </template>
     </LxForm>
-    <!-- <pre>{{ data }}</pre> -->
   </div>
 </template>
