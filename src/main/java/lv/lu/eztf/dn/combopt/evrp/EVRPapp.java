@@ -19,21 +19,21 @@ import java.util.Random;
 @Slf4j
 public class EVRPapp {
     public static void main(String[] args) {
-        runSolvers();
-        // runBenchmarker();
+        // runSolvers();
+        runBenchmarker();
         // generateData();
     }
 
-    private static void runBenchmarker() {
-        //EVRPsolution problem = createExample();
-        PlannerBenchmarkFactory benchmarkFactory = PlannerBenchmarkFactory.createFromSolverConfigXmlResource(
-                "solverConfig.xml");
-        PlannerBenchmarkFactory benchmarkFactoryFromXmlConfig =
-                PlannerBenchmarkFactory.createFromXmlResource("BenchmarkConfig.xml");
-        //PlannerBenchmark benchmark = benchmarkFactory.buildPlannerBenchmark(problem);
-        PlannerBenchmark benchmark = benchmarkFactoryFromXmlConfig.buildPlannerBenchmark();
-        benchmark.benchmarkAndShowReportInBrowser();
-    }
+private static void runBenchmarker() {
+    // Remove these unused lines
+    // PlannerBenchmarkFactory benchmarkFactory = PlannerBenchmarkFactory.createFromSolverConfigXmlResource("solverConfig.xml");
+    // PlannerBenchmark benchmark = benchmarkFactory.buildPlannerBenchmark(problem);
+    
+    PlannerBenchmarkFactory benchmarkFactoryFromXmlConfig =
+            PlannerBenchmarkFactory.createFromXmlResource("BenchmarkConfig.xml");
+    PlannerBenchmark benchmark = benchmarkFactoryFromXmlConfig.buildPlannerBenchmark();
+    benchmark.benchmarkAndShowReportInBrowser();
+}
 
     private static void runSolvers() {
         // Run optimizer

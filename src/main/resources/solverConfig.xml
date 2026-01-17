@@ -15,13 +15,17 @@
 
     <!-- Configure the optimization algorithms (optional) -->
     <termination>
-        <!--<secondsSpentLimit>5</secondsSpentLimit>-->
-        <diminishedReturns />
+        <secondsSpentLimit>5</secondsSpentLimit>
+        <!-- <diminishedReturns /> -->
     </termination>
 
     <constructionHeuristic />
 
     <localSearch>
+        <localSearch>
+        <localSearchType>HILL_CLIMBING</localSearchType>
+    </localSearch>
+
         <!--<subListChangeMoveSelector />
         <acceptor>
             <valueTabuSize>2</valueTabuSize>

@@ -8,7 +8,7 @@
             <environmentMode>PHASE_ASSERT</environmentMode>
             <!-- Define the model -->
             <solutionClass>lv.lu.eztf.dn.combopt.evrp.domain.EVRPsolution</solutionClass>
-            <entityClass>lv.lu.eztf.dn.combopt.evrp.domain.Vehicle</entityClass>
+            <entityClass>lv.lu.eztf.dn.combopt.evrp.domain.Gate</entityClass>
             <entityClass>lv.lu.eztf.dn.combopt.evrp.domain.Visit</entityClass>
 
             <!-- Define the score function -->
@@ -26,10 +26,8 @@
         <problemBenchmarks>
             <solutionFileIOClass>lv.lu.eztf.dn.combopt.evrp.domain.JsonIO</solutionFileIOClass>
             <writeOutputSolutionEnabled>true</writeOutputSolutionEnabled>
-            <inputSolutionFile>data/problem_10.json</inputSolutionFile>
-            <inputSolutionFile>data/problem_25.json</inputSolutionFile>
-            <inputSolutionFile>data/problem_50.json</inputSolutionFile>
-            <inputSolutionFile>data/problem_100.json</inputSolutionFile>
+            <inputSolutionFile>data/airport_example.json</inputSolutionFile>
+            <inputSolutionFile>data/airport_example_20.json</inputSolutionFile>
             <problemStatisticType>STEP_SCORE</problemStatisticType>
             <problemStatisticType>BEST_SCORE</problemStatisticType>
             <singleStatisticType>PICKED_MOVE_TYPE_BEST_SCORE_DIFF</singleStatisticType>
