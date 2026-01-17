@@ -25,13 +25,10 @@ public class EVRPapp {
     }
 
 private static void runBenchmarker() {
-    // Remove these unused lines
-    // PlannerBenchmarkFactory benchmarkFactory = PlannerBenchmarkFactory.createFromSolverConfigXmlResource("solverConfig.xml");
-    // PlannerBenchmark benchmark = benchmarkFactory.buildPlannerBenchmark(problem);
     
-    PlannerBenchmarkFactory benchmarkFactoryFromXmlConfig =
-            PlannerBenchmarkFactory.createFromXmlResource("BenchmarkConfig.xml");
-    PlannerBenchmark benchmark = benchmarkFactoryFromXmlConfig.buildPlannerBenchmark();
+    PlannerBenchmarkFactory benchmarkFactory = 
+        PlannerBenchmarkFactory.createFromXmlResource("BenchmarkConfig.xml");
+    PlannerBenchmark benchmark = benchmarkFactory.buildPlannerBenchmark();
     benchmark.benchmarkAndShowReportInBrowser();
 }
 

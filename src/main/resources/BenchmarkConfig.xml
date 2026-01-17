@@ -18,16 +18,15 @@
 
             <!-- Configure the optimization algorithms (optional) -->
             <termination>
-                <diminishedReturns />
+                <secondsSpentLimit>30</secondsSpentLimit>
             </termination>
-
             <constructionHeuristic />
         </solver>
         <problemBenchmarks>
             <solutionFileIOClass>lv.lu.eztf.dn.combopt.evrp.domain.JsonIO</solutionFileIOClass>
             <writeOutputSolutionEnabled>true</writeOutputSolutionEnabled>
             <inputSolutionFile>data/airport_example.json</inputSolutionFile>
-            <inputSolutionFile>data/airport_example_20.json</inputSolutionFile>
+            <!-- <inputSolutionFile>data/airport_example_20.json</inputSolutionFile> -->
             <problemStatisticType>STEP_SCORE</problemStatisticType>
             <problemStatisticType>BEST_SCORE</problemStatisticType>
             <singleStatisticType>PICKED_MOVE_TYPE_BEST_SCORE_DIFF</singleStatisticType>
