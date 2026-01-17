@@ -5,7 +5,7 @@
 
     <!-- Define the model -->
     <solutionClass>lv.lu.eztf.dn.combopt.evrp.domain.EVRPsolution</solutionClass>
-    <entityClass>lv.lu.eztf.dn.combopt.evrp.domain.Plane</entityClass>
+    <entityClass>lv.lu.eztf.dn.combopt.evrp.domain.Gate</entityClass>
     <entityClass>lv.lu.eztf.dn.combopt.evrp.domain.Visit</entityClass>
 
     <!-- Define the score function -->

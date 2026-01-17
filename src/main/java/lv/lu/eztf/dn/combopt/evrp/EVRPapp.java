@@ -46,7 +46,7 @@ public class EVRPapp {
         SolverFactory<EVRPsolution> solverFactory = SolverFactory.create(
                 new SolverConfig()
                         .withSolutionClass(EVRPsolution.class)
-                        .withEntityClasses( Visit.class)
+                .withEntityClasses(Gate.class, Visit.class)
                         //.withEasyScoreCalculatorClass(EasyJustDistanceCostFunction.class)
                         .withConstraintProviderClass(ConstraintStreamCostFunction.class)
                         .withTerminationConfig(new TerminationConfig().withDiminishedReturns())
@@ -116,16 +116,19 @@ public class EVRPapp {
 
 
         Gate gate1 = new Gate();
+        gate1.setId("G1");
         gate1.setType("GATE TYPE 1");
         gate1.setServiceSpeedCoefficient(1.0);
         gate1.setTerminal(terminal1);
 
         Gate gate2 = new Gate();
+        gate2.setId("G2");
         gate2.setType("GATE TYPE 2");
         gate2.setServiceSpeedCoefficient(1.2);
         gate2.setTerminal(terminal2);
 
         Gate gate3 = new Gate();
+        gate3.setId("G3");
         gate3.setType("GATE TYPE 1");
         gate3.setServiceSpeedCoefficient(1.0);
         gate3.setTerminal(terminal3);
@@ -197,7 +200,17 @@ public class EVRPapp {
         // chargingStation2.setNumberOfSlots(2);
 
 
-        // problem.getVisitList().addAll(List.of(customer1, customer2, customer3, chargingStation, customer4, chargingStation2));
+        Visit v1 = new Visit();
+        v1.setId(plane.getId() + "-V");
+        v1.setPlane(plane);
+        v1.setName(plane.getId());
+
+        Visit v2 = new Visit();
+        v2.setId(plane2.getId() + "-V");
+        v2.setPlane(plane2);
+        v2.setName(plane2.getId());
+
+        problem.getVisitList().addAll(List.of(v1, v2));
         problem.getGateList().addAll(List.of(gate1, gate2, gate3));
         problem.getPlaneList().addAll(List.of(plane, plane2));
 
@@ -207,23 +220,14 @@ public class EVRPapp {
     private static void printExample(EVRPsolution solution) {
         log.info("Printing EVRP solution %s with score %s."
                 .formatted(solution.getName(), solution.getScore().toString()));
-        for (Plane plane : solution.getPlaneList()) {
-            log.info("Plane %s with charge departing at %d :"
-                    .formatted(plane.getId(),
-                            plane.getScheduledArrivalTime()));
-            for (Visit visit : plane.getVisits()) {
-                log.info("Visited %s gate %s, arrived at %d, departure at %d"
-                        .formatted(
-                                visit.getName(),
-                                visit.getGate().getId(),
-                                visit.getArrivalTime(),
-                                visit.getDepartureTime()));
+        for (Gate gate : solution.getGateList()) {
+            log.info("Gate %s (%s) schedule:".formatted(gate.getId(), gate.getType()));
+            for (Visit visit : gate.getVisits()) {
+                String planeId = (visit.getPlane() == null) ? "?" : visit.getPlane().getId();
+                Long delay = visit.getDelay();
+                log.info("  Flight %s: start=%s end=%s delay=%s"
+                        .formatted(planeId, visit.getStartTime(), visit.getEndTime(), delay));
             }
-            // Visit last = vehicle.lastSupplier();
-            // log.info("Charge when finished in depot %.2f"
-            //         .formatted(last != null ? last.getVehicleChargeAfterVisit() - vehicle.getDischargeSpeed() *
-            //                 last.getLocation().distanceTo(vehicle.getDepot()) :
-            //                 vehicle.getCharge()));
         }
         log.info("===================================================");
 
