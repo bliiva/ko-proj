@@ -2,7 +2,6 @@ import os
 import json
 import random
 import glob
-from collections import OrderedDict
 
 
 def generate_terminals_companies(
@@ -41,11 +40,11 @@ def _gate_type_count(gate_type_count, regime):
         return uppercase_alphabet[random.randint(0, gate_type_count - 1)]
 
 
-def _skew_towards_min(min, max):
-    return random.random() ** 2 * (max - min) + min
+def _skew_towards_min(min, max):  # skew depends on max value - experimentally better
+    return random.random() ** (max) * (max - min) + min
 
 
-def _skew_towards_max(min, max):
+def _skew_towards_max(min, max):  # skew got too big with different power
     return random.random() ** 0.5 * (max - min) + min
 
 
@@ -112,6 +111,8 @@ def _generate_times(minutes_on_ground_min, minutes_on_ground_max):
     delta = scheduled_departure_time - scheduled_arrival_time
 
     while True:
+        # NOTE: limited minimum time for arrival processing dynamically,
+        # but it could be hardcoded as well
         service_time_arrival = random.randint(int(delta * 0.3), delta - 1)
         service_time_departure = random.randint(int(delta * 0.3), delta - 1)
 
@@ -136,7 +137,7 @@ def generate_planes(
     dict_with_data["planeList"] = []
 
     company_count = len(dict_with_data["companyList"])
-    service_priority_min, service_priority_max = 1, 5  # TODO later
+    service_priority_min, service_priority_max = 1, 5
 
     for i in range(1, plane_count + 1):
         (
@@ -148,13 +149,16 @@ def generate_planes(
             minutes_on_ground_min=minutes_on_ground_min,
             minutes_on_ground_max=minutes_on_ground_max,
         )
+
         one_plane_dict = {
             "id": f"P{i}",
             "scheduledArrivalTime": scheduled_arrival_time,
             "scheduledDepartureTime": scheduled_departure_time,
             "serviceTimeArrival": service_time_arrival,
             "serviceTimeDeparture": service_time_departure,
-            "servicePriority": 1.00,  # TODO change later
+            "servicePriority": round(
+                _skew_towards_min(min=service_priority_min, max=service_priority_max)
+            ),
             "necessaryGateTypes": [
                 _gate_type_count(
                     gate_type_count=gate_type_count, regime="select_gate_type"
@@ -167,7 +171,7 @@ def generate_planes(
     return dict_with_data
 
 
-def generate_meta(dict_with_data, data_dir, name=""):
+def generate_meta_and_save(dict_with_data, data_dir, name=""):
     dict_with_data["score"] = None
 
     if name == "":
@@ -182,6 +186,7 @@ def generate_meta(dict_with_data, data_dir, name=""):
             json_files_len += 1
 
     dict_with_data["name"] = name
+    print(f"Saving data file with name ({name}) to path ({save_at_path})")
 
     ordered = {
         "score": dict_with_data["score"],
@@ -195,26 +200,6 @@ def generate_meta(dict_with_data, data_dir, name=""):
     return ordered
 
 
-# def vis():
-#     import random
-#     import matplotlib.pyplot as plt
-
-#     a, b = 1, 5
-#     N = 100000
-
-#     # skew toward a
-#     data_a = [round((random.random() ** 2) * (b - a) + a) for _ in range(N)]
-
-#     # skew toward b
-#     data_b = [round((random.random() ** 0.5) * (b - a) + a) for _ in range(N)]
-
-#     plt.hist(data_a, bins=50, alpha=0.6, label="skew toward a")
-#     plt.hist(data_b, bins=50, alpha=0.6, label="skew toward b")
-#     plt.legend()
-#     plt.show()
-
-
-# vis()
 if __name__ == "__main__":
     ###############################################
     # TODO specify them all:
@@ -275,4 +260,6 @@ if __name__ == "__main__":
         minutes_on_ground_max=minutes_on_ground_max,
     )
 
-    generate_meta(dict_with_data=dict_with_data, data_dir=data_dir, name=solution_name)
+    generate_meta_and_save(
+        dict_with_data=dict_with_data, data_dir=data_dir, name=solution_name
+    )
