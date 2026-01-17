@@ -16,24 +16,25 @@ public class ConstraintStreamCostFunction implements ConstraintProvider {
     @Override
     public Constraint @NonNull [] defineConstraints(@NonNull ConstraintFactory constraintFactory) {
         return new Constraint[] {
-                                arrivalMustFinishBeforeDepartureStarts(constraintFactory),
-                gateTypeMismatch(constraintFactory),
-                companyTerminalMismatch(constraintFactory),
-                totalDelay(constraintFactory)
+                arrivalMustFinishBeforeDepartureStarts(constraintFactory), //hard
+                gateTypeMismatch(constraintFactory), //hard
+                companyTerminalMismatch(constraintFactory), //soft
+                totalDelay(constraintFactory), //soft
+                mustAssignGateAfterScheduled(constraintFactory) //hard
         };
     }
 
         public Constraint arrivalMustFinishBeforeDepartureStarts(ConstraintFactory constraintFactory) {
-                return constraintFactory
-                                .forEach(Visit.class)
-                                .filter(v -> v.getType() == VisitType.ARRIVAL)
-                                .filter(v -> v.getPlane() != null)
-                                .join(Visit.class, equal(Visit::getPlane))
-                                .filter((arrival, other) -> other.getType() == VisitType.DEPARTURE)
-                                .filter((arrival, departure) -> arrival.getEndTime() != null && departure.getStartTime() != null)
-                                .filter((arrival, departure) -> departure.getStartTime() < arrival.getEndTime())
-                                .penalize(HardSoftScore.ONE_HARD)
-                                .asConstraint("Arrival must finish before departure starts");
+        return constraintFactory
+                .forEach(Visit.class)
+                .filter(v -> v.getType() == VisitType.ARRIVAL)
+                .filter(v -> v.getPlane() != null)
+                .join(Visit.class, equal(Visit::getPlane))
+                .filter((arrival, other) -> other.getType() == VisitType.DEPARTURE)
+                .filter((arrival, departure) -> arrival.getEndTime() != null && departure.getStartTime() != null)
+                .filter((arrival, departure) -> departure.getStartTime() < arrival.getEndTime())
+                .penalize(HardSoftScore.ONE_HARD)
+                .asConstraint("Arrival must finish before departure starts");
         }
 
         public Constraint gateTypeMismatch(ConstraintFactory constraintFactory) {
@@ -64,12 +65,29 @@ public class ConstraintStreamCostFunction implements ConstraintProvider {
         public Constraint totalDelay(ConstraintFactory constraintFactory) {
         return constraintFactory
                 .forEach(Visit.class)
-                .filter(v -> v.getType() == VisitType.DEPARTURE)
                 .filter(v -> v.getPlane() != null)
                 .filter(v -> v.getDelay() != null && v.getDelay() > 0)
                 .penalize(HardSoftScore.ONE_SOFT,
-                        v -> Math.toIntExact(v.getDelay() * Math.max(1L, (long) v.getPlane().getServicePriority())))
+                        v -> Math.toIntExact(v.getDelay() * Math.max(1L, (long) v.getPlane().getServicePriority()) * (v.getType() == VisitType.ARRIVAL ? 2 : 3)))
                 .asConstraint("Total delay");
+        }
+
+        public Constraint mustAssignGateAfterScheduled(ConstraintFactory constraintFactory) {
+        return constraintFactory
+                .forEach(Visit.class)
+                .filter(v -> v.getPlane() != null)
+                .filter(v -> v.getPlane().getScheduledArrivalTime() != null && v.getPlane().getScheduledArrivalTime() > 0)
+                .filter(v -> v.getPlane().getScheduledDepartureTime() != null && v.getPlane().getScheduledDepartureTime() > 0)
+                .filter(v -> v.getGate() != null)
+                .filter(v -> v.getStartTime() != null &&
+                        (
+                        (v.getType() == VisitType.ARRIVAL && v.getStartTime() < v.getPlane().getScheduledArrivalTime())
+                        ||
+                        (v.getType() == VisitType.DEPARTURE && v.getStartTime() < v.getPlane().getScheduledDepartureTime())
+                        )
+                )
+                .penalize(HardSoftScore.ONE_HARD)
+                .asConstraint("Must assign gate after scheduled time");
         }
 
 //     public Constraint totalDistance(ConstraintFactory constraintFactory) {
