@@ -5,7 +5,7 @@ export default (options = {}) => {
   const { useExceptionInterceptor = true } = options || {};
   const http = axios.create({
     baseURL: APP_CONFIG.apiUrl,
-    withCredentials: true,
+    // withCredentials: true,
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
