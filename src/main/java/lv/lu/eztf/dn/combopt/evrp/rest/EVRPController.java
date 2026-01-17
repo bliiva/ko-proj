@@ -50,7 +50,6 @@ public class EVRPController {
         this.solutionManager = solutionManager;
     }
 
-    @CrossOrigin(origins = "http://localhost:5173")
     @Operation(summary = "List the job IDs of all submitted EVRPs.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "List of all job IDs.",
