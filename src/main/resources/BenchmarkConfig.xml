@@ -18,14 +18,14 @@
 
             <!-- Configure the optimization algorithms (optional) -->
             <termination>
-                <secondsSpentLimit>30</secondsSpentLimit>
+                <diminishedReturns />
             </termination>
             <constructionHeuristic />
         </solver>
         <problemBenchmarks>
             <solutionFileIOClass>lv.lu.eztf.dn.combopt.evrp.domain.JsonIO</solutionFileIOClass>
             <writeOutputSolutionEnabled>true</writeOutputSolutionEnabled>
-            <inputSolutionFile>data/airport_example.json</inputSolutionFile>
+            <inputSolutionFile>data/airport_auto_example_2.json</inputSolutionFile>
             <!-- <inputSolutionFile>data/airport_example_20.json</inputSolutionFile> -->
             <problemStatisticType>STEP_SCORE</problemStatisticType>
             <problemStatisticType>BEST_SCORE</problemStatisticType>
@@ -75,4 +75,86 @@
         </solver>
     </solverBenchmark>
 
+    <!-- Different Tabu configuration !-->
+    <solverBenchmark>
+        <name>Tabu 10 1000</name>
+        <solver>
+            <localSearch>
+                <unionMoveSelector>
+                    <subListChangeMoveSelector />
+                    <listChangeMoveSelector />
+                    <listSwapMoveSelector />
+                    <kOptListMoveSelector />
+                </unionMoveSelector>
+                <acceptor>
+                    <valueTabuSize>10</valueTabuSize>
+                </acceptor>
+                <forager>
+                    <acceptedCountLimit>1000</acceptedCountLimit>
+                </forager>
+            </localSearch>
+        </solver>
+    </solverBenchmark>
+
+    <solverBenchmark>
+        <name>LAHC 800</name>
+        <solver>
+            <localSearch>
+                <unionMoveSelector>
+                    <subListChangeMoveSelector />
+                    <listChangeMoveSelector />
+                    <listSwapMoveSelector />
+                    <kOptListMoveSelector />
+                </unionMoveSelector>
+                <acceptor>
+                    <lateAcceptanceSize>800</lateAcceptanceSize>
+                </acceptor>
+                <forager>
+                    <acceptedCountLimit>1</acceptedCountLimit>
+                </forager>
+            </localSearch>
+        </solver>
+    </solverBenchmark>
+
+    <solverBenchmark>
+        <name>VND</name>
+        <solver>
+            <localSearch>
+                <unionMoveSelector>
+                    <subListChangeMoveSelector />
+                    <listChangeMoveSelector />
+                    <listSwapMoveSelector />
+                    <kOptListMoveSelector />
+                </unionMoveSelector>
+                <acceptor>
+                    <stepCountingHillClimbingSize>1</stepCountingHillClimbingSize>
+                    <stepCountingHillClimbingType>IMPROVING_STEP</stepCountingHillClimbingType>
+                </acceptor>
+                <forager>
+                    <acceptedCountLimit>1</acceptedCountLimit>
+                </forager>
+            </localSearch>
+        </solver>
+    </solverBenchmark>
+
+    <solverBenchmark>
+        <name>First Improvement HC</name>
+        <solver>
+            <localSearch>
+                <unionMoveSelector>
+                    <subListChangeMoveSelector />
+                    <listChangeMoveSelector />
+                    <listSwapMoveSelector />
+                    <kOptListMoveSelector />
+                </unionMoveSelector>
+                <acceptor>
+                    <stepCountingHillClimbingSize>1</stepCountingHillClimbingSize>
+                    <stepCountingHillClimbingType>EQUAL_OR_IMPROVING_STEP</stepCountingHillClimbingType>
+                </acceptor>
+                <forager>
+                    <acceptedCountLimit>1</acceptedCountLimit>
+                </forager>
+            </localSearch>
+        </solver>
+    </solverBenchmark>
 </plannerBenchmark>
