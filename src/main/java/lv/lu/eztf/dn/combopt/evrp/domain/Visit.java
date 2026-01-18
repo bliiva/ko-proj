@@ -116,7 +116,7 @@ public class  Visit {
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     public Long getDelay() {
-        if (this.getPlane() == null || this.getStartTime() == null) {
+        if (this.getPlane() == null || this.getStartTime() == null || this.getDepartureTime() == null) {
             return null;
         }
         if (this.getType() == VisitType.ARRIVAL) {
@@ -130,7 +130,7 @@ public class  Visit {
             if (scheduledDeparture == null) {
                 return null;
             }
-            return Math.max(0L, this.getStartTime() - scheduledDeparture);
+            return Math.max(0L, this.getDepartureTime() - scheduledDeparture);
         }
         return 0L;
     }
