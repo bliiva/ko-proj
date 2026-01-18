@@ -1,32 +1,76 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<solver xmlns="https://timefold.ai/xsd/solver" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<solver xmlns="https://timefold.ai/xsd/solver"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="https://timefold.ai/xsd/solver https://timefold.ai/xsd/solver/solver.xsd">
+
     <environmentMode>PHASE_ASSERT</environmentMode>
 
-    <!-- Define the model -->
+    <!-- Model -->
     <solutionClass>lv.lu.eztf.dn.combopt.evrp.domain.EVRPsolution</solutionClass>
     <entityClass>lv.lu.eztf.dn.combopt.evrp.domain.Gate</entityClass>
     <entityClass>lv.lu.eztf.dn.combopt.evrp.domain.Visit</entityClass>
 
-    <!-- Define the score function -->
+    <!-- Score -->
     <scoreDirectorFactory>
         <constraintProviderClass>lv.lu.eztf.dn.combopt.evrp.solver.ConstraintStreamCostFunction</constraintProviderClass>
     </scoreDirectorFactory>
 
-    <!-- Configure the optimization algorithms (optional) -->
+    <!-- Total solver stop condition -->
+    <!-- If you prefer fixed time, replace diminishedReturns with secondsSpentLimit -->
     <termination>
-        <diminishedReturns />
+        <secondsSpentLimit>120</secondsSpentLimit>
+        <!-- or: <diminishedReturns/> -->
     </termination>
 
-    <constructionHeuristic />
+    <!-- Phase 1: Build a decent initial schedule -->
+    <constructionHeuristic/>
 
+    <!-- Phase 2: Main improvement (best for gate scheduling) -->
     <localSearch>
-        <!--<subListChangeMoveSelector />
+        <!-- Optional: stop this phase early if it stalls -->
+        <termination>
+            <secondsSpentLimit>90</secondsSpentLimit>
+            <!-- or: <diminishedReturns/> -->
+        </termination>
+
+        <unionMoveSelector>
+            <subListChangeMoveSelector/>
+            <listChangeMoveSelector/>
+            <listSwapMoveSelector/>
+            <kOptListMoveSelector/>
+        </unionMoveSelector>
+
         <acceptor>
-            <valueTabuSize>2</valueTabuSize>
+            <!-- Tabu: good default for scheduling -->
+            <valueTabuSize>10</valueTabuSize>
         </acceptor>
+
         <forager>
+            <!-- Explore more accepted moves before picking best -->
             <acceptedCountLimit>1000</acceptedCountLimit>
-        </forager>-->
+        </forager>
+    </localSearch>
+
+    <!-- Phase 3: Polish (only equal-or-improving moves) -->
+    <localSearch>
+        <termination>
+            <secondsSpentLimit>30</secondsSpentLimit>
+        </termination>
+
+        <unionMoveSelector>
+            <subListChangeMoveSelector/>
+            <listChangeMoveSelector/>
+            <listSwapMoveSelector/>
+            <kOptListMoveSelector/>
+        </unionMoveSelector>
+
+        <acceptor>
+            <stepCountingHillClimbingSize>1</stepCountingHillClimbingSize>
+            <stepCountingHillClimbingType>EQUAL_OR_IMPROVING_STEP</stepCountingHillClimbingType>
+        </acceptor>
+
+        <forager>
+            <acceptedCountLimit>1</acceptedCountLimit>
+        </forager>
     </localSearch>
 </solver>
