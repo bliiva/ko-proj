@@ -68,6 +68,12 @@ function goBack(path) {
     router.back();
   }
 }
+
+onMounted(() => {
+  if (route.name === 'home') {
+    router.replace({ name: 'dashboard' });
+  }
+});
 </script>
 <template>
   <div>

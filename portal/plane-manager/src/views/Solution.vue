@@ -12,10 +12,14 @@ import {
   LxContentSwitcher,
   LxInfoWrapper,
   LxIcon,
+  LxAppendableList,
+  LxList,
 } from "@wntr/lx-ui";
 import api from "../../api.js";
+import useNotifyStore from "@/stores/useNotifyStore.js";
 
 const route = useRoute();
+const notify = useNotifyStore();
 
 const data = ref();
 const switcherModel = ref("full");
@@ -24,8 +28,11 @@ function getSolution() {
   api()
     .get(`/evrp/${route.params.id}`)
     .then((response) => {
-      console.log(response);
       data.value = response.data;
+    })
+    .catch((e) => {
+      notify.pushError("Neizdevās ielādēt risinājumu");
+      console.error(e);
     });
 }
 
@@ -48,12 +55,15 @@ const softScore = computed(() => {
 
 const visitData = ref();
 
-function getTest() {
+function getGateInfo() {
   api()
     .get(`/evrp/${route.params.id}/schedule`)
     .then((response) => {
-      console.log("Test data:", response);
       visitData.value = response.data;
+    })
+    .catch((e) => {
+      notify.pushError("Neizdevās ielādēt vārtu grafiku");
+      console.error(e);
     });
 }
 
@@ -96,7 +106,7 @@ const columnDefinitions = [
     attributeName: "endTime",
     size: "s",
   },
-    {
+  {
     id: "delay",
     name: "Aizkave",
     attributeName: "delay",
@@ -158,9 +168,36 @@ const timeMarkers = computed(() => {
   return timeMarkers;
 });
 
+function formatVisitType(type) {
+  return type === "ARRIVAL" ? "Ielidošana" : "Izlidošana";
+}
+
+const indictments = ref();
+
+const indictmentsDispay = computed(() => {
+  if (!indictments.value) return [];
+  return indictments.value.map((x) => ({
+    ...x,
+    name: `${x.planeId} ${formatVisitType(x.visitType)} (${x.score})`,
+    icon: x.visitType === "ARRIVAL" ? "back" : "next",
+  }));
+});
+
+function getIndictments() {
+  api()
+    .get(`/evrp/indictments/${route.params.id}`)
+    .then((response) => {
+      indictments.value = response.data;
+    })
+    .catch((e) => {
+      notify.pushError("Neizdevās ielādēt izdevumu paskaidrojumu");
+      console.error(e);
+    });
+}
 onMounted(() => {
   getSolution();
-  getTest();
+  getGateInfo();
+  getIndictments();
 });
 </script>
 <template>
@@ -191,12 +228,13 @@ onMounted(() => {
       <LxRow label="Rezultāts" columnSpan="4">
         <LxStack orientation="horizontal">
           <LxBadge
-            :icon="hardScore === '-0' ? 'accept' : 'warning'"
+            :icon="hardScore === '0' ? 'accept' : 'warning'"
             :value="`Hard rezultāts: ${hardScore}`"
             iconSet="material"
             :class="[
               {
-                'lx-bage-error': hardScore !== '-0',
+                'lx-bage-error': hardScore !== '0',
+                'lx-bage-success': hardScore === '0',
               },
             ]"
           />
@@ -347,8 +385,40 @@ onMounted(() => {
             </div>
           </LxRow>
         </LxSection>
+        <LxSection label="Izmaksu paskaidrojums" columnCount="2">
+          <LxRow :hideLabel="true" :columnSpan="2">
+            <LxAppendableList
+              :modelValue="indictmentsDispay"
+              :expandable="true"
+              :readOnly="true"
+              :forceUppercase="false"
+              iconAttribute="icon"
+              :columnCount="3"
+              :defaultExpanded="false"
+            >
+              <template #customItem="{ item }">
+                <LxRow label="Lidmašīna">
+                  <p class="lx-data">{{ item.planeId }}</p>
+                </LxRow>
+                <LxRow label="Tips">
+                  <p class="lx-data">{{ formatVisitType(item.visitType) }}</p>
+                </LxRow>
+                <LxRow label="Rezultāts">
+                  <p class="lx-data">{{ item.score }}</p>
+                </LxRow>
+                <LxRow label="Izmaksu apkopojums" columnSpan="3">
+                  <LxList
+                    primary-attribute="score"
+                    secondary-attribute="constraintName"
+                    :items="item.constraintMatches"
+                    listType="1"
+                  />
+                </LxRow>
+              </template>
+            </LxAppendableList>
+          </LxRow>
+        </LxSection>
       </template>
     </LxForm>
-    <pre>{{ data }}</pre>
   </div>
 </template>
