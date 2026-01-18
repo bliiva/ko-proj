@@ -19,7 +19,7 @@
     {
       "id": "C1",
       "name": "Company-1",
-      "terminal": "T1"
+      "terminal": "T4"
     },
     {
       "id": "C2",
@@ -29,179 +29,83 @@
     {
       "id": "C3",
       "name": "Company-3",
-      "terminal": "T4"
+      "terminal": "T3"
     },
     {
       "id": "C4",
       "name": "Company-4",
-      "terminal": "T1"
+      "terminal": "T4"
     }
   ],
   "gateList": [
     {
       "id": "G1",
-      "type": "B",
-      "serviceSpeedCoefficient": 1.31,
-      "terminal": "T3"
+      "type": "A",
+      "serviceSpeedCoefficient": 1.9,
+      "terminal": "T1"
     },
     {
       "id": "G2",
       "type": "B",
-      "serviceSpeedCoefficient": 1.13,
-      "terminal": "T2"
+      "serviceSpeedCoefficient": 0.83,
+      "terminal": "T1"
     },
     {
       "id": "G3",
-      "type": "B",
-      "serviceSpeedCoefficient": 1.09,
+      "type": "A",
+      "serviceSpeedCoefficient": 0.82,
       "terminal": "T4"
     },
     {
       "id": "G4",
-      "type": "B",
-      "serviceSpeedCoefficient": 1.88,
-      "terminal": "T4"
+      "type": "A",
+      "serviceSpeedCoefficient": 1.06,
+      "terminal": "T2"
     }
   ],
   "planeList": [
     {
       "id": "P1",
-      "scheduledArrivalTime": 1794,
-      "scheduledDepartureTime": 1953,
-      "serviceTimeArrival": 62,
-      "serviceTimeDeparture": 70,
-      "servicePriority": 2,
+      "scheduledArrivalTime": 231,
+      "scheduledDepartureTime": 350,
+      "serviceTimeArrival": 48,
+      "serviceTimeDeparture": 52,
+      "servicePriority": 4,
       "necessaryGateTypes": [
         "B"
       ],
-      "company": "C3"
+      "company": "C2"
     },
     {
       "id": "P2",
-      "scheduledArrivalTime": 1074,
-      "scheduledDepartureTime": 1226,
-      "serviceTimeArrival": 51,
-      "serviceTimeDeparture": 74,
+      "scheduledArrivalTime": 1506,
+      "scheduledDepartureTime": 1672,
+      "serviceTimeArrival": 61,
+      "serviceTimeDeparture": 71,
       "servicePriority": 1,
       "necessaryGateTypes": [
-        "B"
+        "A"
       ],
       "company": "C2"
     },
     {
       "id": "P3",
-      "scheduledArrivalTime": 853,
-      "scheduledDepartureTime": 963,
-      "serviceTimeArrival": 44,
-      "serviceTimeDeparture": 41,
+      "scheduledArrivalTime": 393,
+      "scheduledDepartureTime": 477,
+      "serviceTimeArrival": 25,
+      "serviceTimeDeparture": 37,
       "servicePriority": 1,
       "necessaryGateTypes": [
-        "B"
+        "A"
       ],
       "company": "C3"
     },
     {
       "id": "P4",
-      "scheduledArrivalTime": 1416,
-      "scheduledDepartureTime": 1579,
-      "serviceTimeArrival": 92,
-      "serviceTimeDeparture": 65,
-      "servicePriority": 1,
-      "necessaryGateTypes": [
-        "A"
-      ],
-      "company": "C4"
-    },
-    {
-      "id": "P5",
-      "scheduledArrivalTime": 722,
-      "scheduledDepartureTime": 846,
-      "serviceTimeArrival": 79,
-      "serviceTimeDeparture": 38,
-      "servicePriority": 2,
-      "necessaryGateTypes": [
-        "B"
-      ],
-      "company": "C4"
-    },
-    {
-      "id": "P6",
-      "scheduledArrivalTime": 886,
-      "scheduledDepartureTime": 1048,
-      "serviceTimeArrival": 90,
-      "serviceTimeDeparture": 69,
-      "servicePriority": 2,
-      "necessaryGateTypes": [
-        "A"
-      ],
-      "company": "C4"
-    },
-    {
-      "id": "P7",
-      "scheduledArrivalTime": 1148,
-      "scheduledDepartureTime": 1328,
-      "serviceTimeArrival": 97,
-      "serviceTimeDeparture": 76,
-      "servicePriority": 1,
-      "necessaryGateTypes": [
-        "A"
-      ],
-      "company": "C1"
-    },
-    {
-      "id": "P8",
-      "scheduledArrivalTime": 505,
-      "scheduledDepartureTime": 576,
-      "serviceTimeArrival": 40,
-      "serviceTimeDeparture": 22,
-      "servicePriority": 2,
-      "necessaryGateTypes": [
-        "B"
-      ],
-      "company": "C2"
-    },
-    {
-      "id": "P9",
-      "scheduledArrivalTime": 1235,
-      "scheduledDepartureTime": 1340,
-      "serviceTimeArrival": 66,
-      "serviceTimeDeparture": 34,
-      "servicePriority": 2,
-      "necessaryGateTypes": [
-        "A"
-      ],
-      "company": "C4"
-    },
-    {
-      "id": "P10",
-      "scheduledArrivalTime": 697,
-      "scheduledDepartureTime": 778,
-      "serviceTimeArrival": 49,
-      "serviceTimeDeparture": 28,
-      "servicePriority": 1,
-      "necessaryGateTypes": [
-        "A"
-      ],
-      "company": "C2"
-    },
-    {
-      "id": "P11",
-      "scheduledArrivalTime": 333,
-      "scheduledDepartureTime": 383,
-      "serviceTimeArrival": 17,
-      "serviceTimeDeparture": 28,
-      "servicePriority": 3,
-      "necessaryGateTypes": [
-        "A"
-      ],
-      "company": "C1"
-    },
-    {
-      "id": "P12",
-      "scheduledArrivalTime": 696,
-      "scheduledDepartureTime": 820,
-      "serviceTimeArrival": 40,
-      "serviceTimeDeparture": 74,
+      "scheduledArrivalTime": 398,
+      "scheduledDepartureTime": 555,
+      "serviceTimeArrival": 81,
+      "serviceTimeDeparture": 67,
       "servicePriority": 1,
       "necessaryGateTypes": [
         "A"
@@ -209,35 +113,71 @@
       "company": "C3"
     },
     {
-      "id": "P13",
-      "scheduledArrivalTime": 1307,
-      "scheduledDepartureTime": 1475,
-      "serviceTimeArrival": 60,
-      "serviceTimeDeparture": 86,
+      "id": "P5",
+      "scheduledArrivalTime": 295,
+      "scheduledDepartureTime": 397,
+      "serviceTimeArrival": 41,
+      "serviceTimeDeparture": 57,
       "servicePriority": 1,
       "necessaryGateTypes": [
-        "A"
+        "B"
+      ],
+      "company": "C1"
+    },
+    {
+      "id": "P6",
+      "scheduledArrivalTime": 1832,
+      "scheduledDepartureTime": 1896,
+      "serviceTimeArrival": 33,
+      "serviceTimeDeparture": 26,
+      "servicePriority": 2,
+      "necessaryGateTypes": [
+        "B"
+      ],
+      "company": "C1"
+    },
+    {
+      "id": "P7",
+      "scheduledArrivalTime": 1896,
+      "scheduledDepartureTime": 2028,
+      "serviceTimeArrival": 70,
+      "serviceTimeDeparture": 43,
+      "servicePriority": 5,
+      "necessaryGateTypes": [
+        "B"
       ],
       "company": "C2"
     },
     {
-      "id": "P14",
-      "scheduledArrivalTime": 702,
-      "scheduledDepartureTime": 841,
-      "serviceTimeArrival": 96,
+      "id": "P8",
+      "scheduledArrivalTime": 295,
+      "scheduledDepartureTime": 391,
+      "serviceTimeArrival": 43,
       "serviceTimeDeparture": 41,
       "servicePriority": 1,
       "necessaryGateTypes": [
-        "A"
+        "B"
       ],
-      "company": "C2"
+      "company": "C1"
     },
     {
-      "id": "P15",
-      "scheduledArrivalTime": 163,
-      "scheduledDepartureTime": 225,
+      "id": "P9",
+      "scheduledArrivalTime": 290,
+      "scheduledDepartureTime": 367,
       "serviceTimeArrival": 28,
-      "serviceTimeDeparture": 32,
+      "serviceTimeDeparture": 29,
+      "servicePriority": 1,
+      "necessaryGateTypes": [
+        "B"
+      ],
+      "company": "C3"
+    },
+    {
+      "id": "P10",
+      "scheduledArrivalTime": 160,
+      "scheduledDepartureTime": 192,
+      "serviceTimeArrival": 11,
+      "serviceTimeDeparture": 14,
       "servicePriority": 2,
       "necessaryGateTypes": [
         "B"
@@ -245,36 +185,96 @@
       "company": "C2"
     },
     {
-      "id": "P16",
-      "scheduledArrivalTime": 861,
-      "scheduledDepartureTime": 1005,
-      "serviceTimeArrival": 67,
-      "serviceTimeDeparture": 44,
-      "servicePriority": 3,
+      "id": "P11",
+      "scheduledArrivalTime": 1026,
+      "scheduledDepartureTime": 1111,
+      "serviceTimeArrival": 51,
+      "serviceTimeDeparture": 27,
+      "servicePriority": 1,
       "necessaryGateTypes": [
-        "A"
+        "B"
       ],
       "company": "C2"
     },
     {
-      "id": "P17",
-      "scheduledArrivalTime": 1929,
-      "scheduledDepartureTime": 2044,
-      "serviceTimeArrival": 35,
+      "id": "P12",
+      "scheduledArrivalTime": 480,
+      "scheduledDepartureTime": 605,
+      "serviceTimeArrival": 53,
+      "serviceTimeDeparture": 58,
+      "servicePriority": 1,
+      "necessaryGateTypes": [
+        "B"
+      ],
+      "company": "C1"
+    },
+    {
+      "id": "P13",
+      "scheduledArrivalTime": 1567,
+      "scheduledDepartureTime": 1733,
+      "serviceTimeArrival": 90,
+      "serviceTimeDeparture": 59,
+      "servicePriority": 1,
+      "necessaryGateTypes": [
+        "B"
+      ],
+      "company": "C2"
+    },
+    {
+      "id": "P14",
+      "scheduledArrivalTime": 1022,
+      "scheduledDepartureTime": 1175,
+      "serviceTimeArrival": 61,
+      "serviceTimeDeparture": 82,
+      "servicePriority": 2,
+      "necessaryGateTypes": [
+        "B"
+      ],
+      "company": "C4"
+    },
+    {
+      "id": "P15",
+      "scheduledArrivalTime": 1716,
+      "scheduledDepartureTime": 1852,
+      "serviceTimeArrival": 47,
       "serviceTimeDeparture": 74,
-      "servicePriority": 4,
+      "servicePriority": 1,
+      "necessaryGateTypes": [
+        "B"
+      ],
+      "company": "C3"
+    },
+    {
+      "id": "P16",
+      "scheduledArrivalTime": 938,
+      "scheduledDepartureTime": 1070,
+      "serviceTimeArrival": 47,
+      "serviceTimeDeparture": 71,
+      "servicePriority": 1,
       "necessaryGateTypes": [
         "A"
+      ],
+      "company": "C4"
+    },
+    {
+      "id": "P17",
+      "scheduledArrivalTime": 289,
+      "scheduledDepartureTime": 341,
+      "serviceTimeArrival": 15,
+      "serviceTimeDeparture": 32,
+      "servicePriority": 3,
+      "necessaryGateTypes": [
+        "B"
       ],
       "company": "C2"
     },
     {
       "id": "P18",
-      "scheduledArrivalTime": 1388,
-      "scheduledDepartureTime": 1490,
-      "serviceTimeArrival": 48,
-      "serviceTimeDeparture": 41,
-      "servicePriority": 2,
+      "scheduledArrivalTime": 1729,
+      "scheduledDepartureTime": 1819,
+      "serviceTimeArrival": 55,
+      "serviceTimeDeparture": 34,
+      "servicePriority": 1,
       "necessaryGateTypes": [
         "B"
       ],
@@ -282,27 +282,27 @@
     },
     {
       "id": "P19",
-      "scheduledArrivalTime": 661,
-      "scheduledDepartureTime": 831,
-      "serviceTimeArrival": 57,
-      "serviceTimeDeparture": 88,
+      "scheduledArrivalTime": 36,
+      "scheduledDepartureTime": 212,
+      "serviceTimeArrival": 63,
+      "serviceTimeDeparture": 109,
       "servicePriority": 1,
       "necessaryGateTypes": [
-        "B"
+        "A"
       ],
       "company": "C4"
     },
     {
       "id": "P20",
-      "scheduledArrivalTime": 340,
-      "scheduledDepartureTime": 370,
-      "serviceTimeArrival": 9,
-      "serviceTimeDeparture": 17,
+      "scheduledArrivalTime": 1951,
+      "scheduledDepartureTime": 2062,
+      "serviceTimeArrival": 56,
+      "serviceTimeDeparture": 44,
       "servicePriority": 1,
       "necessaryGateTypes": [
         "B"
       ],
-      "company": "C1"
+      "company": "C2"
     }
   ],
   "visitList": [
