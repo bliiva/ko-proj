@@ -29,7 +29,7 @@
     <localSearch>
         <!-- Optional: stop this phase early if it stalls -->
         <termination>
-            <secondsSpentLimit>90</secondsSpentLimit>
+            <secondsSpentLimit>30</secondsSpentLimit>
             <!-- or: <diminishedReturns/> -->
         </termination>
 
@@ -54,7 +54,7 @@
     <!-- Phase 3: Polish (only equal-or-improving moves) -->
     <localSearch>
         <termination>
-            <secondsSpentLimit>30</secondsSpentLimit>
+            <secondsSpentLimit>90</secondsSpentLimit>
         </termination>
 
         <unionMoveSelector>
