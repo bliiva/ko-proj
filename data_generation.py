@@ -189,7 +189,7 @@ def generate_planes_visits(
             "serviceTimeArrival": service_time_arrival,
             "serviceTimeDeparture": service_time_departure,
             "servicePriority": round(
-                _skew_towards_min(
+                _skew_towards_max(
                     min_v=service_priority_min, max_v=service_priority_max
                 )
             ),
@@ -260,15 +260,24 @@ def generate_meta_and_save(dict_with_data, data_dir: str, name=""):
     return ordered
 
 
+# Piemēri:
+# 1) airport_auto_example_0.json:  4, 4, 4, 20 - easy, random
+# 2) airport_auto_example_1.json:  6, 6, 6, 100 - easy, random
+# 3) airport_auto_example_2.json:  12, 20, 40, 400 - "easy", random (varētu rasties "companyTerminalMismatch" mbyyyy)
+# -
+# 4) airport_auto_example_3.json:  4, 4, 4, 20 + ģenerē vajadzīgo gate visām lidmašīnām kā "Z" - gateTypeMismatch
+# 5) airport_auto_example_4.json:  10, 15, 40, 300 + service time = [1.2 * delta - 2 * delta] -> lieli totalDelay
+# 6) airport_auto_example_5.json:  10, 18, 50, 500 + augsti priority visiem
+
 if __name__ == "__main__":
     ###############################################
     # TODO specify them all:
 
     # total counts
-    terminal_count = 2
-    company_count = 2
-    gate_count = 2
-    plane_count = 4
+    terminal_count = 10
+    company_count = 18
+    gate_count = 50
+    plane_count = 500
     generate_visits = True
 
     # NOTE: these are fine if no particular interest in going deeper in logic:
