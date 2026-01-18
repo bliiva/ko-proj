@@ -195,16 +195,15 @@ function getIndictments() {
       console.error(e);
     });
 }
-
-const loading = ref(true);
+const loading = computed(() => {
+  return !data.value || !visitData.value || !indictments.value;
+})
 onMounted(async () => {
   try {
     await Promise.all([getSolution(), getGateInfo(), getIndictments()]);
   } catch (error) {
     console.error("Failed to load data:", error);
-  } finally {
-    loading.value = false;
-  }
+  } 
 });
 </script>
 <template>

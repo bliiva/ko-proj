@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, computed } from "vue";
+import { onMounted, computed, ref } from "vue";
 import { LxShell } from "@wntr/lx-ui";
 import { useRouter, useRoute } from "vue-router";
 import useNotifyStore from "@/stores/useNotifyStore";
@@ -69,6 +69,8 @@ function goBack(path) {
   }
 }
 
+const animation = ref(true);
+
 onMounted(() => {
   if (route.name === 'home') {
     router.replace({ name: 'dashboard' });
@@ -95,6 +97,8 @@ onMounted(() => {
       :coverLogo="null"
       :hasThemePicker="true"
       v-model:notifications="notify.notifications"
+      :hasAnimations="animation"
+      @update:hasAnimations="(_) => (animation = true)"
       @go-home="goHome"
       @go-back="goBack"
     >
