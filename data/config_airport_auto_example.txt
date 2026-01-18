@@ -1,0 +1,10 @@
+This file explains files "airport_auto_example[0-5].json"
+
+Piemēri:
+1) airport_auto_example_0.json:  4, 4, 4, 20, (2 gatetypes) - easy, random
+2) airport_auto_example_1.json:  6, 8, 6, 100 (3 gatetypes) - easy, random
+3) airport_auto_example_2.json:  12, 20, 40, 400 (8 gatetypes) - "easy", random (varētu rasties "companyTerminalMismatch" mbyyyy)
+-
+4) airport_auto_example_3.json:  4, 6, 4, 20 (2 gatetypes)+ ģenerē vajadzīgo gate visām lidmašīnām kā "Z" - gateTypeMismatch (necessaryGateTypes -> 197 rinda .py)
+5) airport_auto_example_4.json:  10, 15, 40, 300 (4 gatetypes) + service time = [1.2 * delta - 2 * delta] -> lieli totalDelay (~143 rinda)
+6) airport_auto_example_5.json:  10, 18, 50, 500 (4 gatetypes) + augsti priority visiem (~194 rinda servicePriority -> _skew_towards_max() funkcija)

@@ -1,0 +1,720 @@
+{
+  "score": null,
+  "name": "airport_auto_example_3",
+  "terminalList": [
+    {
+      "id": "T1"
+    },
+    {
+      "id": "T2"
+    },
+    {
+      "id": "T3"
+    },
+    {
+      "id": "T4"
+    }
+  ],
+  "companyList": [
+    {
+      "id": "C1",
+      "name": "Company-1",
+      "terminal": "T2"
+    },
+    {
+      "id": "C2",
+      "name": "Company-2",
+      "terminal": "T1"
+    },
+    {
+      "id": "C3",
+      "name": "Company-3",
+      "terminal": "T4"
+    },
+    {
+      "id": "C4",
+      "name": "Company-4",
+      "terminal": "T3"
+    },
+    {
+      "id": "C5",
+      "name": "Company-5",
+      "terminal": "T1"
+    },
+    {
+      "id": "C6",
+      "name": "Company-6",
+      "terminal": "T2"
+    }
+  ],
+  "gateList": [
+    {
+      "id": "G1",
+      "type": "B",
+      "serviceSpeedCoefficient": 1.07,
+      "terminal": "T3"
+    },
+    {
+      "id": "G2",
+      "type": "B",
+      "serviceSpeedCoefficient": 1.26,
+      "terminal": "T1"
+    },
+    {
+      "id": "G3",
+      "type": "A",
+      "serviceSpeedCoefficient": 1.14,
+      "terminal": "T1"
+    },
+    {
+      "id": "G4",
+      "type": "A",
+      "serviceSpeedCoefficient": 1.67,
+      "terminal": "T2"
+    }
+  ],
+  "planeList": [
+    {
+      "id": "P1",
+      "scheduledArrivalTime": 852,
+      "scheduledDepartureTime": 1030,
+      "serviceTimeArrival": 89,
+      "serviceTimeDeparture": 55,
+      "servicePriority": 3,
+      "necessaryGateTypes": [
+        "Z"
+      ],
+      "company": "C3"
+    },
+    {
+      "id": "P2",
+      "scheduledArrivalTime": 912,
+      "scheduledDepartureTime": 995,
+      "serviceTimeArrival": 26,
+      "serviceTimeDeparture": 46,
+      "servicePriority": 4,
+      "necessaryGateTypes": [
+        "Z"
+      ],
+      "company": "C5"
+    },
+    {
+      "id": "P3",
+      "scheduledArrivalTime": 1096,
+      "scheduledDepartureTime": 1268,
+      "serviceTimeArrival": 52,
+      "serviceTimeDeparture": 105,
+      "servicePriority": 1,
+      "necessaryGateTypes": [
+        "Z"
+      ],
+      "company": "C6"
+    },
+    {
+      "id": "P4",
+      "scheduledArrivalTime": 1501,
+      "scheduledDepartureTime": 1589,
+      "serviceTimeArrival": 52,
+      "serviceTimeDeparture": 35,
+      "servicePriority": 3,
+      "necessaryGateTypes": [
+        "Z"
+      ],
+      "company": "C5"
+    },
+    {
+      "id": "P5",
+      "scheduledArrivalTime": 446,
+      "scheduledDepartureTime": 621,
+      "serviceTimeArrival": 74,
+      "serviceTimeDeparture": 52,
+      "servicePriority": 1,
+      "necessaryGateTypes": [
+        "Z"
+      ],
+      "company": "C6"
+    },
+    {
+      "id": "P6",
+      "scheduledArrivalTime": 1113,
+      "scheduledDepartureTime": 1215,
+      "serviceTimeArrival": 59,
+      "serviceTimeDeparture": 41,
+      "servicePriority": 1,
+      "necessaryGateTypes": [
+        "Z"
+      ],
+      "company": "C1"
+    },
+    {
+      "id": "P7",
+      "scheduledArrivalTime": 956,
+      "scheduledDepartureTime": 1063,
+      "serviceTimeArrival": 38,
+      "serviceTimeDeparture": 40,
+      "servicePriority": 2,
+      "necessaryGateTypes": [
+        "Z"
+      ],
+      "company": "C1"
+    },
+    {
+      "id": "P8",
+      "scheduledArrivalTime": 1222,
+      "scheduledDepartureTime": 1290,
+      "serviceTimeArrival": 27,
+      "serviceTimeDeparture": 37,
+      "servicePriority": 1,
+      "necessaryGateTypes": [
+        "Z"
+      ],
+      "company": "C4"
+    },
+    {
+      "id": "P9",
+      "scheduledArrivalTime": 1197,
+      "scheduledDepartureTime": 1352,
+      "serviceTimeArrival": 55,
+      "serviceTimeDeparture": 64,
+      "servicePriority": 3,
+      "necessaryGateTypes": [
+        "Z"
+      ],
+      "company": "C6"
+    },
+    {
+      "id": "P10",
+      "scheduledArrivalTime": 813,
+      "scheduledDepartureTime": 883,
+      "serviceTimeArrival": 33,
+      "serviceTimeDeparture": 24,
+      "servicePriority": 1,
+      "necessaryGateTypes": [
+        "Z"
+      ],
+      "company": "C6"
+    },
+    {
+      "id": "P11",
+      "scheduledArrivalTime": 300,
+      "scheduledDepartureTime": 431,
+      "serviceTimeArrival": 70,
+      "serviceTimeDeparture": 42,
+      "servicePriority": 3,
+      "necessaryGateTypes": [
+        "Z"
+      ],
+      "company": "C2"
+    },
+    {
+      "id": "P12",
+      "scheduledArrivalTime": 1941,
+      "scheduledDepartureTime": 2110,
+      "serviceTimeArrival": 85,
+      "serviceTimeDeparture": 83,
+      "servicePriority": 1,
+      "necessaryGateTypes": [
+        "Z"
+      ],
+      "company": "C1"
+    },
+    {
+      "id": "P13",
+      "scheduledArrivalTime": 270,
+      "scheduledDepartureTime": 310,
+      "serviceTimeArrival": 17,
+      "serviceTimeDeparture": 14,
+      "servicePriority": 3,
+      "necessaryGateTypes": [
+        "Z"
+      ],
+      "company": "C4"
+    },
+    {
+      "id": "P14",
+      "scheduledArrivalTime": 965,
+      "scheduledDepartureTime": 996,
+      "serviceTimeArrival": 20,
+      "serviceTimeDeparture": 9,
+      "servicePriority": 3,
+      "necessaryGateTypes": [
+        "Z"
+      ],
+      "company": "C6"
+    },
+    {
+      "id": "P15",
+      "scheduledArrivalTime": 523,
+      "scheduledDepartureTime": 657,
+      "serviceTimeArrival": 69,
+      "serviceTimeDeparture": 55,
+      "servicePriority": 1,
+      "necessaryGateTypes": [
+        "Z"
+      ],
+      "company": "C5"
+    },
+    {
+      "id": "P16",
+      "scheduledArrivalTime": 1189,
+      "scheduledDepartureTime": 1293,
+      "serviceTimeArrival": 36,
+      "serviceTimeDeparture": 40,
+      "servicePriority": 1,
+      "necessaryGateTypes": [
+        "Z"
+      ],
+      "company": "C3"
+    },
+    {
+      "id": "P17",
+      "scheduledArrivalTime": 1071,
+      "scheduledDepartureTime": 1124,
+      "serviceTimeArrival": 20,
+      "serviceTimeDeparture": 31,
+      "servicePriority": 1,
+      "necessaryGateTypes": [
+        "Z"
+      ],
+      "company": "C3"
+    },
+    {
+      "id": "P18",
+      "scheduledArrivalTime": 888,
+      "scheduledDepartureTime": 1019,
+      "serviceTimeArrival": 43,
+      "serviceTimeDeparture": 63,
+      "servicePriority": 1,
+      "necessaryGateTypes": [
+        "Z"
+      ],
+      "company": "C1"
+    },
+    {
+      "id": "P19",
+      "scheduledArrivalTime": 1778,
+      "scheduledDepartureTime": 1899,
+      "serviceTimeArrival": 60,
+      "serviceTimeDeparture": 43,
+      "servicePriority": 1,
+      "necessaryGateTypes": [
+        "Z"
+      ],
+      "company": "C2"
+    },
+    {
+      "id": "P20",
+      "scheduledArrivalTime": 271,
+      "scheduledDepartureTime": 312,
+      "serviceTimeArrival": 21,
+      "serviceTimeDeparture": 18,
+      "servicePriority": 2,
+      "necessaryGateTypes": [
+        "Z"
+      ],
+      "company": "C1"
+    }
+  ],
+  "visitList": [
+    {
+      "id": "V1",
+      "plane": "P1",
+      "type": "ARRIVAL",
+      "gate": null,
+      "startTime": null,
+      "endTime": null,
+      "next": null,
+      "previous": null
+    },
+    {
+      "id": "V2",
+      "plane": "P1",
+      "type": "DEPARTURE",
+      "gate": null,
+      "startTime": null,
+      "endTime": null,
+      "next": null,
+      "previous": null
+    },
+    {
+      "id": "V3",
+      "plane": "P2",
+      "type": "ARRIVAL",
+      "gate": null,
+      "startTime": null,
+      "endTime": null,
+      "next": null,
+      "previous": null
+    },
+    {
+      "id": "V4",
+      "plane": "P2",
+      "type": "DEPARTURE",
+      "gate": null,
+      "startTime": null,
+      "endTime": null,
+      "next": null,
+      "previous": null
+    },
+    {
+      "id": "V5",
+      "plane": "P3",
+      "type": "ARRIVAL",
+      "gate": null,
+      "startTime": null,
+      "endTime": null,
+      "next": null,
+      "previous": null
+    },
+    {
+      "id": "V6",
+      "plane": "P3",
+      "type": "DEPARTURE",
+      "gate": null,
+      "startTime": null,
+      "endTime": null,
+      "next": null,
+      "previous": null
+    },
+    {
+      "id": "V7",
+      "plane": "P4",
+      "type": "ARRIVAL",
+      "gate": null,
+      "startTime": null,
+      "endTime": null,
+      "next": null,
+      "previous": null
+    },
+    {
+      "id": "V8",
+      "plane": "P4",
+      "type": "DEPARTURE",
+      "gate": null,
+      "startTime": null,
+      "endTime": null,
+      "next": null,
+      "previous": null
+    },
+    {
+      "id": "V9",
+      "plane": "P5",
+      "type": "ARRIVAL",
+      "gate": null,
+      "startTime": null,
+      "endTime": null,
+      "next": null,
+      "previous": null
+    },
+    {
+      "id": "V10",
+      "plane": "P5",
+      "type": "DEPARTURE",
+      "gate": null,
+      "startTime": null,
+      "endTime": null,
+      "next": null,
+      "previous": null
+    },
+    {
+      "id": "V11",
+      "plane": "P6",
+      "type": "ARRIVAL",
+      "gate": null,
+      "startTime": null,
+      "endTime": null,
+      "next": null,
+      "previous": null
+    },
+    {
+      "id": "V12",
+      "plane": "P6",
+      "type": "DEPARTURE",
+      "gate": null,
+      "startTime": null,
+      "endTime": null,
+      "next": null,
+      "previous": null
+    },
+    {
+      "id": "V13",
+      "plane": "P7",
+      "type": "ARRIVAL",
+      "gate": null,
+      "startTime": null,
+      "endTime": null,
+      "next": null,
+      "previous": null
+    },
+    {
+      "id": "V14",
+      "plane": "P7",
+      "type": "DEPARTURE",
+      "gate": null,
+      "startTime": null,
+      "endTime": null,
+      "next": null,
+      "previous": null
+    },
+    {
+      "id": "V15",
+      "plane": "P8",
+      "type": "ARRIVAL",
+      "gate": null,
+      "startTime": null,
+      "endTime": null,
+      "next": null,
+      "previous": null
+    },
+    {
+      "id": "V16",
+      "plane": "P8",
+      "type": "DEPARTURE",
+      "gate": null,
+      "startTime": null,
+      "endTime": null,
+      "next": null,
+      "previous": null
+    },
+    {
+      "id": "V17",
+      "plane": "P9",
+      "type": "ARRIVAL",
+      "gate": null,
+      "startTime": null,
+      "endTime": null,
+      "next": null,
+      "previous": null
+    },
+    {
+      "id": "V18",
+      "plane": "P9",
+      "type": "DEPARTURE",
+      "gate": null,
+      "startTime": null,
+      "endTime": null,
+      "next": null,
+      "previous": null
+    },
+    {
+      "id": "V19",
+      "plane": "P10",
+      "type": "ARRIVAL",
+      "gate": null,
+      "startTime": null,
+      "endTime": null,
+      "next": null,
+      "previous": null
+    },
+    {
+      "id": "V20",
+      "plane": "P10",
+      "type": "DEPARTURE",
+      "gate": null,
+      "startTime": null,
+      "endTime": null,
+      "next": null,
+      "previous": null
+    },
+    {
+      "id": "V21",
+      "plane": "P11",
+      "type": "ARRIVAL",
+      "gate": null,
+      "startTime": null,
+      "endTime": null,
+      "next": null,
+      "previous": null
+    },
+    {
+      "id": "V22",
+      "plane": "P11",
+      "type": "DEPARTURE",
+      "gate": null,
+      "startTime": null,
+      "endTime": null,
+      "next": null,
+      "previous": null
+    },
+    {
+      "id": "V23",
+      "plane": "P12",
+      "type": "ARRIVAL",
+      "gate": null,
+      "startTime": null,
+      "endTime": null,
+      "next": null,
+      "previous": null
+    },
+    {
+      "id": "V24",
+      "plane": "P12",
+      "type": "DEPARTURE",
+      "gate": null,
+      "startTime": null,
+      "endTime": null,
+      "next": null,
+      "previous": null
+    },
+    {
+      "id": "V25",
+      "plane": "P13",
+      "type": "ARRIVAL",
+      "gate": null,
+      "startTime": null,
+      "endTime": null,
+      "next": null,
+      "previous": null
+    },
+    {
+      "id": "V26",
+      "plane": "P13",
+      "type": "DEPARTURE",
+      "gate": null,
+      "startTime": null,
+      "endTime": null,
+      "next": null,
+      "previous": null
+    },
+    {
+      "id": "V27",
+      "plane": "P14",
+      "type": "ARRIVAL",
+      "gate": null,
+      "startTime": null,
+      "endTime": null,
+      "next": null,
+      "previous": null
+    },
+    {
+      "id": "V28",
+      "plane": "P14",
+      "type": "DEPARTURE",
+      "gate": null,
+      "startTime": null,
+      "endTime": null,
+      "next": null,
+      "previous": null
+    },
+    {
+      "id": "V29",
+      "plane": "P15",
+      "type": "ARRIVAL",
+      "gate": null,
+      "startTime": null,
+      "endTime": null,
+      "next": null,
+      "previous": null
+    },
+    {
+      "id": "V30",
+      "plane": "P15",
+      "type": "DEPARTURE",
+      "gate": null,
+      "startTime": null,
+      "endTime": null,
+      "next": null,
+      "previous": null
+    },
+    {
+      "id": "V31",
+      "plane": "P16",
+      "type": "ARRIVAL",
+      "gate": null,
+      "startTime": null,
+      "endTime": null,
+      "next": null,
+      "previous": null
+    },
+    {
+      "id": "V32",
+      "plane": "P16",
+      "type": "DEPARTURE",
+      "gate": null,
+      "startTime": null,
+      "endTime": null,
+      "next": null,
+      "previous": null
+    },
+    {
+      "id": "V33",
+      "plane": "P17",
+      "type": "ARRIVAL",
+      "gate": null,
+      "startTime": null,
+      "endTime": null,
+      "next": null,
+      "previous": null
+    },
+    {
+      "id": "V34",
+      "plane": "P17",
+      "type": "DEPARTURE",
+      "gate": null,
+      "startTime": null,
+      "endTime": null,
+      "next": null,
+      "previous": null
+    },
+    {
+      "id": "V35",
+      "plane": "P18",
+      "type": "ARRIVAL",
+      "gate": null,
+      "startTime": null,
+      "endTime": null,
+      "next": null,
+      "previous": null
+    },
+    {
+      "id": "V36",
+      "plane": "P18",
+      "type": "DEPARTURE",
+      "gate": null,
+      "startTime": null,
+      "endTime": null,
+      "next": null,
+      "previous": null
+    },
+    {
+      "id": "V37",
+      "plane": "P19",
+      "type": "ARRIVAL",
+      "gate": null,
+      "startTime": null,
+      "endTime": null,
+      "next": null,
+      "previous": null
+    },
+    {
+      "id": "V38",
+      "plane": "P19",
+      "type": "DEPARTURE",
+      "gate": null,
+      "startTime": null,
+      "endTime": null,
+      "next": null,
+      "previous": null
+    },
+    {
+      "id": "V39",
+      "plane": "P20",
+      "type": "ARRIVAL",
+      "gate": null,
+      "startTime": null,
+      "endTime": null,
+      "next": null,
+      "previous": null
+    },
+    {
+      "id": "V40",
+      "plane": "P20",
+      "type": "DEPARTURE",
+      "gate": null,
+      "startTime": null,
+      "endTime": null,
+      "next": null,
+      "previous": null
+    }
+  ]
+}
