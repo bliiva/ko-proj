@@ -1,7 +1,9 @@
 package lv.lu.eztf.dn.combopt.evrp.rest;
 
+import java.time.Instant;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -31,6 +33,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import lv.lu.eztf.dn.combopt.evrp.domain.EVRPsolution;
+import lv.lu.eztf.dn.combopt.evrp.domain.Gate;
+import lv.lu.eztf.dn.combopt.evrp.domain.Plane;
 import lv.lu.eztf.dn.combopt.evrp.domain.Visit;
 import lv.lu.eztf.dn.combopt.evrp.domain.VisitType;
 import lv.lu.eztf.dn.combopt.evrp.solver.SimpleIndictmentObject;
@@ -51,12 +55,14 @@ public class EVRPController {
 
     @Operation(summary = "List the job IDs of all submitted EVRPs.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "List of all job IDs.",
+            @ApiResponse(responseCode = "200", description = "List of all submitted jobs.",
                     content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
-                            schema = @Schema(type = "array", implementation = String.class))) })
+                            schema = @Schema(type = "array", implementation = JobSummary.class))) })
     @GetMapping
-    public Collection<String> list() {
-        return jobIdToJob.keySet();
+    public Collection<JobSummary> list() {
+        return jobIdToJob.entrySet().stream()
+                .map(entry -> new JobSummary(entry.getKey(), entry.getValue().startedAt))
+                .collect(Collectors.toList());
     }
 
     @Operation(summary = "Submit a EVRP to start solving as soon as CPU resources are available.")
@@ -108,13 +114,15 @@ public class EVRPController {
 
         // Existing solver start code
         String jobId = UUID.randomUUID().toString();
-        jobIdToJob.put(jobId, Job.ofEVRPsolution(problem));
+        jobIdToJob.put(jobId, Job.ofEVRPsolution(problem, Instant.now()));
         solverManager.solveBuilder()
                 .withProblemId(jobId)
                 .withProblemFinder(jobId_ -> jobIdToJob.get(jobId).evrpSolution)
-                .withBestSolutionConsumer(solution -> jobIdToJob.put(jobId, Job.ofEVRPsolution(solution)))
+                .withBestSolutionConsumer(solution -> jobIdToJob.compute(jobId, (jobId_, previousJob) ->
+                        Job.ofEVRPsolution(solution, previousJob == null ? Instant.now() : previousJob.startedAt)))
                 .withExceptionHandler((jobId_, exception) -> {
-                        jobIdToJob.put(jobId, Job.ofException(exception));
+                        jobIdToJob.compute(jobId, (id, previousJob) ->
+                                Job.ofException(exception, previousJob == null ? Instant.now() : previousJob.startedAt));
                         log.error("Failed solving jobId ({}).", jobId, exception);
                 })
                 .run();
@@ -166,6 +174,61 @@ public class EVRPController {
         return solutionManager.analyze(evrpSolution);
     }
 
+    @Operation(summary = "Get a UI-friendly schedule view (gates with expanded visit objects) for a given job ID.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "List of gates with expanded visits.",
+                    content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = @Schema(type = "array", implementation = ScheduleGate.class))),
+            @ApiResponse(responseCode = "404", description = "No EVRP found.",
+                    content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = ErrorInfo.class))),
+            @ApiResponse(responseCode = "500", description = "Exception during solving an EVRP.",
+                    content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = ErrorInfo.class)))
+    })
+    @GetMapping(value = "/{jobId}/schedule", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<ScheduleGate> schedule(
+            @Parameter(description = "The job ID returned by the POST method.") @PathVariable("jobId") String jobId) {
+        EVRPsolution evrpSolution = getEVRPsolutionAndCheckForExceptions(jobId);
+        List<Gate> gateList = evrpSolution.getGateList();
+        if (gateList == null) {
+            return List.of();
+        }
+        return gateList.stream()
+                .filter(Objects::nonNull)
+                .map(gate -> new ScheduleGate(
+                        gate.getId(),
+                        gate.getType(),
+                        gate.getTerminal() == null ? null : gate.getTerminal().getId(),
+                        gate.getServiceSpeedCoefficient(),
+                        gate.getVisits() == null ? List.of() : gate.getVisits().stream()
+                                .filter(Objects::nonNull)
+                                .map(this::toScheduleVisit)
+                                .collect(Collectors.toList())
+                ))
+                .collect(Collectors.toList());
+    }
+
+    private ScheduleVisit toScheduleVisit(Visit visit) {
+        Plane plane = visit.getPlane();
+        return new ScheduleVisit(
+                visit.getId(),
+                visit.getName(),
+                visit.getType(),
+                plane == null ? null : plane.getId(),
+                plane == null ? null : plane.getScheduledArrivalTime(),
+                plane == null ? null : plane.getScheduledDepartureTime(),
+                visit.getArrivalTime(),
+                visit.getStartTime(),
+                visit.getEndTime(),
+                visit.getDepartureTime(),
+                visit.getDelay(),
+                visit.getGate() == null ? null : visit.getGate().getId(),
+                visit.getPrevious() == null ? null : visit.getPrevious().getId(),
+                visit.getNext() == null ? null : visit.getNext().getId()
+        );
+    }
+
     @Operation(
             summary = "Get the score indictments for a given job ID. This is the best solution so far, as it might still be running or not even started.")
     @ApiResponses(value = {
@@ -205,16 +268,46 @@ public class EVRPController {
         return job.evrpSolution;
     }
 
-    private record Job(EVRPsolution evrpSolution, Throwable exception) {
+        private record Job(EVRPsolution evrpSolution, Throwable exception, Instant startedAt) {
 
-        static Job ofEVRPsolution(EVRPsolution evrpSolution) {
-            return new Job(evrpSolution, null);
+                static Job ofEVRPsolution(EVRPsolution evrpSolution, Instant startedAt) {
+                        return new Job(evrpSolution, null, startedAt);
         }
 
-        static Job ofException(Throwable error) {
-            return new Job(null, error);
+                static Job ofException(Throwable error, Instant startedAt) {
+                        return new Job(null, error, startedAt);
         }
     }
+
+        public record JobSummary(String jobId, Instant startedAt) {
+        }
+
+        public record ScheduleGate(
+                String gateId,
+                String gateType,
+                String terminalId,
+                Double serviceSpeedCoefficient,
+                List<ScheduleVisit> visits
+        ) {
+        }
+
+        public record ScheduleVisit(
+                String id,
+                String name,
+                VisitType type,
+                String planeId,
+                Long scheduledArrivalTime,
+                Long scheduledDepartureTime,
+                Long arrivalTime,
+                Long startTime,
+                Long endTime,
+                Long departureTime,
+                Long delay,
+                String gateId,
+                String previousId,
+                String nextId
+        ) {
+        }
 
 
 }
