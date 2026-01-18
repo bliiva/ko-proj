@@ -92,9 +92,16 @@ body {
   background-color: var(--color-red);
 }
 
-.lx-badge.lx-bage-error .lx-badge-text{
+.lx-badge.lx-bage-error .lx-badge-text,
+.lx-badge.lx-bage-success .lx-badge-text{
   color: var(--color-badge-foreground);
 }
-.lx-badge.lx-bage-error .lx-badge-icon {
+.lx-badge.lx-bage-error .lx-badge-icon,
+.lx-badge.lx-bage-success .lx-badge-icon {
   fill: var(--color-badge-foreground);
 }
+
+.lx-form-grid .lx-badge.lx-bage-success {
+  background-color: var(--color-green);
+}
+
