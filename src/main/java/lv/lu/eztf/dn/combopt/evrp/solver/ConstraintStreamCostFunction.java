@@ -33,7 +33,7 @@ public class ConstraintStreamCostFunction implements ConstraintProvider {
                 .filter((arrival, other) -> other.getType() == VisitType.DEPARTURE)
                 .filter((arrival, departure) -> arrival.getEndTime() != null && departure.getStartTime() != null)
                 .filter((arrival, departure) -> departure.getStartTime() < arrival.getEndTime())
-                .penalize(HardSoftScore.ONE_HARD)
+                .penalize(HardSoftScore.ofHard(3))
                 .asConstraint("Arrival must finish before departure starts");
         }
 
@@ -47,8 +47,8 @@ public class ConstraintStreamCostFunction implements ConstraintProvider {
                         }
                         return v.getGate().getType() == null || !v.getPlane().getNecessaryGateTypes().contains(v.getGate().getType());
                 })
-                .penalize(HardSoftScore.ONE_HARD, v -> Math.max(1, v.getPlane().getServicePriority()))
-                .asConstraint("Gate type mismatch");
+                .penalize(HardSoftScore.ONE_HARD, v -> Math.min(3, v.getPlane().getServicePriority()))
+                .asConstraint("Gate type mismatch"); // Penalize if gate type does not match plane necessary gate type. If highter service priority, then higher penalty
         }
 
         public Constraint companyTerminalMismatch(ConstraintFactory constraintFactory) {
@@ -83,116 +83,11 @@ public class ConstraintStreamCostFunction implements ConstraintProvider {
                         (
                         (v.getType() == VisitType.ARRIVAL && v.getStartTime() < v.getPlane().getScheduledArrivalTime())
                         ||
-                        (v.getType() == VisitType.DEPARTURE && v.getStartTime() < v.getPlane().getScheduledDepartureTime())
+                        (v.getType() == VisitType.DEPARTURE && v.getEndTime() < v.getPlane().getScheduledDepartureTime())
                         )
                 )
                 .penalize(HardSoftScore.ONE_HARD)
-                .asConstraint("Must assign gate after scheduled time");
+                .asConstraint("Must assign gate after scheduled time"); // Penalize if plane leaves before scheduled time, pasangers are not ready yet
         }
-
-//     public Constraint totalDistance(ConstraintFactory constraintFactory) {
-//         return constraintFactory
-//                 .forEach(Vehicle.class)
-//                 .penalize(HardSoftScore.ONE_SOFT, vehicle -> (int) Math.round(vehicle.getTotalDistance() * 1000))
-//                 .asConstraint("Total distance for a vehicle");
-//     }
-
-//     // This actually is BAD constraint braking incremental score calculation
-//     public Constraint batteryEmpty(ConstraintFactory constraintFactory) {
-//         return constraintFactory
-//                 .forEach(Vehicle.class)
-//                 .filter(vehicle -> vehicle.isBatteryEmpty())
-//                 .penalize(HardSoftScore.ONE_HARD)
-//                 .asConstraint("Battery empty");
-//     }
-
-//     // This actually is BAD constraint braking incremental score calculation
-//     public Constraint visitTimeWindowViolated(ConstraintFactory constraintFactory) {
-//         return constraintFactory
-//                 .forEach(Visit.class)
-//                 .filter(visit -> visit.getDepartureTime() > visit.getEndTime())
-//                 .penalize(HardSoftScore.ONE_HARD)
-//                 .asConstraint("TW violation");
-//     }
-
-//     public Constraint visitChargeNegative(ConstraintFactory constraintFactory) {
-//         return constraintFactory
-//                 .forEach(Visit.class)
-//                 .filter(visit -> visit.getVehicleCharge() < 0)
-//                 .penalize(HardSoftScore.ONE_HARD)
-//                 .asConstraint("Visit with empty battery");
-//     }
-
-//     public Constraint depotChargeNegative(ConstraintFactory constraintFactory) {
-//         return constraintFactory
-//                 .forEach(Visit.class)
-//                 .filter(visit -> visit.getNext() == null)
-//                 .join(Vehicle.class, equal(Visit::getVehicle, v -> v))
-//                 .filter((visit, vehicle) -> visit.getVehicleChargeAfterVisit() -
-//                         vehicle.getDischargeSpeed() * visit.getLocation().distanceTo(vehicle.getDepot()) < 0 )
-//                 .penalize(HardSoftScore.ONE_HARD)
-//                 .asConstraint("Depot with empty battery");
-//     }
-
-//     public Constraint depotTimeWindowViolated(ConstraintFactory constraintFactory) {
-//         return constraintFactory
-//                 .forEach(Visit.class)
-//                 .filter(visit -> visit.getNext() == null)
-//                 .join(Vehicle.class, equal(Visit::getVehicle, v -> v))
-//                 .filter((visit, vehicle) -> visit.getDepartureTime() +
-//                         visit.getLocation().timeTo(vehicle.getDepot()) + vehicle.getServiceDurationAtFinish() >
-//                         vehicle.getOperationEndingTime())
-//                 .penalize(HardSoftScore.ONE_HARD)
-//                 .asConstraint("Depot TW violation");
-//     }
-
-//     public Constraint costVehicleUsage(ConstraintFactory constraintFactory) {
-//         return constraintFactory
-//                 .forEach(Vehicle.class)
-//                 .filter(vehicle -> !vehicle.getVisits().isEmpty())
-//                 .penalize(HardSoftScore.ONE_SOFT, vehicle -> (int) Math.round(vehicle.getCostUsage() * 100))
-//                 .asConstraint("Vehicle usage cost");
-//     }
-
-//     public Constraint costVehicleTime(ConstraintFactory constraintFactory) {
-//         return constraintFactory
-//                 .forEach(Visit.class)
-//                 .filter(visit -> visit.getNext() == null)
-//                 .join(Vehicle.class, equal(Visit::getVehicle, v -> v))
-//                 .penalize(HardSoftScore.ONE_SOFT, (visit, vehicle) -> (int) Math.round(
-//                         (visit.getDepartureTime() + visit.getLocation().timeTo(vehicle.getDepot()) +
-//                         vehicle.getServiceDurationAtFinish() - vehicle.getOperationStartingTime())
-//                         * vehicle.getCostHourly() * 100 / 3600))
-//                 .asConstraint("Vehicle hourly cost");
-//     }
-
-//     public Constraint costInitialEnergy(ConstraintFactory constraintFactory) {
-//         return constraintFactory
-//                 .forEach(Vehicle.class)
-//                 .filter(vehicle -> !vehicle.getVisits().isEmpty())
-//                 .penalize(HardSoftScore.ONE_SOFT, vehicle -> (int) Math.round(vehicle.getPriceEnergyDepot() *
-//                         100 * vehicle.getCharge()))
-//                 .asConstraint("Initial energy cost");
-//     }
-
-//     public Constraint costRechargedEnergy(ConstraintFactory constraintFactory) {
-//         return constraintFactory
-//                 .forEach(ChargingStation.class)
-//                 .penalize(HardSoftScore.ONE_SOFT, station -> (int) Math.round(station.getPriceEnergy() *
-//                         100 * (station.getVehicleChargeAfterVisit() - station.getVehicleCharge())))
-//                 .asConstraint("Recharged energy cost");
-//     }
-
-//     public Constraint rewardLeftover(ConstraintFactory constraintFactory) {
-//         return constraintFactory
-//                 .forEach(ChargingStation.class)
-//                 .groupBy(ChargingStation::getVehicle, ConstraintCollectors.max(ChargingStation::getPriceEnergy))
-//                 // TODO: expand with cars without charging stations!
-//                 .join(Visit.class, equal((v,p)->v, Visit::getVehicle))
-//                 .filter((vehicle, price, visit) -> visit.getNext() == null)
-//                 .reward(HardSoftScore.ONE_SOFT,(vehicle, maxStationPrice, lastVisit) -> (int) Math.round(Math.max(vehicle.getPriceEnergyDepot(), maxStationPrice) * 100 *
-//                                 Math.max(0, lastVisit.getVehicleChargeAfterVisit() - lastVisit.getLocation().distanceTo(vehicle.getDepot()) * vehicle.getDischargeSpeed())))
-//                 .asConstraint("Leftover reward");
-//     }
 }
 

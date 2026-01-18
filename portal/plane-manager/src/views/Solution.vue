@@ -96,6 +96,12 @@ const columnDefinitions = [
     attributeName: "endTime",
     size: "s",
   },
+    {
+    id: "delay",
+    name: "Aizkave",
+    attributeName: "delay",
+    size: "s",
+  },
 ];
 
 const visitListDisplay = computed(() => {
@@ -343,5 +349,6 @@ onMounted(() => {
         </LxSection>
       </template>
     </LxForm>
+    <pre>{{ data }}</pre>
   </div>
 </template>

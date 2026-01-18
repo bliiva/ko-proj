@@ -25,44 +25,6 @@ public class Plane {
 
     @JsonIdentityReference(alwaysAsId = true)
     Company company;
-    // public Visit lastSupplier() {
-    //     Visit last = null;
-    //     if (!this.getVisits().isEmpty()) {
-    //         last = this.getVisits().get(this.getVisits().size() - 1);
-    //     }
-    //     //log.info(String.valueOf(last));
-    //     return last;
-    // }
-
-    // @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    // public Double getTotalDistance() {
-    //     Double totalDistance = 0.0;
-    //     Location prevLoc = this.getDepot();
-    //     for (Visit visit: this.getVisits()) {
-    //         totalDistance = totalDistance +
-    //                 prevLoc.distanceTo(visit.getLocation());
-    //         prevLoc = visit.getLocation();
-    //     }
-    //     totalDistance = totalDistance +
-    //             prevLoc.distanceTo(this.getDepot());
-    //     return totalDistance;
-    // }
-    // @JsonIgnore
-    // public Boolean isBatteryEmpty() {
-    //     Boolean batteryEmpty = false;
-    //     Double charge = this.getCharge();
-    //     Location prevLoc = this.getDepot();
-    //     for (Visit visit: this.getVisits()) {
-    //         charge = charge - this.getDischargeSpeed() * prevLoc.distanceTo(visit.getLocation());
-    //         if (charge < 0) { batteryEmpty = true; }
-    //         if (visit instanceof ChargingStation) {charge = this.getMaxCharge(); }
-    //         prevLoc = visit.getLocation();
-    //     }
-    //     charge = charge - this.getDischargeSpeed() * prevLoc.distanceTo(this.getDepot());
-    //     if (charge < 0) { batteryEmpty = true; }
-    //     return batteryEmpty;
-
-    // }
 
     @Override
     public String toString() {
