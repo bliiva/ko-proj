@@ -61,7 +61,12 @@ public class EVRPController {
     @GetMapping
     public Collection<JobSummary> list() {
         return jobIdToJob.entrySet().stream()
-                .map(entry -> new JobSummary(entry.getKey(), entry.getValue().startedAt))
+                                .map(entry -> {
+                                        Job job = entry.getValue();
+                                        String name = job == null || job.evrpSolution() == null ? null : job.evrpSolution().getName();
+                                        Instant startedAt = job == null ? null : job.startedAt;
+                                        return new JobSummary(entry.getKey(), name, startedAt);
+                                })
                 .collect(Collectors.toList());
     }
 
@@ -279,7 +284,7 @@ public class EVRPController {
         }
     }
 
-        public record JobSummary(String jobId, Instant startedAt) {
+        public record JobSummary(String jobId, String name, Instant startedAt) {
         }
 
         public record ScheduleGate(

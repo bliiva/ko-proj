@@ -1,7 +1,7 @@
 <script setup>
 import { onMounted, ref, computed } from "vue";
 import api from "../../api.js";
-import { LxList, lxDateUtils } from "@wntr/lx-ui";
+import { LxList, lxDateUtils, LxIcon, LxStack } from "@wntr/lx-ui";
 
 const data = ref([]);
 
@@ -21,6 +21,7 @@ const listDisplay = computed(() => {
       jobId: item.jobId,
       startedAt: lxDateUtils.formatFull(item.startedAt),
       href: { name: "solution", params: { id: item?.jobId } },
+      name: item?.name,
     }));
 });
 
@@ -36,6 +37,33 @@ onMounted(() => {
       primaryAttribute="jobId"
       secondaryAttribute="startedAt"
       clickableAttribute="jobId"
-    />
+    >
+      <template #customItem="item">
+        <LxStack
+          orientation="horizontal"
+          verticalAlignment="center"
+          mode="grid"
+          :horizontalConfig="['*', 'auto']"
+        >
+          <div>
+            <p class="lx-primary">{{ item?.name }}</p>
+            <p class="lx-secondary">{{ item?.jobId }}</p>
+          </div>
+          <div>
+            <LxStack
+              orientation="horizontal"
+              verticalAlignment="center"
+              kind="compact"
+            >
+              <LxIcon
+                value="time"
+                style="height: 1.25rem; fill: var(--color-label)"
+              />
+              <p class="lx-secondary">{{ item?.startedAt }}</p>
+            </LxStack>
+          </div>
+        </LxStack>
+      </template>
+    </LxList>
   </div>
 </template>
