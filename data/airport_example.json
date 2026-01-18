@@ -48,5 +48,67 @@
       "necessaryGateTypes": ["B"],
       "company": "C2"
     }
+  ],
+  "visitList": [
+    {
+      "id": "V1",
+      "plane": "P1",
+      "type": "ARRIVAL",
+      "gate": null,
+      "startTime": null,
+      "endTime": null,
+      "next": null,
+      "previous": null
+    },
+    {
+      "id": "V2",
+      "plane": "P1",
+      "type": "DEPARTURE",
+      "gate": null,
+      "startTime": null,
+      "endTime": null,
+      "next": null,
+      "previous": null
+    },
+    {
+      "id": "V3",
+      "plane": "P2",
+      "type": "ARRIVAL",
+      "gate": null,
+      "startTime": null,
+      "endTime": null,
+      "next": null,
+      "previous": null
+    },
+    {
+      "id": "V4",
+      "plane": "P2",
+      "type": "DEPARTURE",
+      "gate": null,
+      "startTime": null,
+      "endTime": null,
+      "next": null,
+      "previous": null
+    },
+    {
+      "id": "V5",
+      "plane": "P3",
+      "type": "ARRIVAL",
+      "gate": null,
+      "startTime": null,
+      "endTime": null,
+      "next": null,
+      "previous": null
+    },
+    {
+      "id": "V6",
+      "plane": "P3",
+      "type": "DEPARTURE",
+      "gate": null,
+      "startTime": null,
+      "endTime": null,
+      "next": null,
+      "previous": null
+    }
   ]
 }

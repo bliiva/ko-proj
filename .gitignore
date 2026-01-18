@@ -38,3 +38,6 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+/portal/plane-manager/dist/
+/portal/plane-manager/node_modules/
